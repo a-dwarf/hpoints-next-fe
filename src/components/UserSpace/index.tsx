@@ -1,22 +1,34 @@
 'use client'
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
+import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Tab, TabIndicator, TabList, TabPanel, TabPanels, Tabs, useDisclosure } from "@chakra-ui/react"
 import Link  from "next/link";
-import SpaceView from "../Home/SpaceView";
+import UserProjectView from "./UserProjectView";
+import UserSpaceView from "./UserSpaceView";
 
 export const UserBanner = () => {
   return  <div>
-    <div className="flex  items-center">
-      <div className="h-40 w-40 border flex flex-col items-center justify-center rounded-lg">
-        <div className=" border rounded-full w-20 h-20">
+    <div className="flex items-center mt-10 mb-10">
+      <div>
+        <div className="h-40 w-40 border flex flex-col items-center justify-center rounded-lg">
+          <div className=" border rounded-full w-20 h-20">
 
+          </div>
         </div>
-        <div className=" font-semibold">
-          {'User Name'}
-        </div>
-
       </div>
-      <div className=" flex h-full items-center ml-20">
-        {"User Info"}
+      <div className=" flex h-full ml-20 flex-col">
+        <div className="text-xl font-bold lg:text-3xl pb-1 capitalize">
+          {"User Info"}
+        </div>
+        <div className="text-sm lg:text-base line-clamp-2 max-w-2xl">
+          {"Joined on June 6th 2024"}
+        </div>
+        <div>
+          <span className=" mr-2 font-medium text-2xl">
+            {"3"}
+          </span>
+          <span>
+            {"Reputations"}
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -78,7 +90,25 @@ function UserSpace() {
         <UserBanner />
       </div>
       <div className='max-w-5xl w-full flex flex-col'>
-        <SpaceView />
+        <Tabs position='relative' variant='unstyled'>
+          <TabList>
+            <Tab>Project</Tab>
+            <Tab>Space</Tab>
+            {/* <Tab>Reward</Tab> */}
+          </TabList>
+          <TabIndicator mt='-1.5px' height='2px' bg='blue.500' borderRadius='1px' />
+          <TabPanels>
+            <TabPanel>
+            <UserProjectView /> 
+            </TabPanel>
+            <TabPanel>
+              <UserSpaceView /> 
+            </TabPanel>
+            {/* <TabPanel>
+            <SpaceView /> 
+            </TabPanel> */}
+          </TabPanels>
+        </Tabs>
       </div>
     </div>
   )
