@@ -6,63 +6,41 @@ export const ActivityItem = () => {
 }
 
 export const SpaceItem = () => {
-  return <div className="flex flex-col md:flex-row items-center card-bordered rounded-md">
-    <div className="flex items-center m-4">
-      <div className="h-40 w-40 border">
-
-      </div>
-      <div className=" px-2 mx-6 w-56 h-full">
-        <div className="flex justify-between">
-          <div>{'550 points'}</div>
-          <div>{'share'}</div>
-        </div>
-        <Link href={'/spaceInfo'}>{'Airdrop program'}</Link>
-        <div className="flex items-center">
-          <div>Ended</div>
-          <div className="ml-6">Participants</div>
-        </div>
-        <div className="btn">
-          Ended
-        </div>
-      </div>
+  return <div className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3">
+    <div className="h-40 border rounded-2xl w-full">
 
     </div>
-    <div className=" flex-grow h-full m-4">
-      <div className="flex items-center justify-between">
-        <div>{'Requirements'}</div>
-        <div>{'Complete any below tasks'}</div>
-      </div>
-      <div className="flex flex-col gap-4">
-        <ActivityItem />
-        <ActivityItem />
-        <div className="flex items-center justify-center btn-link">
-          More
-        </div>
-      </div>
-
+    <div className="pt-2 line-clamp-2 text-base font-medium">
+      {'AirPro Quiz: Where Knowledge meets rewards!'}
     </div>
 
+    <div className="h-5 w-full text-sm inline-flex items-center gap-2 text-gray-400">
+      {'Project1'}
+    </div>
+    <div className="flex items-center gap-4 w-full pt-2">
+      <div className="badge badge-info gap-2"> 5 points</div>
+      <div className="badge badge-success gap-2"> 12 token</div>
+
+    </div>
   </div>
 }
 
 export default function SpaceView () {
 
   return (
-    <div className="">
+    <div className="w-full my-10">
       <div className="flex justify-between">
-        <div>
-          {"Space"}
+        <div className="text-base sm:text-xl font-bold sm:font-semibold">
+          {"Trending Space"}
         </div>
         <div className="flex items-center justify-center gap-2">
-          <Button className="btn" as={"div"}>
-            {"List View"}
-          </Button>
-          <Button className="btn" as={"div"}>{"Grid View"}</Button>
+          <button className="btn btn-outline rounded-2xl border-gray-300">{"View All"}</button>
         </div>
       </div>
-      <div className="flex flex-col gap-2 mt-4">
+      <div className="flex gap-4 mt-4 w-full overflow-scroll">
         <SpaceItem />
-
+        <SpaceItem />
+        <SpaceItem />
         <SpaceItem />
       </div>
     </div>
