@@ -8,61 +8,71 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  address     String   @unique
-  name        String?
-  avatar      String?
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          Int      @id @default(autoincrement()) @map("id")
+  address     String   @unique @map("address")
+  name        String?  @map("name")
+  avatar      String?  @map("avatar")
+  description String?  @map("description")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
   spaces      Space[]
   points      Point[]
+
+  @@map("users")
 }
 
 model Space {
-  id          Int      @id @default(autoincrement())
-  userId      Int
-  name        String
-  avatar      String?
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          Int      @id @default(autoincrement()) @map("id")
+  userId      Int      @map("user_id")
+  name        String   @map("name")
+  avatar      String?  @map("avatar")
+  description String?  @map("description")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   tasks       Task[]
+
+  @@map("spaces")
 }
 
 model EventType {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          Int      @id @default(autoincrement()) @map("id")
+  name        String   @map("name")
+  description String?  @map("description")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
   tasks       Task[]
+
+  @@map("event_types")
 }
 
 model Task {
-  id          Int      @id @default(autoincrement())
-  spaceId     Int
-  eventTypeId Int
-  name        String
-  description String?
-  status      String?
-  startDate   DateTime?
-  endDate     DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  space       Space    @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  id          Int       @id @default(autoincrement()) @map("id")
+  spaceId     Int       @map("space_id")
+  eventTypeId Int       @map("event_type_id")
+  name        String    @map("name")
+  description String?   @map("description")
+  status      String?   @map("status")
+  startDate   DateTime? @map("start_date")
+  endDate     DateTime? @map("end_date")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  space       Space     @relation(fields: [spaceId], references: [id], onDelete: Cascade)
   eventType   EventType @relation(fields: [eventTypeId], references: [id])
   points      Point[]
+
+  @@map("tasks")
 }
 
 model Point {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  taskId    Int
-  points    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        Int      @id @default(autoincrement()) @map("id")
+  userId    Int      @map("user_id")
+  taskId    Int      @map("task_id")
+  points    Int      @map("points")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
   user      User     @relation(fields: [userId], references: [id])
   task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@map("points")
 }
