@@ -14,11 +14,11 @@ export default function HeadBanner () {
         </div>
         <div></div>
         <div className="py-10 flex gap-10">
-          <Link href={'/createSpace'} className="btn">
+          <Link href={'/project/profile'} className="btn">
             Create Your Space
           </Link>
 
-          <Link href={'/createSpace'} className=" btn btn-outline">
+          <Link href={'/'} className=" btn btn-outline">
             Explore Existing
           </Link>
         </div>
