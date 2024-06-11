@@ -6,10 +6,10 @@ export async function GET() {
   return NextResponse.json(eventTypes);
 }
 
-export async function POST(request: NextRequest) {
-  const { name, description } = await request.json();
-  const newEventType = await prisma.eventType.create({
-    data: { name, description },
-  });
-  return NextResponse.json(newEventType, { status: 201 });
-}
+// export async function POST(request: NextRequest) {
+//   const { name, description } = await request.json();
+//   const newEventType = await prisma.eventType.create({
+//     data: { name, description },
+//   });
+//   return NextResponse.json(newEventType, { status: 201 });
+// }

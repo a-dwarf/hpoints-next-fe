@@ -5,11 +5,7 @@ import { verifyAndGetUserId } from '../../../lib/auth';
 export async function GET() {
   const spaces = await prisma.space.findMany({
     include: {
-      tasks: {
-        include: {
-          points: true,
-        },
-      },
+      tasks: true
     },
   });
   return NextResponse.json(spaces);
