@@ -11,7 +11,16 @@ import {
     // extendTheme,
     theme as chakraTheme,
     extendBaseTheme,
-  } from '@chakra-ui/react'
+  } from '@chakra-ui/react';
+
+import * as React from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { WagmiProvider } from 'wagmi';
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+
+import { config } from '@/wagmi';
+
+const queryClient = new QueryClient();
 
   const { Button } = chakraTheme.components
 
@@ -28,7 +37,11 @@ const theme = extendBaseTheme({
 export function Providers({ children }: { children: React.ReactNode }) {
   return <ChakraBaseProvider theme={theme} resetCSS={false}>
       <ReduxProvider store={store}>
-          {children}
+        <WagmiProvider config={config}>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider>{children}</RainbowKitProvider>
+          </QueryClientProvider>
+        </WagmiProvider>
           {/* <PersistGate loading={null} persistor={persistor}>
           </PersistGate> */}
       </ReduxProvider>

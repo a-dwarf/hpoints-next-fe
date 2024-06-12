@@ -6,7 +6,7 @@ export const ActivityItem = () => {
 }
 
 export const SpaceItem = () => {
-  return <Link href={`/space/${1}`} className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3">
+  return <div className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3">
     <div className="h-40 border rounded-2xl w-full">
 
     </div>
@@ -22,19 +22,16 @@ export const SpaceItem = () => {
       <div className="badge badge-success gap-2"> 12 token</div>
 
     </div>
-  </Link>
+  </div>
 }
 
-export default function SpaceView () {
+export default function UserProjectView () {
 
   return (
     <div className="w-full my-10">
       <div className="flex justify-between">
         <div className="text-base sm:text-xl font-bold sm:font-semibold">
-          {"Trending Space"}
-        </div>
-        <div className="flex items-center justify-center gap-2">
-          <button className="btn btn-outline rounded-2xl border-gray-300">{"View All"}</button>
+          {"Trending Project"}
         </div>
       </div>
       <div className="flex gap-4 mt-4 w-full overflow-scroll">
