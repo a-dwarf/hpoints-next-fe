@@ -6,7 +6,7 @@ export const ActivityItem = () => {
 }
 
 export const SpaceItem = () => {
-  return <div className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3">
+  return <Link href={`/space/${1}`} className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3">
     <div className="h-40 border rounded-2xl w-full">
 
     </div>
@@ -22,7 +22,7 @@ export const SpaceItem = () => {
       <div className="badge badge-success gap-2"> 12 token</div>
 
     </div>
-  </div>
+  </Link>
 }
 
 export default function SpaceView () {

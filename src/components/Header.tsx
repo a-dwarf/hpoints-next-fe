@@ -26,7 +26,8 @@ function Header() {
   }, [account?.address, dispatch]);
   // const navigate = useNavigate();
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
     return () => {
       window.removeEventListener('scroll', handleScroll);
 
