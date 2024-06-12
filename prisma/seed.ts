@@ -3,14 +3,14 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // 清空现有数据 / Clear existing data
+  // Clear existing data
   await prisma.point.deleteMany();
   await prisma.task.deleteMany();
   await prisma.space.deleteMany();
   await prisma.eventType.deleteMany();
   await prisma.user.deleteMany();
 
-  // 插入用户数据 / Insert users data
+  // Insert users data
   const user1 = await prisma.user.create({
     data: {
       address: '0x1234abcd',
@@ -47,7 +47,7 @@ async function main() {
     },
   });
 
-  // 插入事件类型数据 / Insert event types data
+  // Insert event types data
   const eventType1 = await prisma.eventType.create({
     data: {
       name: 'EventType1',
@@ -62,7 +62,7 @@ async function main() {
     },
   });
 
-  // 插入空间数据 / Insert spaces data
+  // Insert spaces data
   const space1 = await prisma.space.create({
     data: {
       userId: user1.id,
@@ -90,7 +90,7 @@ async function main() {
     },
   });
 
-  // 插入任务数据 / Insert tasks data
+  // Insert tasks data
   const task1 = await prisma.task.create({
     data: {
       spaceId: space1.id,
@@ -127,7 +127,7 @@ async function main() {
     },
   });
 
-  // 插入积分数据 / Insert points data
+  // Insert points data
   await prisma.point.create({
     data: {
       userId: user1.id,

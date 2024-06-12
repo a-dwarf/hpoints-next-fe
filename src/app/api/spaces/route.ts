@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
   const { address, signature, name, avatar, description } = await request.json();
 
-  // 验证地址并获取用户ID / Verify address and get user ID
+  // Verify address and get user ID
   const userId = await verifyAndGetUserId(address, signature);
 
   if (!userId) {

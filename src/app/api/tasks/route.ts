@@ -15,14 +15,14 @@ export async function POST(request: NextRequest) {
   try {
     const { address, signature, spaceId, eventTypeId, name, description, status, startDate, endDate } = await request.json();
 
-    // 验证地址并获取用户ID / Verify address and get user ID
+    // Verify address and get user ID
     const userId = await verifyAndGetUserId(address, signature);
 
     if (!userId) {
       return NextResponse.json({ error: 'Invalid signature or user not found' }, { status: 401 });
     }
 
-    // 创建任务 / Create task
+    // Create task
     const newTask = await prisma.task.create({
       data: { spaceId: Number(spaceId), eventTypeId: Number(eventTypeId), name, description, status, startDate: new Date(startDate), endDate: new Date(endDate) },
     });
