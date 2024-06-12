@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '../../../lib/prisma';
-import { verifyAndGetUserId } from '../../../lib/auth';
+import { getUserId } from '../../../lib/auth';
 
 export async function GET() {
   const tasks = await prisma.task.findMany({
@@ -13,13 +13,12 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const { address, signature, spaceId, eventTypeId, name, description, status, startDate, endDate } = await request.json();
+    const { address, spaceId, eventTypeId, name, description, status, startDate, endDate } = await request.json();
 
-    // Verify address and get user ID
-    const userId = await verifyAndGetUserId(address, signature);
+    const userId = await getUserId(address);
 
     if (!userId) {
-      return NextResponse.json({ error: 'Invalid signature or user not found' }, { status: 401 });
+      return NextResponse.json({ error: 'User not found' }, { status: 401 });
     }
 
     // Create task
