@@ -78,10 +78,6 @@ export default function TaskForm({
     const submitData = {
       ...sign,
       ...data,
-      // spaceId,
-      // status: '未完成',
-      // startDate:  2024,
-      // endDate:  2024,
     }
     const res = await axios.put(`/api/tasks`, submitData);
     return res;
@@ -91,15 +87,14 @@ export default function TaskForm({
   const handleDeleteTask = useCallback(async (data: any = {}) => {
     const sign = await signApiMessage();
     const submitData = {
+      ...sign,
       ...data,
-      spaceId,
-      // status: '未完成',
-      // startDate:  2024,
-      // endDate:  2024,
+      // spaceId,
     }
-    const res = await axios.post(`/api/tasks`, submitData);
+    const res = await axios.delete(`/api/tasks`, {data: submitData});
+    return res;
 
-  }, [signApiMessage, spaceId])
+  }, [signApiMessage])
 
   return (
     <div className='w-full'>

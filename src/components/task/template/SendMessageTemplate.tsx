@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import axios from 'axios';
 import { TaskTemplateAction } from "../TaskTemplate";
 import TaskExist from "../TaskExist";
+import dayjs from 'dayjs';
 
 interface TaskTemplateProps {
   taskTemplateId?: string;
@@ -60,35 +61,37 @@ export default function SendMessageTemplate({
     const res = await axios.post('/api/tasks')
 
   }, []);
-  const handleAdd = useCallback(() => {
+  const handleAdd = useCallback(async () => {
     onAdd?.({
       eventTypeId: 6,
       name: 'Send Message',
       description: 'send message to earn point',
       status: 'ongoing',
-      startDate: new Date().getTime(),
-      endDate: new Date().getTime() + 12900,
+      startDate: dayjs().add(1, 'hour').toISOString(),
+      endDate: dayjs().add(1, 'day').toISOString(),
     })
     templateDialog.onClose();
   }, [onAdd, templateDialog]);
 
-  const handleUpdate = useCallback(() => {
+  const handleUpdate = useCallback(async () => {
     onUpdate?.({
       id: data.id,
       eventTypeId: 6,
       name: 'Send Message',
       description: 'send message to earn point',
       status: 'ongoing',
-      startDate: new Date().getTime(),
-      endDate: new Date().getTime() + 12900,
+      startDate: dayjs().add(1, 'hour').toISOString(),
+      endDate: dayjs().add(1, 'day').toISOString(),
     })
     templateDialog.onClose();
   }, [data.id, onUpdate, templateDialog]);
 
-  const handleDelete = useCallback(() => {
-    onDelete?.({})
-
-  }, [onDelete]);
+  const handleDelete = useCallback(async () => {
+    await onDelete?.({
+      id: data.id,
+    })
+    templateDialog.onClose();
+  }, [data.id, onDelete, templateDialog]);
   return (
     <>
       {actionType === TaskTemplateAction.Exist &&

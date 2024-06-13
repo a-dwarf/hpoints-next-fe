@@ -24,6 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { TaskTemplateAction } from "../TaskTemplate";
 import TaskExist from "../TaskExist";
+import dayjs from "dayjs";
 
 interface TaskTemplateProps {
   taskTemplateId?: string;
@@ -79,18 +80,19 @@ export default function TwitterTemplate({
       name: 'Follow Twitter',
       description: 'Follow the twitter',
       status: 'ongoing',
-      startDate: new Date().getTime(),
-      endDate: new Date().getTime() + 12900,
+      startDate: dayjs().add(1, 'hour').toISOString(),
+      endDate: dayjs().add(1, 'day').toISOString(),
 
     });
     templateDialog.onClose();
-    templateDialog.onClose();
   }, [data.id, onUpdate, templateDialog]);
 
-  const handleDelete = useCallback(() => {
-    onDelete?.({})
-
-  }, [onDelete]);
+  const handleDelete = useCallback(async () => {
+    await onDelete?.({
+      id: data.id,
+    })
+    templateDialog.onClose();
+  }, [data.id, onDelete, templateDialog]);
   return (
     <>
     {actionType === TaskTemplateAction.Exist &&
