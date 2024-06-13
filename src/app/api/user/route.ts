@@ -1,17 +1,25 @@
-import { prisma } from "@/lib/prisma"
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '../../../lib/prisma';
+import { getUserId } from '../../../lib/auth';
 
-export const dynamic = 'force-dynamic' // defaults to auto
-export async function POST(request: Request) {
-    const { email, password } = await request.json()
-    const user = await prisma.user.create({
-        data: {
-            email,
-            verifyHash: password,
-            name: email,
-        }
-    });
-    if(user) {
-        delete (user as any).verifyHash;
+export async function PUT(request: NextRequest) {
+  try {
+    const { address, name, avatar, description } = await request.json();
+    const userId = await getUserId(address);
+
+    if (!userId) {
+      return NextResponse.json({ error: 'user not found' }, { status: 401 });
     }
-    return Response.json(user)
+
+    const updatedSpace = await prisma.user.update({
+      where: { address: address },
+      data: { name, avatar, description },
+    });
+
+    return NextResponse.json(updatedSpace, { status: 200 });
+
+  } catch (error) {
+    console.error('Error updating user:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }
