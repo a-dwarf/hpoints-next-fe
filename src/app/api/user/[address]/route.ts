@@ -3,22 +3,42 @@ import { prisma } from '../../../../lib/prisma';
 import { getUserId } from '../../../../lib/auth';
 
 export async function GET(request: NextRequest, { params }: { params: { address: string } }) {
+  const searchParams = request.nextUrl.searchParams
   const address = params.address
-  const user = await prisma.user.findUnique({
-    where: { address: String(address) },
-    include: {
-      spaces: {
-        include: {
-          tasks: {
-            include: {
-              points: true,
+
+  if (searchParams.get('project') === '1') {
+    const user = await prisma.user.findUnique({
+      where: { address: String(address) },
+      include: {
+        spaces: {
+          include: {
+            tasks: {
+              include: {
+                points: true,
+              },
             },
           },
         },
       },
-    },
-  });
-  return NextResponse.json(user);
+    });
+    return NextResponse.json(user);
+  } else {
+    const user = await prisma.user.findUnique({
+      where: { address: String(address) },
+      include: {
+        points: {
+          include: {
+            task: {
+              include: {
+                space: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return NextResponse.json(user);
+  }
 }
 
 export async function PUT(request: NextRequest) {

@@ -33,3 +33,30 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
+
+export async function PUT(request: NextRequest) {
+  const { address, id, name, description, startDate, endDate } = await request.json();
+
+  const userId = await getUserId(address);
+
+  if (!userId) {
+    return NextResponse.json({ error: 'User not found' }, { status: 401 });
+  }
+
+  // ...
+
+  const updatedTask = await prisma.task.update({
+    where: { id: Number(id) },
+    data: { name, description, startDate, endDate },
+  });
+  return NextResponse.json(updatedTask);
+}
+
+export async function DELETE(request: NextRequest) {
+  const { id } = await request.json();
+  await prisma.task.delete({
+    where: { id: Number(id) },
+  });
+  return NextResponse.json({ message: 'Task deleted' }, { status: 204 });
+}
