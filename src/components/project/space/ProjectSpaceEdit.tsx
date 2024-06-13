@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import Header from "@/components/Header";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -24,6 +24,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TaskForm from "./TaskForm";
 import InformationForm from "./InformationForm";
 import RewardForm from "./RewardForm";
+import { useParams } from "next/navigation";
+import useSWR from "swr";
+import axios from "axios";
 
 
 interface ProjectSpaceProps {
@@ -55,10 +58,20 @@ interface Inputs {
   name?: string;
   description?: string;
 }
+const taskFetcher = async (url: string) => {
+  const res = await axios.get(url);
+  return res.data;
+}
 
 export default function ProjectSpaceEdit({ title, icon }: ProjectSpaceProps) {
   const form = useForm();
   const taskDialog = useDisclosure();
+  const params = useParams();
+  const spaceId = useMemo(() => {
+    return params.id
+  },[params.id]);
+  const { data, error, isLoading } = useSWR(`/api/spaces/${spaceId}`, taskFetcher);
+
   return (
     <div className="w-full flex flex-col items-center">
       {/* <div className="w-full flex justify-end">

@@ -40,50 +40,20 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { EditIcon } from "lucide-react"
-
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@gmail.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@gmail.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-]
+import Link from "next/link"
 
 export type Payment = {
   id: string
-  amount: number
+  userId: string
+  name: number
   status: "pending" | "processing" | "success" | "failed"
-  email: string
+  description: string
+  updatedAt: string
 }
 
 export const columns: ColumnDef<Payment>[] = [
   {
-    id: "select",
+    id: "id",
     header: ({ table }) => (
       <></>
       // <Checkbox
@@ -107,7 +77,7 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "email",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
@@ -119,7 +89,7 @@ export const columns: ColumnDef<Payment>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "status",
@@ -144,11 +114,13 @@ export const columns: ColumnDef<Payment>[] = [
     cell: ({ row }) => <div className="lowercase">{row.getValue("id")}</div>,
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    accessorKey: "id",
+    header: () => <div className="text-right">Action</div>,
     cell: ({ row }) => {
       return <div className=" flex items-center justify-end">
-        <EditIcon className="h-6 w-6"/>
+          <Link href={`/project/space/edit/${row.getValue('id')}`}>
+            <EditIcon className="h-6 w-6"/>
+          </Link>
         </div>
     },
   },
@@ -180,7 +152,13 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ]
 
-export function SpaceListTable() {
+export interface SpaceListTableProps {
+  data?: any[];
+}
+
+export function SpaceListTable({
+  data = []
+}: SpaceListTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -211,40 +189,6 @@ export function SpaceListTable() {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        {/* <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        /> */}
-        {/* <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                )
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu> */}
       </div>
       <div className="rounded-md border">
         <Table>

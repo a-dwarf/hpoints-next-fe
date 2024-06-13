@@ -1,5 +1,5 @@
 'use client'
-import { ReactNode } from 'react'
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import Header from '../../Header'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
@@ -11,6 +11,12 @@ import { Dialog, DialogContent, DialogTrigger } from '../../ui/dialog'
 import { useDisclosure } from '@chakra-ui/react'
 import TaskExist from '../../task/TaskExist'
 import TaskTemplate from '../../task/TaskTemplate'
+import { ReloadIcon } from '@radix-ui/react-icons'
+import axios from 'axios';
+import { useAccount, useSignMessage } from 'wagmi'
+import { Hex, verifyMessage } from 'viem';
+import { useParams, useRouter } from 'next/navigation'
+import useSWR from 'swr'
 
 interface TaskFormProps {
   title?: ReactNode;
@@ -22,19 +28,75 @@ interface Inputs {
   description?: string;
 }
 
+const fetcher = async (url: string) => {
+  const res = await axios.get(url);
+  return res.data;
+}
 export default function InformationForm({
   title,
   icon
 }: TaskFormProps) {
-  const form = useForm();
+  const account = useAccount();
+  const form = useForm<Inputs>();
   const taskDialog = useDisclosure();
+  const [loading, setLoading] = useState(false);
+  const { signMessageAsync } = useSignMessage();
+  const router = useRouter();
+  const params = useParams();
+  const spaceId = useMemo(() => {
+    return params.id
+  },[params.id])
+
+  const { data, error, isLoading, mutate } = useSWR(`/api/spaces/${spaceId}`, fetcher);
+
+  useEffect(() => {
+    form.reset(data)
+  }, [data, form])
+
+
+  const handleSave = useCallback(async() => {
+    if(!account.address) return;
+    const address = account.address.toLowerCase() as Hex;
+
+    setLoading(true);
+    try {
+      const formValues = form.getValues();
+      const message = `Verify address: ${address}`;
+      
+      const signature = await signMessageAsync({
+        account: address,
+        message,
+      });
+
+      const valid = await verifyMessage({ address, message, signature });
+      console.log('verifyMessage', address, message,signature );
+
+      console.log('verifyMessage', valid);
+      const params = {
+        address,
+        signature,
+        name: formValues.name,
+        avatar: '',
+        description: formValues.description,
+      };
+      const res = await axios.post('/api/spaces', params);
+      if(res.data.id) {
+        router.push(`/project/space/edit/${res.data.id}`);
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+    setLoading(false);
+
+  }, [account.address, form, router, signMessageAsync])
   return (
     <div className='w-full'>
             <Form {...form}>
       <FormField
           control={form.control}
           name="name"
-          render={(field) => (
+          render={({field}) => (
             <FormItem>
               <FormLabel>
                 {'Space Name'}
@@ -50,7 +112,7 @@ export default function InformationForm({
         <FormField
           control={form.control}
           name="description"
-          render={(field) => (
+          render={({field}) => (
             <FormItem>
               <FormLabel>
                 {'Space Description'}
@@ -64,7 +126,13 @@ export default function InformationForm({
           )}
         />
         <div className='mt-10'>
-          <Button>Save</Button>
+          <Button
+          // disabled={loading}
+          onClick={handleSave}
+          >
+            {loading && <ReloadIcon className="mr-2 h-4 w-4 animate-spin"/>}
+            Save
+          </Button>
         </div>
       </Form>
     </div>

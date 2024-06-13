@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import Header from "../Header";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -20,6 +20,9 @@ import { useDisclosure } from "@chakra-ui/react";
 import TaskExist from "../task/TaskExist";
 import TaskTemplate from "../task/TaskTemplate";
 import { SpaceListTable } from "./space/SpaceListTable";
+import { useAccount } from "wagmi";
+import useSWR from "swr";
+import axios from "axios";
 
 interface ProjectSpaceProps {
   title?: ReactNode;
@@ -51,9 +54,21 @@ interface Inputs {
   description?: string;
 }
 
+
+const userSpacesFetcher = async (url: string) => {
+  const res = await axios.get(url);
+  return res.data;
+}
+
+
 export default function ProjectSpace({ title, icon }: ProjectSpaceProps) {
   const form = useForm();
   const taskDialog = useDisclosure();
+  const { address } = useAccount();
+  const {data, isLoading} = useSWR(address ? `/api/user/${address.toLowerCase()}` : null, userSpacesFetcher);
+  const spaceList = useMemo(() => {
+    return data?.spaces || []
+  }, [data?.spaces])
   return (
     <div className="w-full">
       <div className="flex justify-between items-center">
@@ -99,7 +114,7 @@ export default function ProjectSpace({ title, icon }: ProjectSpaceProps) {
         </div>
       </div>
       <div>
-        <SpaceListTable />
+        <SpaceListTable  data={spaceList}/>
       </div>
     </div>
   );
