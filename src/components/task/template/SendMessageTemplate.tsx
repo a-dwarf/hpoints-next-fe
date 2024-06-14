@@ -26,6 +26,7 @@ import axios from 'axios';
 import { TaskTemplateAction } from "../TaskTemplate";
 import TaskExist from "../TaskExist";
 import dayjs from 'dayjs';
+import TaskAction from "./message/TaskAction";
 
 interface TaskTemplateProps {
   taskTemplateId?: string;
@@ -38,6 +39,7 @@ interface TaskTemplateProps {
   onAdd?: (data: any) => void;
   onUpdate?: (data: any) => void;
   onDelete?: (data: any) => void;
+  onAction?: (data: any) => void;
 }
 
 interface Inputs {
@@ -54,6 +56,7 @@ export default function SendMessageTemplate({
   onAdd,
   onUpdate,
   onDelete,
+  onAction,
 }: TaskTemplateProps) {
   const templateDialog = useDisclosure();
   const form = useForm<Inputs>();
@@ -62,7 +65,7 @@ export default function SendMessageTemplate({
 
   }, []);
   const handleAdd = useCallback(async () => {
-    onAdd?.({
+    await onAdd?.({
       eventTypeId: 6,
       name: 'Send Message',
       description: 'send message to earn point',
@@ -74,7 +77,7 @@ export default function SendMessageTemplate({
   }, [onAdd, templateDialog]);
 
   const handleUpdate = useCallback(async () => {
-    onUpdate?.({
+    await onUpdate?.({
       id: data.id,
       eventTypeId: 6,
       name: 'Send Message',
@@ -104,6 +107,17 @@ export default function SendMessageTemplate({
     </div>
     
     }
+        {actionType === TaskTemplateAction.Action &&
+        <div
+          // onClick={templateDialog.onOpen}
+        >
+          <TaskAction title= {title}
+          onAction={onAction}
+          data={data}
+          />
+        </div>
+        
+        }
     {actionType === TaskTemplateAction.List && <div
         className="w-full flex flex-col card card-bordered p-6 shadow cursor-pointer"
         onClick={templateDialog.onOpen}

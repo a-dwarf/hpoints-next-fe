@@ -17,6 +17,8 @@ import { useAccount, useSignMessage } from 'wagmi'
 import { Hex, verifyMessage } from 'viem';
 import { useParams, useRouter } from 'next/navigation'
 import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
+
 
 interface TaskFormProps {
   title?: ReactNode;
@@ -47,7 +49,7 @@ export default function InformationForm({
     return params.id
   },[params.id])
 
-  const { data, error, isLoading, mutate } = useSWR(`/api/spaces/${spaceId}`, fetcher);
+  const { data, error, isLoading, mutate } = useSWRImmutable(`/api/spaces/${spaceId}`, fetcher);
 
   useEffect(() => {
     form.reset(data)
@@ -73,15 +75,18 @@ export default function InformationForm({
 
       console.log('verifyMessage', valid);
       const params = {
+        id: spaceId,
         address,
         signature,
         name: formValues.name,
         avatar: '',
         description: formValues.description,
       };
-      const res = await axios.post('/api/spaces', params);
+      const res = await axios.put('/api/spaces', params);
+      mutate();
       if(res.data.id) {
-        router.push(`/project/space/edit/${res.data.id}`);
+        // mutate();
+        // router.push(`/project/space/edit/${res.data.id}`);
       }
     } catch (error) {
       console.log(error)
@@ -89,7 +94,7 @@ export default function InformationForm({
 
     setLoading(false);
 
-  }, [account.address, form, router, signMessageAsync])
+  }, [account.address, form, mutate, signMessageAsync, spaceId])
   return (
     <div className='w-full'>
             <Form {...form}>

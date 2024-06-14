@@ -81,7 +81,7 @@ export default function ProjectSpaceEdit({ title, icon }: ProjectSpaceProps) {
         <TabsList className="grid w-full grid-cols-3 mb-4">
           <TabsTrigger value="information">1.Information</TabsTrigger>
           <TabsTrigger value="task">2.Task</TabsTrigger>
-          <TabsTrigger value="reward">3.Reward</TabsTrigger>
+          <TabsTrigger value="reward" disabled>3.Reward(Coming Soon)</TabsTrigger>
 
         </TabsList>
         <TabsContent value="information">

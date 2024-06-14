@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { TaskTemplateAction } from "../TaskTemplate";
 import TaskExist from "../TaskExist";
 import dayjs from "dayjs";
+import TaskAction from "./twitter/TaskAction";
 
 interface TaskTemplateProps {
   taskTemplateId?: string;
@@ -105,6 +106,15 @@ export default function TwitterTemplate({
     </div>
     
     }
+           {actionType === TaskTemplateAction.Action &&
+        <div
+          // onClick={templateDialog.onOpen}
+        >
+          <TaskAction title= {title}
+          />
+        </div>
+        
+        } 
     {actionType === TaskTemplateAction.List && <div
         className="w-full flex flex-col card card-bordered p-6 shadow cursor-pointer"
         onClick={templateDialog.onOpen}

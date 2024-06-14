@@ -23,6 +23,8 @@ interface TaskTemplateProps {
   onAdd?: (data: any) => void;
   onUpdate?: (data: any) => void;
   onDelete?: (data: any) => void;
+  onAction?: (data: any) => void;
+
 }
 
 export const TaskTypeRegister: Record<string, FC<any>> = {
@@ -35,6 +37,7 @@ export default function TaskTemplate({
   onAdd,
   onDelete,
   onUpdate,
+  onAction,
   ...props
 }: TaskTemplateProps) {
   const Template = TaskTypeRegister[templateType];
@@ -51,7 +54,9 @@ export default function TaskTemplate({
   if(!Template) return;
   return (
     <>
-      <Template {...props} onAdd={onAdd} onUpdate={onUpdate} onDelete={onDelete}/>
+      <Template {...props} onAdd={onAdd} onUpdate={onUpdate} onDelete={onDelete}
+        onAction={onAction}
+      />
     </>
   )
 }

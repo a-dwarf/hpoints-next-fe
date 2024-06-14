@@ -17,13 +17,15 @@ import axios from 'axios';
 import TwitterTemplate from '@/components/task/template/TwitterTemplate'
 import SendMessageTemplate from '@/components/task/template/SendMessageTemplate'
 import { useSignApiMessage } from '@/hooks/sign'
+import useSWRImmutable from 'swr/immutable'
+
 interface TaskFormProps {
   title?: ReactNode;
   icon?: ReactNode;
 }
 
 
-const templateTypeMap: Record<string, string> = {
+export const templateTypeMap: Record<string, string> = {
   '1': 'twitter',
   '2': 'sendMessage',
   '5': 'twitter',
@@ -50,7 +52,7 @@ export default function TaskForm({
   const spaceId = useMemo(() => {
     return params.id
   },[params.id])
-  const { data, error, isLoading } = useSWR(`/api/spaces/${spaceId}`, taskFetcher);
+  const { data, error, isLoading, mutate } = useSWRImmutable(`/api/spaces/${spaceId}`, taskFetcher);
   const tasks: any[] = useMemo(() => {
     return data?.tasks || [];
   }, [data?.tasks])
@@ -70,8 +72,9 @@ export default function TaskForm({
     }
     console.log('handleAddTask', submitData);
     const res = await axios.post(`/api/tasks`, submitData);
+    mutate();
 
-  }, [signApiMessage, spaceId])
+  }, [mutate, signApiMessage, spaceId])
 
   const handleUpdateTask = useCallback(async (data: any = {}) => {
     const sign = await signApiMessage();
@@ -80,9 +83,10 @@ export default function TaskForm({
       ...data,
     }
     const res = await axios.put(`/api/tasks`, submitData);
+    mutate();
     return res;
 
-  }, [signApiMessage])
+  }, [mutate, signApiMessage])
 
   const handleDeleteTask = useCallback(async (data: any = {}) => {
     const sign = await signApiMessage();
@@ -92,9 +96,10 @@ export default function TaskForm({
       // spaceId,
     }
     const res = await axios.delete(`/api/tasks`, {data: submitData});
+    mutate();
     return res;
 
-  }, [signApiMessage])
+  }, [mutate, signApiMessage])
 
   return (
     <div className='w-full'>
@@ -134,7 +139,7 @@ export default function TaskForm({
           onUpdate={handleUpdateTask}
           onDelete={handleDeleteTask}
           />
-        }): <div className='w-full justify-center items-center'>
+        }): <div className='w-full flex justify-center items-center'>
           {'No Task'}
           </div>}
       </div>
