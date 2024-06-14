@@ -13,7 +13,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const { address, spaceId, eventTypeId, name, description, status, startDate, endDate } = await request.json();
+    const { address, spaceId, eventTypeId, name, description, params, startDate, endDate } = await request.json();
 
     const userId = await getUserId(address);
 
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 
     // Create task
     const newTask = await prisma.task.create({
-      data: { spaceId: Number(spaceId), eventTypeId: Number(eventTypeId), name, description, status, startDate: new Date(startDate), endDate: new Date(endDate) },
+      data: { spaceId: Number(spaceId), eventTypeId: Number(eventTypeId), name, description, params, startDate: new Date(startDate), endDate: new Date(endDate) },
     });
 
     return NextResponse.json(newTask, { status: 201 });
