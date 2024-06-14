@@ -25,11 +25,9 @@ function Header() {
     if(user?.id) {
       return;
     }
-    const rs = await axios.post(`/api/user/${address}`, {
+    const rs = await axios.put(`/api/user/${address}`, {
       address,
       name: address,
-      avatar: '',
-      description: '',
     });
 
   }, [account.address]);

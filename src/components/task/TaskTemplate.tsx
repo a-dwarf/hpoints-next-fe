@@ -6,6 +6,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Button } from '@/components/ui/button';
 import TwitterTemplate from './template/TwitterTemplate';
 import SendMessageTemplate from './template/SendMessageTemplate';
+import checkInTemplate from './template/checkIn/Template';
+import onlineTimeTemplate from './template/onlineTime/Template';
 
 export enum TaskTemplateAction  {
   Exist = 'Exist',
@@ -30,6 +32,8 @@ interface TaskTemplateProps {
 export const TaskTypeRegister: Record<string, FC<any>> = {
   twitter: TwitterTemplate,
   sendMessage: SendMessageTemplate,
+  checkIn: checkInTemplate,
+  onlineTime: onlineTimeTemplate,
 }
 
 export default function TaskTemplate({

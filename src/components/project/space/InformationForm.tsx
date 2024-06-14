@@ -58,7 +58,7 @@ export default function InformationForm({
 
   const handleSave = useCallback(async() => {
     if(!account.address) return;
-    const address = account.address.toLowerCase() as Hex;
+    const address = account.address as Hex;
 
     setLoading(true);
     try {
