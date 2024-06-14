@@ -1,12 +1,22 @@
+'use client'
 import { Button } from "@chakra-ui/react";
+import axios from "axios";
 import Link from "next/link";
+import useSWRImmutable from "swr/immutable";
 
 export const ActivityItem = () => {
   return <div className=" h-14 border flex items-center px-4">{'Task'}</div>
 }
 
-export const SpaceItem = () => {
-  return <Link href={`/space/${1}`} className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3">
+export interface SpaceItemProps {
+  data?: any
+}
+
+export const SpaceItem = ({
+  data
+}: SpaceItemProps) => {
+  
+  return <Link href={`/space/${data?.id}`} className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3 flex-shrink-0">
     <div className="h-40 border rounded-2xl w-full">
 
     </div>
@@ -24,8 +34,15 @@ export const SpaceItem = () => {
     </div>
   </Link>
 }
+export const spaceFetcher = async (url: string) => {
+  const res = await axios.get(url);
+  return res.data || [];
+}
 
 export default function SpaceView () {
+
+  const {data, isLoading} = useSWRImmutable('/api/spaces', spaceFetcher);
+  console.log('SpaceView', data);
 
   return (
     <div className="w-full my-10">
@@ -38,10 +55,9 @@ export default function SpaceView () {
         </div>
       </div>
       <div className="flex gap-4 mt-4 w-full overflow-scroll">
-        <SpaceItem />
-        <SpaceItem />
-        <SpaceItem />
-        <SpaceItem />
+        {data?.map((item: any) => {
+          return <SpaceItem key={item.id} data={item}/>
+        })}
       </div>
     </div>
   )
