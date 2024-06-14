@@ -47,34 +47,34 @@ model EventType {
 }
 
 model Task {
-  id          Int     @id @default(autoincrement()) @map("id")
-  spaceId     Int     @map("space_id")
-  eventTypeId Int     @map("event_type_id")
-  name        String  @map("name")
-  description String? @map("description")
-  params      String? @map("params")
-  startDate DateTime? @map("start_date")
-  endDate   DateTime? @map("end_date")
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  space     Space     @relation(fields: [spaceId], references: [id], onDelete: Cascade)
-  eventType EventType @relation(fields: [eventTypeId], references: [id])
-  points    Point[]
+  id          Int       @id @default(autoincrement()) @map("id")
+  spaceId     Int       @map("space_id")
+  eventTypeId Int       @map("event_type_id")
+  name        String    @map("name")
+  description String?   @map("description")
+  params      String?   @map("params")
+  startDate   DateTime? @map("start_date")
+  endDate     DateTime? @map("end_date")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  space       Space     @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+  eventType   EventType @relation(fields: [eventTypeId], references: [id])
+  points      Point[]
 
   @@map("tasks")
 }
 
 model Point {
-  id          Int      @id @default(autoincrement()) @map("id")
-  dataId      Int      @map("data_id")
-  userId      Int      @map("user_id")
-  taskId      Int      @map("task_id")
-  eventTypeId Int      @map("event_type_id")
-  points      Int      @map("points")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  user        User     @relation(fields: [userId], references: [id])
-  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement()) @map("id")
+  dataId    Int      @map("data_id")
+  userId    Int      @map("user_id")
+  taskId    Int      @map("task_id")
+  eventType String   @map("event_type")
+  points    Int      @map("points")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id])
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   @@map("points")
 }

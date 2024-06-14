@@ -28,7 +28,14 @@ async function main() {
   // Create an event type
   const eventType = await prisma.eventType.create({
     data: {
-      name: 'Example Event',
+      name: 'CHECK-IN',
+      description: 'An example event type for tasks.'
+    },
+  });
+
+  const eventType1 = await prisma.eventType.create({
+    data: {
+      name: 'ONLINE-TIME',
       description: 'An example event type for tasks.'
     },
   });
@@ -52,7 +59,7 @@ async function main() {
       userId: user.id,
       taskId: task.id,
       dataId: 1,
-      eventTypeId: eventType.id,
+      eventType: eventType.name,
       points: 100
     },
   });
