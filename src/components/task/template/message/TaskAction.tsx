@@ -47,7 +47,7 @@ interface Inputs {
   message?: string;
 }
 
-const gateway = 'http://52.221.181.98:8080/gateway/post_data';
+const gateway = '/gateway/post_data';
 
 export default function TaskAction({ taskId, title, onAction,
   data
