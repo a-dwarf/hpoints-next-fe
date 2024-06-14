@@ -20,12 +20,12 @@ export const SpaceItem = ({
     <div className="h-40 border rounded-2xl w-full">
 
     </div>
-    <div className="pt-2 line-clamp-2 text-base font-medium">
-      {'AirPro Quiz: Where Knowledge meets rewards!'}
+    <div className="pt-2 line-clamp-2 text-base font-medium w-full">
+      {data?.name}
     </div>
 
     <div className="h-5 w-full text-sm inline-flex items-center gap-2 text-gray-400">
-      {'Project1'}
+      {data?.description}
     </div>
     <div className="flex items-center gap-4 w-full pt-2">
       <div className="badge badge-info gap-2"> 5 points</div>
