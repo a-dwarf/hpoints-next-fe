@@ -9,12 +9,33 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 import { useAccount as useWagmiAccount } from 'wagmi'
+import axios from "axios";
 
 
 
 function Header() {
   // const account = useAccount();
   const account = useWagmiAccount();
+
+  const handleRegister = useCallback(async () => {
+    const address = account.address;
+    if(!address) return;
+    const res = await axios.get(`/api/user/${address}`);
+    const user = res.data;
+    if(user?.id) {
+      return;
+    }
+    const rs = await axios.post(`/api/user/${address}`, {
+      address,
+      name: address,
+      avatar: '',
+      description: '',
+    });
+
+  }, [account.address]);
+  useEffect(() => {
+    handleRegister();
+  }, [handleRegister]);
   const scrollRef = useRef(null);
   const [top, setTop] = useState(0)
   const handleScroll = useCallback(() => {
@@ -51,7 +72,7 @@ function Header() {
       </div>
       <div className="navbar-end flex items-center gap-6 mr-6">
         <div className="flex items-center justify-center gap-4">
-          <ConnectButton showBalance={false}/>
+          <ConnectButton showBalance={false}  />
           {/* <div className=" btn rounded-xl cursor-pointer ">Sign Up</div> */}
         </div>
         <label className="swap swap-rotate">
