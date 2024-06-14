@@ -10,7 +10,7 @@ import { Plus } from 'lucide-react'
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog'
 import { useDisclosure } from '@chakra-ui/react'
 import TaskExist from '../task/TaskExist'
-import TaskTemplate from '../task/TaskTemplate'
+import TaskTemplate, { TaskTemplateAction } from '../task/TaskTemplate'
 
 interface ProjectTaskProps {
   title?: ReactNode;
@@ -63,10 +63,10 @@ export default function ProjectTask({
         Add Task
       </div>
       <div className=' grid grid-cols-2 gap-4 my-6'>
-        <TaskTemplate  title={'Ask users to follow an account on Twitter'}
+        <TaskTemplate templateType='twitter' actionType={TaskTemplateAction.List}  title={'Ask users to follow an account on Twitter'}
         description={'Follow, retweet, like a tweet, or create memes with a hashtag.'}
         />
-        <TaskTemplate  title={'CheckIn'}
+        <TaskTemplate  templateType='twitter' actionType={TaskTemplateAction.List}   title={'CheckIn'}
         description='To earn Points, users have the option to come and perform check-ins.'
         />
 
