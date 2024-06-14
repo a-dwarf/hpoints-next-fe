@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
-import HeadBanner from "@/components/Home/HeadBanner";
-import SpaceView from "@/components/Home/SpaceView";
+import HeadBanner from "@/components/home/HeadBanner";
+import SpaceView from "@/components/home/SpaceView";
 import Image from "next/image";
 
 export default function Home() {

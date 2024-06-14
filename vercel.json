@@ -1,4 +1,15 @@
 {
+
+  "rewrites": [
+    {
+      "source": "/gateway/(.*)",
+      "destination": "http://52.221.181.98:8080/gateway/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ],
   "crons": [
     {
       "path": "/api/cron",

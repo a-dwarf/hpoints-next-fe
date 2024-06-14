@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode } from "react";
+import { ReactNode, useCallback, useMemo } from "react";
 import Header from "../Header";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -20,6 +20,11 @@ import { useDisclosure } from "@chakra-ui/react";
 import TaskExist from "../task/TaskExist";
 import TaskTemplate from "../task/TaskTemplate";
 import { SpaceListTable } from "./space/SpaceListTable";
+import { useAccount } from "wagmi";
+import useSWRImmutable from "swr/immutable";
+import axios from "axios";
+import { useSignApiMessage } from "@/hooks/sign";
+import { useRouter } from "next/navigation";
 
 interface ProjectSpaceProps {
   title?: ReactNode;
@@ -28,12 +33,16 @@ interface ProjectSpaceProps {
 interface SpaceTemplateOptionItemProps {
   title?: ReactNode;
   icon?: ReactNode;
+  onCreate?: (data: any) => void;
 }
 
 export const SpaceTemplateOptionItem = ({
-  title
+  title,
+  onCreate
 }: SpaceTemplateOptionItemProps) => {
-  return     <Link href={`/project/space/edit/${1}`} className='w-full flex card card-bordered'>
+  return     <div className='w-full flex card card-bordered'
+    onClick={onCreate}
+  >
   <div className=' w-full flex gap-6 items-center justify-between  flex-grow p-6'>
     <div className='flex items-center gap-6'>
         <PlusIcon className='w-6 h-6'/>
@@ -43,7 +52,7 @@ export const SpaceTemplateOptionItem = ({
       <ChevronRightIcon className='w-6 h-6 cursor-pointer'/>
     </div>
   </div>
-</Link>
+</div>
 }
 
 interface Inputs {
@@ -51,9 +60,62 @@ interface Inputs {
   description?: string;
 }
 
+
+const userSpacesFetcher = async (url: string) => {
+  const res = await axios.get(url, {params: {project: '1'}});
+  return res.data;
+}
+
+
 export default function ProjectSpace({ title, icon }: ProjectSpaceProps) {
   const form = useForm();
   const taskDialog = useDisclosure();
+  const { address } = useAccount();
+  const router = useRouter();
+  const {data, isLoading, mutate} = useSWRImmutable(address ? `/api/user/${address.toLowerCase()}` : null, userSpacesFetcher);
+  const spaceList = useMemo(() => {
+    return data?.spaces || []
+  }, [data?.spaces])
+
+  const signApiMessage = useSignApiMessage();
+
+  const handleCreateSpace = useCallback(async() => {
+    try {
+      const sign = await signApiMessage();
+      const params = {
+        ...sign,
+        name: "Simple Space",
+        avatar: '',
+        description: "Simple Space Template",
+      };
+      const res = await axios.post('/api/spaces', params);
+      if(res.data.id) {
+        // mutate();
+        router.push(`/project/space/edit/${res.data.id}`);
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+  }, [router, signApiMessage])
+
+  const handleDelete = useCallback(async(id: string) => {
+    try {
+      const sign = await signApiMessage();
+      const params = {
+        ...sign,
+        id,
+      };
+      // const res = await axios.delete('/api/spaces', {data: params});
+      mutate();
+      // if(res.data.id) {
+      //   router.push(`/project/space/edit/${res.data.id}`);
+      // }
+    } catch (error) {
+      console.log(error)
+    }
+
+  }, [mutate, router, signApiMessage])
   return (
     <div className="w-full">
       <div className="flex justify-between items-center">
@@ -86,8 +148,12 @@ export default function ProjectSpace({ title, icon }: ProjectSpaceProps) {
                     <DialogTitle>Create Space</DialogTitle>
                   </DialogHeader>
                   <div className=" flex flex-col gap-6">
-                    <SpaceTemplateOptionItem title={'Create a simple space template'} />
-                    <SpaceTemplateOptionItem title={'Create a NFT space template'} />
+                    <SpaceTemplateOptionItem title={'Create a simple space template'}
+                      onCreate={handleCreateSpace}
+                    />
+                    <SpaceTemplateOptionItem title={'Create a NFT space template'} 
+                      onCreate={handleCreateSpace}
+                    />
                   </div>
                 </DialogContent>
               </Dialog>
@@ -99,7 +165,7 @@ export default function ProjectSpace({ title, icon }: ProjectSpaceProps) {
         </div>
       </div>
       <div>
-        <SpaceListTable />
+        <SpaceListTable  data={spaceList} onDelete={handleDelete}/>
       </div>
     </div>
   );

@@ -6,11 +6,15 @@ interface TaskExistProps {
   taskId?: string;
   title?: ReactNode;
   icon?: ReactNode;
+  onEdit?: () =>void;
+  onDelete?: () =>void;
 }
 
 export default function TaskExist({
   taskId,
   title,
+  onEdit,
+  onDelete,
   icon,
 }: TaskExistProps) {
   return (
@@ -21,8 +25,16 @@ export default function TaskExist({
             <div>{title}</div>
         </div>
         <div className='flex items-center gap-4'>
-          <Edit className='w-6 h-6 cursor-pointer'/>
-          <ArchiveXIcon className='w-6 h-6 cursor-pointer'/>
+          <Edit className='w-6 h-6 cursor-pointer'
+           onClick={() => {
+            onEdit?.();
+          }}
+          />
+          <ArchiveXIcon className='w-6 h-6 cursor-pointer'
+             onClick={() => {
+              onDelete?.();
+            }}
+          />
         </div>
       </div>
     </div>

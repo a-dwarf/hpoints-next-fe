@@ -14,7 +14,7 @@ export default function HeadBanner () {
         </div>
         <div></div>
         <div className="py-10 flex gap-10">
-          <Link href={'/project/profile'} className="btn">
+          <Link href={'/project/space'} className="btn">
             Create Your Space
           </Link>
 
