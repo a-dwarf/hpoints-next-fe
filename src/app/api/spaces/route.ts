@@ -7,6 +7,9 @@ export async function GET() {
     include: {
       tasks: true
     },
+    orderBy: {
+      id: "desc"
+    }
   });
   return NextResponse.json(spaces);
 }

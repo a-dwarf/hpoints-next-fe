@@ -4,7 +4,22 @@ import Link  from "next/link";
 import UserProjectView from "./UserProjectView";
 import UserSpaceView from "./UserSpaceView";
 
-export const UserBanner = () => {
+import useSWRImmutable from "swr/immutable";
+import axios from "axios";
+import { useAccount } from "wagmi";
+import { useMemo } from "react";
+import dayjs from "dayjs";
+
+
+export interface UserBannerProps {
+  name?: string,
+  data?: any,
+}
+
+
+export const UserBanner = ({
+  data = {}
+}: UserBannerProps) => {
   return  <div>
     <div className="flex items-center mt-10 mb-10">
       <div>
@@ -16,10 +31,10 @@ export const UserBanner = () => {
       </div>
       <div className=" flex h-full ml-20 flex-col">
         <div className="text-xl font-bold lg:text-3xl pb-1 capitalize">
-          {"User Info"}
+          {data?.name || ''}
         </div>
         <div className="text-sm lg:text-base line-clamp-2 max-w-2xl">
-          {"Joined on June 6th 2024"}
+          {`Joined on ${dayjs(data?.createAt).format('YYYY-MM-DD')}`}
         </div>
         <div>
           <span className=" mr-2 font-medium text-2xl">
@@ -82,27 +97,41 @@ export const CreateNewSpace = () => {
   </>
 }
 
+const userSpacesFetcher = async (url: string) => {
+  const res = await axios.get(url, {params: {project: '1'}});
+  return res.data;
+}
+
 function UserSpace() {
+  const { address } = useAccount();
+  const {data, isLoading, mutate} = useSWRImmutable(address ? `/api/user/${address}` : null, userSpacesFetcher);
+
+  const spacesList = useMemo(() => {
+    return data?.spaces || [];
+  }, [data?.spaces])
+
 
   return (
     <div className='w-full flex flex-col justify-center items-center'>
       <div className='max-w-5xl w-full flex flex-col'>
-        <UserBanner />
+        <UserBanner 
+        data={data}
+        />
       </div>
       <div className='max-w-5xl w-full flex flex-col'>
         <Tabs position='relative' variant='unstyled'>
           <TabList>
-            <Tab>Project</Tab>
+            {/* <Tab>Project</Tab> */}
             <Tab>Space</Tab>
             {/* <Tab>Reward</Tab> */}
           </TabList>
           <TabIndicator mt='-1.5px' height='2px' bg='blue.500' borderRadius='1px' />
           <TabPanels>
-            <TabPanel>
+            {/* <TabPanel>
             <UserProjectView /> 
-            </TabPanel>
+            </TabPanel> */}
             <TabPanel>
-              <UserSpaceView /> 
+              <UserSpaceView list={spacesList}/> 
             </TabPanel>
             {/* <TabPanel>
             <SpaceView /> 

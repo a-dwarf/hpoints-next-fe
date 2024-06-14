@@ -5,17 +5,21 @@ export const ActivityItem = () => {
   return <div className=" h-14 border flex items-center px-4">{'Task'}</div>
 }
 
-export const SpaceItem = () => {
+export interface SpaceItemProps {
+  data: any;
+}
+
+export const SpaceItem = ({data = {}}: SpaceItemProps) => {
   return <div className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3">
     <div className="h-40 border rounded-2xl w-full">
 
     </div>
-    <div className="pt-2 line-clamp-2 text-base font-medium">
-      {'AirPro Quiz: Where Knowledge meets rewards!'}
+    <div className="pt-2 line-clamp-2 text-base font-medium w-full">
+      {data.name}
     </div>
 
     <div className="h-5 w-full text-sm inline-flex items-center gap-2 text-gray-400">
-      {'Project1'}
+      {data.description}
     </div>
     <div className="flex items-center gap-4 w-full pt-2">
       <div className="badge badge-info gap-2"> 5 points</div>
@@ -25,20 +29,25 @@ export const SpaceItem = () => {
   </div>
 }
 
-export default function SpaceView () {
+export interface SpaceViewProps {
+  list: any[]
+}
+
+export default function SpaceView ({
+  list = []
+}: SpaceViewProps) {
 
   return (
     <div className="w-full my-10">
       <div className="flex justify-between">
         <div className="text-base sm:text-xl font-bold sm:font-semibold">
-          {"Trending Space"}
+          {"Participated Space"}
         </div>
       </div>
       <div className="flex gap-4 mt-4 w-full overflow-scroll">
-        <SpaceItem />
-        <SpaceItem />
-        <SpaceItem />
-        <SpaceItem />
+        {list.map((item) => {
+          return <SpaceItem key={item.id}  data={item}/>;
+        })}
       </div>
     </div>
   )
