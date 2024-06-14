@@ -62,11 +62,11 @@ export default function TaskAction({ taskId, title, onAction,
     const formValue = form.getValues();
     const submitData =  {
       ...sign,
-      project: data?.id,
+      project: data?.id.toString(),
       event_type: 'CHECK-IN',
       timestamp: dayjs().unix(),
       sign_method: 'ED25519',
-      sign: sign?.signature,
+      sign: sign?.signature.substring(0, 6),
       data: formValue,
     };
     const rs = await axios.post(gateway, submitData)
