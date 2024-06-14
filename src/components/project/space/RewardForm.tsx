@@ -10,7 +10,7 @@ import { Plus } from 'lucide-react'
 import { Dialog, DialogContent, DialogTrigger } from '../../ui/dialog'
 import { useDisclosure } from '@chakra-ui/react'
 import TaskExist from '../../task/TaskExist'
-import TaskTemplate from '../../task/TaskTemplate'
+import TaskTemplate, { TaskTemplateAction } from '../../task/TaskTemplate'
 import GiveawaysReward from '@/components/reward/GiveawaysReward'
 
 interface TaskFormProps {
@@ -67,10 +67,10 @@ export default function RewardForm({
         Add Reward
       </div>
       <div className=' grid grid-cols-2 gap-4 my-6'>
-        <TaskTemplate  title={'NFT Giveaway (ERC721)'}
+        <TaskTemplate templateType='twitter' actionType={TaskTemplateAction.List}  title={'NFT Giveaway (ERC721)'}
         description={'Use your existing ERC721 Token or create a new one for rewards.'}
         />
-        <TaskTemplate  title={'Token Giveaway (ERC20)'}
+        <TaskTemplate templateType='twitter'actionType={TaskTemplateAction.List}  title={'Token Giveaway (ERC20)'}
         description='Use your existing ERC20 Token or create a new one for rewards.'
         />
 
