@@ -26,10 +26,10 @@ interface TaskFormProps {
 
 
 export const templateTypeMap: Record<string, string> = {
-  '1': 'twitter',
-  '2': 'sendMessage',
-  '5': 'twitter',
-  '6': 'sendMessage',
+  '1': 'checkIn',
+  '2': 'onlineTime',
+  '3': 'sendMessage',
+  '4': 'twitter',
 }
 
 interface Inputs {
@@ -147,6 +147,19 @@ export default function TaskForm({
         Add Task
       </div>
       <div className=' grid grid-cols-2 gap-4 my-6'>
+      <TaskTemplate 
+        actionType={TaskTemplateAction.List}      
+        templateType='checkIn'  
+        title={'checkIn'}
+        description={'checkIn'}
+        onAdd={handleAddTask}
+        />
+        <TaskTemplate 
+          actionType={TaskTemplateAction.List}
+          templateType='onlineTime'  title={'onlineTime'}
+          description='onlineTime'
+          onAdd={handleAddTask}
+        />
         <TaskTemplate 
         actionType={TaskTemplateAction.List}      
         templateType='twitter'  title={'Ask users to follow an account on Twitter'}

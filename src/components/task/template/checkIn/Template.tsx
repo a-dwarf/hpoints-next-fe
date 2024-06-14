@@ -22,69 +22,70 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { TaskTemplateAction } from "../TaskTemplate";
-import TaskExist from "../TaskExist";
-import dayjs from "dayjs";
-import TaskAction from "./twitter/TaskAction";
+import axios from 'axios';
+import { TaskTemplateAction } from "../../TaskTemplate";
+import TaskExist from "../../TaskExist";
+import dayjs from 'dayjs';
+import TaskAction from "./TaskAction";
 
 interface TaskTemplateProps {
   taskTemplateId?: string;
   title?: ReactNode;
   icon?: ReactNode;
   description?: string;
-  data?: any;
   templateType?: string;
+  data?: any;
   actionType: TaskTemplateAction;
   onAdd?: (data: any) => void;
   onUpdate?: (data: any) => void;
   onDelete?: (data: any) => void;
+  onAction?: (data: any) => void;
 }
 
 interface Inputs {
-  url?: string;
+  message?: string;
 }
 
-export default function TwitterTemplate({
+export default function SendMessageTemplate({
   taskTemplateId,
   title,
+  data = {},
   icon,
   description,
   actionType,
-  data = {},
   onAdd,
   onUpdate,
   onDelete,
+  onAction,
 }: TaskTemplateProps) {
   const templateDialog = useDisclosure();
   const form = useForm<Inputs>();
-  const handleSubmit = useCallback(() => {
-  }, []);
+  const handleSubmit = useCallback(async () => {
+    const res = await axios.post('/api/tasks')
 
+  }, []);
   const handleAdd = useCallback(async () => {
     await onAdd?.({
-      eventTypeId: 2,
-      name: 'Follow Twitter',
-      description: 'Follow the twitter',
+      eventTypeId: 1,
+      name: 'CheckIn',
+      description: 'CheckIn',
       status: 'ongoing',
-      startDate: new Date().getTime(),
-      endDate: new Date().getTime() + 12900,
-
-    });
+      startDate: dayjs().add(1, 'hour').toISOString(),
+      endDate: dayjs().add(1, 'day').toISOString(),
+    })
     templateDialog.onClose();
-
   }, [onAdd, templateDialog]);
 
   const handleUpdate = useCallback(async () => {
     await onUpdate?.({
       id: data.id,
-      eventTypeId: 2,
-      name: 'Follow Twitter',
-      description: 'Follow the twitter',
+      eventTypeId: 1,
+      name: 'CheckIn',
+      description: 'CheckIn',
       status: 'ongoing',
       startDate: dayjs().add(1, 'hour').toISOString(),
       endDate: dayjs().add(1, 'day').toISOString(),
-
-    });
+    })
     templateDialog.onClose();
   }, [data.id, onUpdate, templateDialog]);
 
@@ -96,7 +97,7 @@ export default function TwitterTemplate({
   }, [data.id, onDelete, templateDialog]);
   return (
     <>
-    {actionType === TaskTemplateAction.Exist &&
+      {actionType === TaskTemplateAction.Exist &&
     <div
       // onClick={templateDialog.onOpen}
     >
@@ -106,15 +107,17 @@ export default function TwitterTemplate({
     </div>
     
     }
-           {actionType === TaskTemplateAction.Action &&
+        {actionType === TaskTemplateAction.Action &&
         <div
           // onClick={templateDialog.onOpen}
         >
           <TaskAction title= {title}
+          onAction={onAction}
+          data={data}
           />
         </div>
         
-        } 
+        }
     {actionType === TaskTemplateAction.List && <div
         className="w-full flex flex-col card card-bordered p-6 shadow cursor-pointer"
         onClick={templateDialog.onOpen}
@@ -153,12 +156,12 @@ export default function TwitterTemplate({
               <Form {...form}>
                 <FormField
                   control={form.control}
-                  name="url"
+                  name="message"
                   render={(field) => (
                     <FormItem>
-                      <FormLabel>{"Twitter Url"}</FormLabel>
+                      <FormLabel>{"Message"}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Twitter Url" {...field} />
+                        <Input placeholder="Message" {...field} />
                       </FormControl>
                       <FormDescription />
                       <FormMessage />

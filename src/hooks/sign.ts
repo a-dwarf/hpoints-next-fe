@@ -6,7 +6,7 @@ export const useSignApiMessage =  () => {
   const { signMessageAsync } = useSignMessage();
   const account = useAccount();
   const signApiMessage = useCallback(async () => {
-    const address  = account?.address?.toLowerCase() as Hex;
+    const address  = account?.address as Hex;
     if(!address) return;
 
     const message = `Verify address: ${address}`;

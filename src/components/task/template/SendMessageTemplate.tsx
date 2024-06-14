@@ -66,7 +66,7 @@ export default function SendMessageTemplate({
   }, []);
   const handleAdd = useCallback(async () => {
     await onAdd?.({
-      eventTypeId: 6,
+      eventTypeId: 1,
       name: 'Send Message',
       description: 'send message to earn point',
       status: 'ongoing',
@@ -79,7 +79,7 @@ export default function SendMessageTemplate({
   const handleUpdate = useCallback(async () => {
     await onUpdate?.({
       id: data.id,
-      eventTypeId: 6,
+      eventTypeId: 1,
       name: 'Send Message',
       description: 'send message to earn point',
       status: 'ongoing',
