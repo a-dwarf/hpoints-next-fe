@@ -56,7 +56,7 @@ async function main() {
   // Assign points to a user for a task
   const point = await prisma.point.create({
     data: {
-      userId: user.id,
+      userAddress: user.address,
       taskId: task.id,
       dataId: 1,
       eventType: eventType.name,

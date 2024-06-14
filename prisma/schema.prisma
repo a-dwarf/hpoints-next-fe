@@ -37,7 +37,7 @@ model Space {
 
 model EventType {
   id          Int      @id @default(autoincrement()) @map("id")
-  name        String   @map("name")
+  name        String   @unique @map("name")
   description String?  @map("description")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
@@ -65,16 +65,16 @@ model Task {
 }
 
 model Point {
-  id        Int      @id @default(autoincrement()) @map("id")
-  dataId    Int      @map("data_id")
-  userId    Int      @map("user_id")
-  taskId    Int      @map("task_id")
-  eventType String   @map("event_type")
-  points    Int      @map("points")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  user      User     @relation(fields: [userId], references: [id])
-  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  id          Int      @id @default(autoincrement()) @map("id")
+  dataId      Int      @unique @map("data_id")
+  userAddress String   @map("user_address")
+  taskId      Int      @map("task_id")
+  eventType   String   @map("event_type")
+  points      Int      @map("points")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  user        User     @relation(fields: [userAddress], references: [address])
+  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   @@map("points")
 }
