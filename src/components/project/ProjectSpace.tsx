@@ -25,6 +25,7 @@ import useSWRImmutable from "swr/immutable";
 import axios from "axios";
 import { useSignApiMessage } from "@/hooks/sign";
 import { useRouter } from "next/navigation";
+import { NormalSkeleton } from "../loading/SkeletonCard";
 
 interface ProjectSpaceProps {
   title?: ReactNode;
@@ -72,7 +73,7 @@ export default function ProjectSpace({ title, icon }: ProjectSpaceProps) {
   const taskDialog = useDisclosure();
   const { address } = useAccount();
   const router = useRouter();
-  const {data, isLoading, mutate} = useSWRImmutable(address ? `/api/user/${address}` : null, userSpacesFetcher);
+  const {data, isLoading, mutate, isValidating } = useSWRImmutable(address ? `/api/user/${address}` : null, userSpacesFetcher);
   const spaceList = useMemo(() => {
     return data?.spaces || []
   }, [data?.spaces])
@@ -115,7 +116,7 @@ export default function ProjectSpace({ title, icon }: ProjectSpaceProps) {
       console.log(error)
     }
 
-  }, [mutate, router, signApiMessage])
+  }, [mutate, signApiMessage])
   return (
     <div className="w-full">
       <div className="flex justify-between items-center">
@@ -165,7 +166,8 @@ export default function ProjectSpace({ title, icon }: ProjectSpaceProps) {
         </div>
       </div>
       <div>
-        <SpaceListTable  data={spaceList} onDelete={handleDelete}/>
+        {(isLoading) && <NormalSkeleton className="w-full h-80" />}
+        {(!isLoading) && <SpaceListTable  data={spaceList} onDelete={handleDelete}/>}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 'use client'
+import { NormalSkeleton, SpaceSkeleton } from "@/components/loading/SkeletonCard";
 import { templateTypeMap } from "@/components/project/space/TaskForm";
 import GiveawaysReward from "@/components/reward/GiveawaysReward";
 import TaskAction from "@/components/task/TaskAction";
@@ -105,16 +106,19 @@ export default function SpaceDetail() {
           </div>
         </div>
         <div className="grid grid-cols-3 mt-4">
-          <ScoredOverview 
+          {userInfo.isLoading && <NormalSkeleton 
+            className="w-full h-40"
+          />}
+          {!userInfo.isLoading && <ScoredOverview 
           userPoints={totalUserPoint}
-          />
+          />}
         </div>
         <div className="grid grid-cols-2 mt-4 gap-4">
           {/* {tasks.map((task: any) => {
             return <TaskAction key={task.id} title={'Follow  on Twitter'} />
           })} */}
 
-          {tasks.map((task: any) => {
+          {!isLoading &&  tasks.map((task: any) => {
             return <TaskTemplate 
             templateType={templateTypeMap[task.eventTypeId || '1']} 
             actionType={TaskTemplateAction.Action} 
@@ -125,6 +129,12 @@ export default function SpaceDetail() {
             data={task}
             />
           })}
+          {isLoading && <>
+          <SpaceSkeleton className=" h-60" />
+          <SpaceSkeleton className=" h-60" />
+          <SpaceSkeleton className=" h-60" />
+          <SpaceSkeleton className=" h-60" />
+          </>}
         </div>
       </div>
     </div>

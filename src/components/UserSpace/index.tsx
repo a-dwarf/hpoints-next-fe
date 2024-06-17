@@ -131,7 +131,7 @@ function UserSpace() {
             <UserProjectView /> 
             </TabPanel> */}
             <TabPanel>
-              <UserSpaceView list={spacesList}/> 
+              <UserSpaceView isLoading={isLoading} list={spacesList}/> 
             </TabPanel>
             {/* <TabPanel>
             <SpaceView /> 

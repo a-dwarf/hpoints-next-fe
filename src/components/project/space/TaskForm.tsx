@@ -18,6 +18,7 @@ import TwitterTemplate from '@/components/task/template/TwitterTemplate'
 import SendMessageTemplate from '@/components/task/template/SendMessageTemplate'
 import { useSignApiMessage } from '@/hooks/sign'
 import useSWRImmutable from 'swr/immutable'
+import { NormalSkeleton } from '@/components/loading/SkeletonCard'
 
 interface TaskFormProps {
   title?: ReactNode;
@@ -129,7 +130,8 @@ export default function TaskForm({
         </div>
       </div>
       <div className='flex flex-col gap-4 my-8'>
-        {tasks.length > 0 ? tasks.map((t) => {
+        {isLoading && <NormalSkeleton className='h-40'/>}
+        {!isLoading && <>{tasks.length > 0 ? tasks.map((t) => {
           return <TaskTemplate key={t.id}
           data={t}
           title={t.description} 
@@ -141,7 +143,7 @@ export default function TaskForm({
           />
         }): <div className='w-full flex justify-center items-center'>
           {'No Task'}
-          </div>}
+          </div>}</>}
       </div>
       <div>
         Add Task

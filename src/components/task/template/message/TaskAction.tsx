@@ -92,9 +92,9 @@ export default function TaskAction({ taskId, title, onAction,
           </div>
           <div className="flex items-center gap-6">
             <div className=" badge badge-secondary badge-outline">
-              {"Token1"}
+              {"1 Point"}
             </div>
-            <div className=" badge badge-warning badge-outline">{"Token2"}</div>
+            {/* <div className=" badge badge-warning badge-outline">{"Token2"}</div> */}
           </div>
         </div>
         <div>

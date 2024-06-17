@@ -3,6 +3,8 @@ import { Button } from "@chakra-ui/react";
 import axios from "axios";
 import Link from "next/link";
 import useSWRImmutable from "swr/immutable";
+import { Skeleton } from "@/components/ui/skeleton";
+import { SpaceSkeleton } from "../loading/SkeletonCard";
 
 export const ActivityItem = () => {
   return <div className=" h-14 border flex items-center px-4">{'Task'}</div>
@@ -41,7 +43,7 @@ export const spaceFetcher = async (url: string) => {
 
 export default function SpaceView () {
 
-  const {data, isLoading} = useSWRImmutable('/api/spaces', spaceFetcher);
+  const {data, isLoading } = useSWRImmutable('/api/spaces', spaceFetcher);
   console.log('SpaceView', data);
 
   return (
@@ -55,9 +57,15 @@ export default function SpaceView () {
         </div>
       </div>
       <div className="flex gap-4 mt-4 w-full overflow-scroll">
-        {data?.map((item: any) => {
+        {!isLoading && data?.map((item: any) => {
           return <SpaceItem key={item.id} data={item}/>
         })}
+        {isLoading && <>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        </>}
       </div>
     </div>
   )

@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import Link from "next/link";
+import { SpaceSkeleton } from "../loading/SkeletonCard";
 
 export const ActivityItem = () => {
   return <div className=" h-14 border flex items-center px-4">{'Task'}</div>
@@ -30,11 +31,13 @@ export const SpaceItem = ({data = {}}: SpaceItemProps) => {
 }
 
 export interface SpaceViewProps {
-  list: any[]
+  list: any[];
+  isLoading?: boolean;
 }
 
 export default function SpaceView ({
-  list = []
+  list = [],
+  isLoading = false,
 }: SpaceViewProps) {
 
   return (
@@ -48,6 +51,12 @@ export default function SpaceView ({
         {list.map((item) => {
           return <SpaceItem key={item.id}  data={item}/>;
         })}
+        {isLoading && <>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        </>}
       </div>
     </div>
   )

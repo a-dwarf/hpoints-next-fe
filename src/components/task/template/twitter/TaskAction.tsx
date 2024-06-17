@@ -29,8 +29,8 @@ export default function TaskAction({
           </div>
           <div className=' text-base text-opacity-80 text-gray-500'>{'Can be performed once'}</div>
           <div className='flex items-center gap-6'>
-            <div className=' badge badge-secondary badge-outline'>{'Token1'}</div>
-            <div className=' badge badge-warning badge-outline'>{'Token2'}</div>
+            <div className=' badge badge-secondary badge-outline'>              {"1 Point"}</div>
+            {/* <div className=' badge badge-warning badge-outline'>{'Token2'}</div> */}
           </div>
         </div>
         <div>
