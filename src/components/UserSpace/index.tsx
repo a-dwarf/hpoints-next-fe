@@ -20,6 +20,9 @@ export interface UserBannerProps {
 export const UserBanner = ({
   data = {}
 }: UserBannerProps) => {
+  const reputationsAmount = useMemo(() => {
+    return data?.spaces?.length || 0
+  }, [data?.spaces?.length])
   return  <div>
     <div className="flex items-center mt-10 mb-10">
       <div>
@@ -38,10 +41,10 @@ export const UserBanner = ({
         </div>
         <div>
           <span className=" mr-2 font-medium text-2xl">
-            {"3"}
+            {reputationsAmount}
           </span>
           <span>
-            {"Reputations"}
+            {"Participated Space"}
           </span>
         </div>
       </div>

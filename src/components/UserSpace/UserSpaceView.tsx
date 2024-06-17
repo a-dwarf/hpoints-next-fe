@@ -1,6 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { SpaceSkeleton } from "../loading/SkeletonCard";
+import { useMemo } from "react";
 
 export const ActivityItem = () => {
   return <div className=" h-14 border flex items-center px-4">{'Task'}</div>
@@ -11,6 +12,13 @@ export interface SpaceItemProps {
 }
 
 export const SpaceItem = ({data = {}}: SpaceItemProps) => {
+  const totalPoints = useMemo(() => {
+    const points = data?.tasks?.map((task: any) => task.points ?? []) ?? []
+    const allPoint =  points.flat().reduce((total: number, cur: any) => {
+      return total + cur.points;
+    }, 0)
+    return allPoint;
+  }, [data?.tasks])
   return <div className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3">
     <div className="h-40 border rounded-2xl w-full">
 
@@ -19,13 +27,14 @@ export const SpaceItem = ({data = {}}: SpaceItemProps) => {
       {data.name}
     </div>
 
-    <div className="h-5 w-full text-sm inline-flex items-center gap-2 text-gray-400">
+    {/* <div className="h-5 w-full text-sm inline-flex items-center gap-2 text-gray-400">
       {data.description}
-    </div>
+    </div> */}
     <div className="flex items-center gap-4 w-full pt-2">
-      <div className="badge badge-info gap-2"> 5 points</div>
-      <div className="badge badge-success gap-2"> 12 token</div>
-
+      <div className="flex flex-col items-center card card-bordered p-2">
+        <div className=""> {`${totalPoints}`}</div>
+        <div className="badge badge-info gap-2">points</div>
+      </div>
     </div>
   </div>
 }
