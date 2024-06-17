@@ -1,4 +1,4 @@
-import { ReactNode, useCallback } from "react";
+import { ReactNode, useCallback, useEffect } from "react";
 import Link from "next/link";
 import {
   ArchiveXIcon,
@@ -33,6 +33,7 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import dayjs from "dayjs";
 import { useSignApiMessage } from "@/hooks/sign";
+import { useAccount } from "wagmi";
 
 interface TaskExistProps {
   taskId?: string;
@@ -55,6 +56,8 @@ export default function TaskAction({ taskId, title, onAction,
   const form = useForm<Inputs>();
   const actionDialog = useDisclosure();
 
+  const { address } = useAccount();
+
   const signApiMessage = useSignApiMessage();
 
   const handleSubmit = useCallback(async () => {
@@ -76,6 +79,29 @@ export default function TaskAction({ taskId, title, onAction,
     }
     actionDialog.onClose();
   }, [actionDialog, data?.id, form, onAction, signApiMessage])
+
+  const handleSubmitInterval = useCallback(async () => {
+    if(!address) return
+    const submitData =  {
+      address,
+      project: data?.id.toString(),
+      event_type: 'ONLINE-TIME',
+      timestamp: dayjs().unix(),
+      sign_method: 'ED25519',
+      sign: '',
+      data: {},
+    };
+    const rs = await axios.post(gateway, submitData)
+  }, [address, data?.id])
+
+  useEffect(() => {
+    const i = setInterval(() => { 
+      handleSubmitInterval();
+    }, 20000)
+    return () => {
+      clearInterval(i);
+    }
+  }, [handleSubmitInterval])
   return (
     <>
       <div
