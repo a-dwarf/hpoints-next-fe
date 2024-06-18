@@ -18,23 +18,50 @@ export interface ScoredOverviewProps {
   userProgress?: number;
 }
 
+export interface ScoredCardOverviewProps {
+  totalPoints?: number;
+  userPoints?: number;
+  userProgress?: number;
+  points?: number;
+  title?: string;
+}
 
-export const ScoredOverview = ({
-  totalPoints,
-  userPoints,
-  userProgress,
-}: ScoredOverviewProps) => {
+export const ScoredCardOverview = ({
+  points,
+  title,
+}: ScoredCardOverviewProps) => {
   return     <div className='w-full flex card card-bordered'>
   <div className=' w-full flex gap-6 items-center  flex-grow p-6'>
     <div className='flex items-center gap-6 border rounded-full p-4'>
         <AwardIcon className='w-6 h-6'/>
     </div>
     <div className='flex justify-center gap-4 h-full flex-col'>
-      <div className=" font-medium text-xl">{userPoints}</div>
-      <div>Your points</div>
+      <div className=" font-medium text-xl">{points}</div>
+      <div>{title}</div>
     </div>
   </div>
 </div>
+}
+
+
+
+export const ScoredOverview = ({
+  totalPoints,
+  userPoints,
+  userProgress,
+}: ScoredOverviewProps) => {
+  return   <div className="grid grid-cols-3 gap-3">
+  <ScoredCardOverview 
+    points={userPoints}
+    title={'Your points'}
+  />
+  <ScoredCardOverview
+    points={totalPoints}
+    title={'Total points'}
+  />
+  {/* <ScoredCardOverview totalPoints={userPoints} /> */}
+
+  </div>
 }
 
 
@@ -83,6 +110,10 @@ export default function SpaceDetail() {
     }, 0)
   }, [userPoints])
 
+  const totalPoints = useMemo(() => {
+    return data?.totalPoints ?? 0
+  }, [data?.totalPoints])
+
 
   const handleAction = useCallback(async () => {
     mutate();
@@ -105,12 +136,13 @@ export default function SpaceDetail() {
             {data?.description}
           </div>
         </div>
-        <div className="grid grid-cols-3 mt-4">
+        <div className="mt-4">
           {userInfo.isLoading && <NormalSkeleton 
             className="w-full h-40"
           />}
           {!userInfo.isLoading && <ScoredOverview 
           userPoints={totalUserPoint}
+          totalPoints={totalPoints}
           />}
         </div>
         <div className="grid grid-cols-2 mt-4 gap-4">
