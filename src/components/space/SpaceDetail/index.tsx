@@ -50,7 +50,7 @@ export const ScoredOverview = ({
   userPoints,
   userProgress,
 }: ScoredOverviewProps) => {
-  return   <div className="grid grid-cols-3 gap-3">
+  return   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
   <ScoredCardOverview 
     points={userPoints}
     title={'Your points'}
@@ -121,7 +121,7 @@ export default function SpaceDetail() {
 
   return (
     <div className='w-full flex flex-col justify-center items-center'>
-      <div className='max-w-5xl w-full py-10'>
+      <div className='max-w-5xl w-full py-10 px-2 sm:px-0'>
         <div className="flex items-center">
           <ChevronLeftIcon className="h-6 w-6 cursor-pointer" 
            onClick={() => {
@@ -145,7 +145,7 @@ export default function SpaceDetail() {
           totalPoints={totalPoints}
           />}
         </div>
-        <div className="grid grid-cols-2 mt-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 mt-4 gap-4">
           {/* {tasks.map((task: any) => {
             return <TaskAction key={task.id} title={'Follow  on Twitter'} />
           })} */}

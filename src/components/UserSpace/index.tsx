@@ -24,7 +24,7 @@ export const UserBanner = ({
     return data?.spaces?.length || 0
   }, [data?.spaces?.length])
   return  <div>
-    <div className="flex items-center mt-10 mb-10">
+    <div className="flex flex-row items-center mt-10 mb-10 gap-6">
       <div>
         <div className="h-40 w-40 border flex flex-col items-center justify-center rounded-lg">
           <div className=" border rounded-full w-20 h-20">
@@ -32,8 +32,8 @@ export const UserBanner = ({
           </div>
         </div>
       </div>
-      <div className=" flex h-full ml-20 flex-col">
-        <div className="text-xl font-bold lg:text-3xl pb-1 capitalize">
+      <div className=" flex h-full flex-col">
+        <div className="text-xl font-bold lg:text-3xl pb-1 capitalize max-w-40 truncate">
           {data?.name || ''}
         </div>
         <div className="text-sm lg:text-base line-clamp-2 max-w-2xl">
@@ -116,12 +116,12 @@ function UserSpace() {
 
   return (
     <div className='w-full flex flex-col justify-center items-center'>
-      <div className='max-w-5xl w-full flex flex-col'>
+      <div className='max-w-5xl w-full flex flex-col px-2 sm:px-0'>
         <UserBanner 
         data={data}
         />
       </div>
-      <div className='max-w-5xl w-full flex flex-col'>
+      <div className='max-w-5xl w-full flex flex-col px-2 sm:px-0'>
         <Tabs position='relative' variant='unstyled'>
           <TabList>
             {/* <Tab>Project</Tab> */}

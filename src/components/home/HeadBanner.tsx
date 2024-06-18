@@ -13,7 +13,7 @@ export default function HeadBanner () {
           <div>Favorite Space on Hetu Ischia</div>
         </div>
         <div></div>
-        <div className="py-10 flex gap-10">
+        <div className="py-10 flex flex-col sm:flex-row gap-10">
           <Link href={'/project/space'} className="btn">
             Create Your Space
           </Link>
@@ -24,7 +24,7 @@ export default function HeadBanner () {
         </div>
 
       </div>
-      <div className="py-10">
+      <div className="py-10 flex justify-center items-center">
         <SpaceCarousel />
       </div>
     </div>
