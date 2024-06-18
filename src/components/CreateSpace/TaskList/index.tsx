@@ -26,7 +26,7 @@ export const TaskList = () => {
   return <div className="">
     <div className="flex">
       <div>
-        <div>Set Up Hpoint Task</div>
+        <div>Set Up Ischia Task</div>
         <div className="mt-5">
           <input className="input input-bordered" />
         </div>
@@ -60,7 +60,7 @@ export const TaskList = () => {
         <ModalContent>
           <ModalHeader>
             <div className="flex justify-between w-full">
-              <div>Create Hpoint by Template</div>
+              <div>Create Ischia by Template</div>
               <div className="btn mr-20">Publish</div>
             </div>
             

@@ -10,7 +10,7 @@ export default function HeadBanner () {
         <div className="text-2xl font-medium sm:text-4xl flex flex-col gap-2">
           <div>Earn rewards</div>
           <div>by Contributing to Your</div>
-          <div>Favorite Space on Hetu Points</div>
+          <div>Favorite Space on Hetu Ischia</div>
         </div>
         <div></div>
         <div className="py-10 flex gap-10">

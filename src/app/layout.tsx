@@ -28,8 +28,8 @@ import {
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "HPoint",
-  description: "HPoint platform",
+  title: "Ischia",
+  description: "Ischia platform",
 };
 
 export default function RootLayout({

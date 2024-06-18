@@ -128,7 +128,7 @@ export default function SpaceDetail() {
             router.back();
           }}
           />
-          <div className=" card-title ml-4">{'HPoints'}</div>
+          <div className=" card-title ml-4">{'Ischia'}</div>
         </div>
         <div className="mt-4">
           <div className=" card-title text-2xl">{data?.name}</div>

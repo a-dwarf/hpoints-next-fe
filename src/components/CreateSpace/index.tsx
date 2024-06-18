@@ -46,7 +46,7 @@ export const CreateNewSpace = () => {
     <Modal isOpen={isOpen} size={"xl"} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create Hpoint by Template</ModalHeader>
+          <ModalHeader>Create Ischia by Template</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <div className="grid grid-cols-3 flex-wrap gap-4 w-full mx-4 my-4">

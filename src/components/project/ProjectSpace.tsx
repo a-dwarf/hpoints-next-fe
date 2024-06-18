@@ -73,7 +73,7 @@ export default function ProjectSpace({ title, icon }: ProjectSpaceProps) {
   const taskDialog = useDisclosure();
   const { address } = useAccount();
   const router = useRouter();
-  const {data, isLoading, mutate, isValidating } = useSWRImmutable(address ? `/api/user/${address}` : null, userSpacesFetcher);
+  const {data, isLoading, mutate, isValidating } = useSWRImmutable(address ? `/api/project/${address}` : null, userSpacesFetcher);
   const spaceList = useMemo(() => {
     return data?.spaces || []
   }, [data?.spaces])

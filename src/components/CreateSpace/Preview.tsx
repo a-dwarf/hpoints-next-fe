@@ -11,7 +11,7 @@ export const TaskItem = ({
 
 export const Preview = () => {
   return <div>
-    <div>Join Hetu HPoint Task</div>
+    <div>Join Hetu Ischia Task</div>
     <div> Get ready for a series </div>
     <div className="flex gap-4 items-center">
       <div>220K+</div>
