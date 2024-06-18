@@ -98,7 +98,7 @@ function Header() {
               </Link>
             </li>
             <li><a>Settings</a></li>
-            <li><Link href={'/mySpace'}>My Space</Link></li>
+            {/* <li><Link href={'/mySpace'}>My Space</Link></li> */}
             {/* <li onClick={logout}><a>Logout</a></li> */}
           </ul>}
         </div>: <></>}

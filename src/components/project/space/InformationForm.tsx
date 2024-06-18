@@ -28,6 +28,7 @@ interface TaskFormProps {
 interface Inputs {
   name?: string;
   description?: string;
+  avatar?: string;
 }
 
 const fetcher = async (url: string) => {
@@ -79,7 +80,7 @@ export default function InformationForm({
         address,
         signature,
         name: formValues.name,
-        avatar: '',
+        avatar: formValues.avatar,
         description: formValues.description,
       };
       const res = await axios.put('/api/spaces', params);
@@ -124,6 +125,22 @@ export default function InformationForm({
               </FormLabel>
               <FormControl>
                 <Input placeholder="Space Description" {...field} />
+              </FormControl>
+              <FormDescription />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="avatar"
+          render={({field}) => (
+            <FormItem>
+              <FormLabel>
+                {'Space Avatar'}
+              </FormLabel>
+              <FormControl>
+                <Input placeholder="Space Avatar" {...field} />
               </FormControl>
               <FormDescription />
               <FormMessage />
