@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "./layout.css";
 import { Providers } from '@/components/Providers';
 import Header from "@/components/Header";
 import '@rainbow-me/rainbowkit/styles.css';
@@ -40,7 +41,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <main  className="min-h-screen">
+          <main id="app" className="min-h-screen">
             <div className="fixed w-screen z-40">
               <Header />
             </div>

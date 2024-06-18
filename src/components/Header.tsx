@@ -56,7 +56,7 @@ function Header() {
     return top > 50 ;
   }, [top])
   return (
-    <div className={clsx("navbar w-full shadow-md", showBlur ? ' backdrop-blur-md': ' bg-base-100')} ref={scrollRef}>
+    <div className={clsx("navbar w-full shadow-md backdrop-blur-md", showBlur ? ' backdrop-blur-md': '')} ref={scrollRef}>
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

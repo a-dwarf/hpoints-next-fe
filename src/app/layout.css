@@ -1,0 +1,4 @@
+#app {
+  background-image: linear-gradient(-20deg, #ddd6f3 0%, #faaca8 100%, #faaca8 100%);
+  @apply min-h-screen;
+}
