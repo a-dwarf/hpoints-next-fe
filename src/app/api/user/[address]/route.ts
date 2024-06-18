@@ -3,42 +3,37 @@ import { prisma } from '../../../../lib/prisma';
 import { getUserId } from '../../../../lib/auth';
 
 export async function GET(request: NextRequest, { params }: { params: { address: string } }) {
-  const searchParams = request.nextUrl.searchParams
   const address = params.address
 
-  if (searchParams.get('project') === '1') {
-    const user = await prisma.user.findUnique({
-      where: { address: String(address) },
-      include: {
-        spaces: {
-          include: {
-            tasks: {
-              include: {
-                points: true,
-              },
-            },
-          },
-        },
+  const user = await prisma.user.findUnique({
+    where: {
+      address: address
+    }
+  })
+
+  const spaces = await prisma.space.findMany({
+    where: {
+      tasks: {
+        some: {
+          points: {
+            some: {
+              userAddress: String(address)
+            }
+          }
+        }
+      }
+    },
+    include: {
+      tasks: {
+        include: {
+          points: {
+            where: { userAddress: String(address) }
+          }
+        }
       },
-    });
-    return NextResponse.json(user);
-  } else {
-    const user = await prisma.user.findUnique({
-      where: { address: String(address) },
-      include: {
-        points: {
-          include: {
-            task: {
-              include: {
-                space: true,
-              },
-            },
-          },
-        },
-      },
-    });
-    return NextResponse.json(user);
-  }
+    },
+  });
+  return NextResponse.json({ ...user, "spaces": spaces });
 }
 
 export async function PUT(request: NextRequest) {
