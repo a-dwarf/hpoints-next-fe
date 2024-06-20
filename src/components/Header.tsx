@@ -10,6 +10,8 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 import { useAccount as useWagmiAccount } from 'wagmi'
 import axios from "axios";
+import { Button } from "./ui/button";
+import { signIn } from "next-auth/react";
 
 
 
@@ -54,7 +56,10 @@ function Header() {
   }, [handleScroll]);
   const showBlur = useMemo(() => {
     return top > 50 ;
-  }, [top])
+  }, [top]);
+  const handleLoginWithX = useCallback(async() => {
+    await signIn('twitch')
+  }, [])
   return (
     <div className={clsx("navbar w-full shadow-md backdrop-blur-md", showBlur ? ' backdrop-blur-md': '')} ref={scrollRef}>
       <div className="navbar-start">
@@ -72,6 +77,13 @@ function Header() {
         <div className="flex items-center justify-center gap-4">
           <ConnectButton showBalance={false}  />
           {/* <div className=" btn rounded-xl cursor-pointer ">Sign Up</div> */}
+        </div>
+        <div>
+          <Button variant={"ghost"}
+          onClick={handleLoginWithX}
+          >
+            Login With X
+          </Button>
         </div>
         <label className="swap swap-rotate  hidden sm:flex">
           <input type="checkbox" className="theme-controller" value="synthwave" />
