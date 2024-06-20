@@ -5,6 +5,8 @@ import "./layout.css";
 import { Providers } from '@/components/Providers';
 import Header from "@/components/Header";
 import '@rainbow-me/rainbowkit/styles.css';
+import { SessionProvider } from "next-auth/react";
+
 
 import {
   getDefaultConfig,
@@ -22,6 +24,7 @@ import {
   QueryClientProvider,
   QueryClient,
 } from "@tanstack/react-query";
+import { auth } from "@/auth";
 
 
 
@@ -32,14 +35,16 @@ export const metadata: Metadata = {
   description: "Ischia platform",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth()
   return (
     <html lang="en">
       <body className={inter.className}>
+      <SessionProvider session={session}>
         <Providers>
           <main id="app" className="min-h-screen">
             <div className="fixed w-screen z-40">
@@ -51,6 +56,7 @@ export default function RootLayout({
           </main>
           
         </Providers>
+      </SessionProvider>
       </body>
     </html>
   );
