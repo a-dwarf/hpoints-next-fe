@@ -8,17 +8,20 @@ datasource db {
 }
 
 model User {
-  id          Int       @id @default(autoincrement()) @map("id")
-  address     String    @unique @map("address")
-  name        String?   @map("name")
-  avatar      String?   @map("avatar")
-  description String?   @map("description")
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  spaces      Space[]
-  points      Point[]
-  Account     Account[]
-  Session     Session[]
+  id            Int       @id @default(autoincrement()) @map("id")
+  address       String?   @unique @map("address")
+  name          String?   @map("name")
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  avatar        String?   @map("avatar")
+  description   String?   @map("description")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  spaces        Space[]
+  points        Point[]
+  accounts      Account[]
+  sessions      Session[]
 
   @@map("users")
 }

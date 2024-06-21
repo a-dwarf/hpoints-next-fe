@@ -4,6 +4,7 @@
 import {Provider as ReduxProvider} from 'react-redux';
 // import { PersistGate } from 'redux-persist/lib/integration/react';
 import { store } from '@/redux/store'
+import { RainbowKitSiweNextAuthProvider } from '@rainbow-me/rainbowkit-siwe-next-auth';
 
 
 import {
@@ -39,7 +40,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <ReduxProvider store={store}>
         <WagmiProvider config={config}>
           <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider>{children}</RainbowKitProvider>
+            <RainbowKitSiweNextAuthProvider>
+              <RainbowKitProvider>{children}</RainbowKitProvider>
+            </RainbowKitSiweNextAuthProvider>
           </QueryClientProvider>
         </WagmiProvider>
           {/* <PersistGate loading={null} persistor={persistor}>

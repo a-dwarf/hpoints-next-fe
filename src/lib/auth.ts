@@ -9,6 +9,7 @@ export async function getUserId(address: any): Promise<number | null> {
     });
 
     if (!user) {
+      return null;
 
       const newUser = await prisma.user.create({
         data: { address },
