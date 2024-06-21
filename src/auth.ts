@@ -7,6 +7,7 @@ import { SiweMessage } from "siwe";
 import { getCsrfToken } from "next-auth/react";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  // debug: true,
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
@@ -29,6 +30,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       async authorize(credentials, req) {
         console.log("authorize", credentials);
+        console.log("authorize", req);
+
         try {
           const creMessage = JSON.parse(credentials?.message as any) || {};
           const siwe = new SiweMessage(creMessage);
@@ -46,13 +49,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           if (result.success) {
             const user = await prisma.user.findUnique({
-              where: { address: siwe.address },
+              where: { 
+                address: siwe.address,
+              },
+              include: {
+                accounts: true,
+              }
             });
             if (user) {
               return {
                 id: user.id,
                 address: siwe.address,
-
+                accounts: user.accounts,
               } as any;
             }
             const newUser = await prisma.user.create({
@@ -72,12 +80,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
     Twitter,
   ],
-  // callbacks: {
-  //   async session({ session, token }: { session: any; token: any }) {
-  //     session.address = token.sub;
-  //     session.user.name = token.sub;
-  //     session.user.image = "https://www.fillmurray.com/128/128";
-  //     return session;
-  //   },
-  // },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) { 
+        token.user = user
+      }
+      return token
+    },
+    async session({ session, token, user }: { session: any; token: any, user: any }) {
+      session.address = token.sub;
+      session.user.name = token.sub;
+      // session.user.image = "https://www.fillmurray.com/128/128";
+      // session.user.userInfo = user;
+      session.token = token;
+      session.userInfo = user;
+
+      return session;
+    },
+  },
 });
