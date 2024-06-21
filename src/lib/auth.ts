@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export async function getUserId(address: any): Promise<number | null> {
+export async function getUserId(address: any){
   try {
     const user = await prisma.user.findUnique({
       where: { address: address },
