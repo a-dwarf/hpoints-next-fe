@@ -31,6 +31,11 @@ export const templateTypeMap: Record<string, string> = {
   '2': 'onlineTime',
   '3': 'sendMessage',
   '4': 'twitter',
+  '5': 'bindX',
+  '6': 'bindGithub',
+  '7': 'NumberOfTransactions',
+  '8': 'Interaction',
+  '9': 'Follow',
 }
 
 interface Inputs {
@@ -163,6 +168,36 @@ export default function TaskForm({
           onAdd={handleAddTask}
         />
         <TaskTemplate 
+          actionType={TaskTemplateAction.List}
+          templateType='bindX'  title={'bindX'}
+          description='bindX'
+          onAdd={handleAddTask}
+        />
+        <TaskTemplate 
+          actionType={TaskTemplateAction.List}
+          templateType='bindGithub'  title={'bindGithub'}
+          description='bindGithub'
+          onAdd={handleAddTask}
+        />
+        <TaskTemplate 
+          actionType={TaskTemplateAction.List}
+          templateType='NumberOfTransactions'  title={'NumberOfTransactions'}
+          description='NumberOfTransactions'
+          onAdd={handleAddTask}
+        />
+        <TaskTemplate 
+          actionType={TaskTemplateAction.List}
+          templateType='Interaction'  title={'Interaction'}
+          description='Interaction'
+          onAdd={handleAddTask}
+        />
+        <TaskTemplate 
+          actionType={TaskTemplateAction.List}
+          templateType='Follow'  title={'Follow'}
+          description='Follow'
+          onAdd={handleAddTask}
+        />
+        {/* <TaskTemplate 
         actionType={TaskTemplateAction.List}      
         templateType='twitter'  title={'Ask users to follow an account on Twitter'}
         description={'Follow, retweet, like a tweet, or create memes with a hashtag.'}
@@ -173,8 +208,13 @@ export default function TaskForm({
           templateType='sendMessage'  title={'Send message'}
           description='To earn Points, users send a message.'
           onAdd={handleAddTask}
-        />
+        /> */}
 
+      </div>
+      <div className='flex items-center justify-center mb-10'>
+        <div className=' card-title btn btn-outline'>
+          Apply for Custom
+        </div>
       </div>
     </div>
   )

@@ -34,6 +34,11 @@ export const TaskTypeRegister: Record<string, FC<any>> = {
   sendMessage: SendMessageTemplate,
   checkIn: checkInTemplate,
   onlineTime: onlineTimeTemplate,
+  bindX: onlineTimeTemplate,
+  bindGithub: onlineTimeTemplate,
+  NumberOfTransactions: onlineTimeTemplate,
+  Interaction: onlineTimeTemplate,
+  Follow: onlineTimeTemplate,
 }
 
 export default function TaskTemplate({

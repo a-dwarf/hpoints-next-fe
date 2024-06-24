@@ -18,6 +18,8 @@ import { Hex, verifyMessage } from 'viem';
 import { useParams, useRouter } from 'next/navigation'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
+import { DatePicker } from 'antd';
+import { Textarea } from '@/components/ui/textarea'
 
 
 interface TaskFormProps {
@@ -29,6 +31,8 @@ interface Inputs {
   name?: string;
   description?: string;
   avatar?: string;
+  startTime?: string;
+  endTime?: string;
 }
 
 const fetcher = async (url: string) => {
@@ -124,7 +128,7 @@ export default function InformationForm({
                 {'Space Description'}
               </FormLabel>
               <FormControl>
-                <Input placeholder="Space Description" {...field} />
+                <Textarea placeholder="Space Description" {...field} />
               </FormControl>
               <FormDescription />
               <FormMessage />
@@ -141,6 +145,43 @@ export default function InformationForm({
               </FormLabel>
               <FormControl>
                 <Input placeholder="Space Avatar" {...field} />
+              </FormControl>
+              <FormDescription />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+      <FormField
+          control={form.control}
+          name="startTime"
+          render={({field}) => (
+            <FormItem className=''>
+              <FormLabel className=''>
+                  {'Start Time'}
+              </FormLabel>
+              <FormControl>
+                <div>
+                  <DatePicker showTime placeholder="Start Time" {...field} />
+                </div>
+              </FormControl>
+              <FormDescription />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+              <FormField
+          control={form.control}
+          name="endTime"
+          render={({field}) => (
+            <FormItem>
+              <FormLabel className=''>
+                {'End Time'}
+              </FormLabel>
+              <FormControl>
+                <div>
+                  <DatePicker showTime placeholder="End Time" {...field} />
+                </div>
               </FormControl>
               <FormDescription />
               <FormMessage />
