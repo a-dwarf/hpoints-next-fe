@@ -12,6 +12,7 @@ import { useAccount as useWagmiAccount } from 'wagmi'
 import axios from "axios";
 import { Button } from "./ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { GitHubLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 
 
 
@@ -60,6 +61,9 @@ function Header() {
   const handleLoginWithX = useCallback(async() => {
     await signIn('twitter')
   }, []);
+  const handleLoginWithGithub = useCallback(async() => {
+    await signIn('github')
+  }, []);
   const session = useSession();
   console.log('user session', session);
 
@@ -68,6 +72,12 @@ function Header() {
       return item.provider === 'twitter'
     })
   }, [session.data]);
+
+  const hasGithub = useMemo(() => {
+    return (session.data as any)?.token?.user?.accounts?.find((item: any) => {
+       return item.provider === 'github'
+     })
+   }, [session.data]);
   return (
     <div className={clsx("navbar w-full shadow-md backdrop-blur-md", showBlur ? ' backdrop-blur-md': '')} ref={scrollRef}>
       <div className="navbar-start">
@@ -90,7 +100,14 @@ function Header() {
           <Button variant={"ghost"}
           onClick={handleLoginWithX}
           >
-            Bind With X
+            <TwitterLogoIcon className="h-6 w-6" />
+          </Button>
+        </div>}
+        {session.status === 'authenticated' && !hasGithub && <div>
+          <Button variant={"ghost"}
+          onClick={handleLoginWithGithub}
+          >
+            <GitHubLogoIcon className="h-6 w-6" />
           </Button>
         </div>}
         {!(session?.status === "authenticated") ? <></> : <div onClick={() => signOut()}>logout</div>}

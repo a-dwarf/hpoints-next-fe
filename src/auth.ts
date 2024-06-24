@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import Credentials from "next-auth/providers/credentials";
 import { SiweMessage } from "siwe";
 import { getCsrfToken } from "next-auth/react";
+import GitHub from "next-auth/providers/github"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   // debug: true,
@@ -79,6 +80,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
     Twitter,
+    GitHub,
   ],
   callbacks: {
     async jwt({ token, user }) {
