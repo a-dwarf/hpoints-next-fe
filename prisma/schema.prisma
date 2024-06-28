@@ -8,17 +8,17 @@ datasource db {
 }
 
 model User {
-  id            String          @id @default(cuid()) @map("id")
-  address       String?   @unique  @map("address")
+  id            String    @id @default(cuid()) @map("id")
+  address       String?   @unique @map("address")
   name          String?   @map("name")
-  email         String?   
-  emailVerified DateTime?
+  email         String?
+  emailVerified DateTime? @map("email_verified")
   image         String?
   avatar        String?   @map("avatar")
   description   String?   @map("description")
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
-  spaces        Space[]
+  quests        Quest[]
   points        Point[]
   accounts      Account[]
   sessions      Session[]
@@ -30,31 +30,33 @@ model Account {
   userId            String
   type              String
   provider          String
-  providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
+  providerAccountId String   @map("provider_account_id")
+  refreshToken      String?  @map("refresh_token")
+  accessToken       String?  @map("access_token")
+  expiresAt         Int?     @map("expires_at")
+  tokenType         String?  @map("token_type")
   scope             String?
-  id_token          String?
-  session_state     String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  idToken           String?  @map("id_token")
+  sessionState      String?  @map("session_state")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
+  @@map("accounts")
 }
 
 model Session {
-  sessionToken String   @unique
-  userId       String
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
 }
 
 model VerificationToken {
@@ -63,20 +65,32 @@ model VerificationToken {
   expires    DateTime
 
   @@id([identifier, token])
+  @@map("verification_tokens")
 }
 
-model Space {
-  id          Int      @id @default(autoincrement()) @map("id")
+model Quest {
+  id          Int         @id @default(autoincrement()) @map("id")
   userId      String      @map("user_id")
-  name        String   @map("name")
-  avatar      String?  @map("avatar")
-  description String?  @map("description")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tasks       Task[]
+  name        String      @map("name")
+  avatar      String?     @map("avatar")
+  status      QuestStatus @default(Draft) @map("status")
+  rewards     String?     @map("rewards")
+  description String?     @map("description")
+  startDate   DateTime?   @map("start_date")
+  endDate     DateTime?   @map("end_date")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
 
-  @@map("spaces")
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks Task[]
+
+  @@map("quests")
+}
+
+enum QuestStatus {
+  Draft
+  Ongoing
+  End
 }
 
 model EventType {
@@ -85,25 +99,25 @@ model EventType {
   description String?  @map("description")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
-  tasks       Task[]
+
+  tasks Task[]
 
   @@map("event_types")
 }
 
 model Task {
-  id          Int       @id @default(autoincrement()) @map("id")
-  spaceId     Int       @map("space_id")
-  eventTypeId Int       @map("event_type_id")
-  name        String    @map("name")
-  description String?   @map("description")
-  params      String?   @map("params")
-  startDate   DateTime? @map("start_date")
-  endDate     DateTime? @map("end_date")
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  space       Space     @relation(fields: [spaceId], references: [id], onDelete: Cascade)
-  eventType   EventType @relation(fields: [eventTypeId], references: [id])
-  points      Point[]
+  id          Int      @id @default(autoincrement()) @map("id")
+  questId     Int      @map("quest_id")
+  eventTypeId Int      @map("event_type_id")
+  name        String   @map("name")
+  description String?  @map("description")
+  params      String?  @map("params")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  quest     Quest     @relation(fields: [questId], references: [id], onDelete: Cascade)
+  eventType EventType @relation(fields: [eventTypeId], references: [id])
+  points    Point[]
 
   @@map("tasks")
 }
@@ -117,8 +131,29 @@ model Point {
   points      Int      @map("points")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
-  user        User     @relation(fields: [userAddress], references: [address])
-  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userAddress], references: [address])
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   @@map("points")
+}
+
+model Banner {
+  id          Int          @id @default(autoincrement()) @map("id")
+  title       String       @map("title")
+  imageUrl    String       @map("image_url")
+  redirectUrl String       @map("redirect_url")
+  startDate   DateTime     @map("start_date")
+  endDate     DateTime     @map("end_date")
+  position    Int          @map("position")
+  status      BannerStatus @default(active) @map("status")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  @@map("banners")
+}
+
+enum BannerStatus {
+  inactive
+  active
 }

@@ -1,66 +1,142 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, QuestStatus, BannerStatus } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Start seeding ...');
+  console.log('Start seeding...');
 
-  // Create a user
+  // Create User
   const user = await prisma.user.create({
     data: {
-      address: '0x123',
+      address: '0x1234567890abcdef',
       name: 'John Doe',
-      avatar: 'https://example.com/avatar.jpg',
-      description: 'A sample user for seeding purposes.'
+      email: 'john.doe@example.com',
+      avatar: 'https://example.com/avatar.png',
+      description: 'A test user',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   });
 
-  // Create a space
-  const space = await prisma.space.create({
+  await prisma.user.create({
     data: {
-      userId: user.id,
-      name: 'Example Space',
-      description: 'A description of the example space.',
-      avatar: 'https://example.com/space.jpg'
+      address: '0x1234567890abcdew',
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      avatar: 'https://example.com/avatar.png',
+      description: 'A test user',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   });
 
-  // Create an event type
+  // Ensure userAddress is not undefined
+  const userAddress = user.address ?? '';
+
+  // Create Event Type
   const eventType = await prisma.eventType.create({
     data: {
-      name: 'CHECK-IN',
-      description: 'An example event type for tasks.'
+      name: 'Task Completion',
+      description: 'Points awarded for completing a task',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   });
 
-  const eventType1 = await prisma.eventType.create({
+  // Create Quest
+  const quest = await prisma.quest.create({
     data: {
-      name: 'ONLINE-TIME',
-      description: 'An example event type for tasks.'
+      userId: user.id,
+      name: 'First Quest 1',
+      avatar: 'https://example.com/quest-avatar.png',
+      status: QuestStatus.Ongoing,
+      rewards: '100 XP',
+      description: 'Complete the tasks to earn rewards',
+      startDate: new Date(),
+      endDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   });
 
-  // Create a task
+  await prisma.quest.create({
+    data: {
+      userId: user.id,
+      name: 'First Quest 2',
+      avatar: 'https://example.com/quest-avatar.png',
+      status: QuestStatus.Draft,
+      rewards: '10 XP',
+      description: 'Complete the tasks to earn rewards',
+      startDate: new Date(),
+      endDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  });
+
+  // Create Task
   const task = await prisma.task.create({
     data: {
-      spaceId: space.id,
+      questId: quest.id,
       eventTypeId: eventType.id,
-      name: 'Initial Task',
-      description: 'This is a task description.',
-      params: 'Param details here',
-      startDate: new Date(),
-      endDate: new Date()
+      name: 'Complete Profile',
+      description: 'Complete your user profile',
+      params: '{}',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   });
 
-  // Assign points to a user for a task
-  const point = await prisma.point.create({
+  await prisma.task.create({
     data: {
-      userAddress: user.address!,
-      taskId: task.id,
+      questId: quest.id,
+      eventTypeId: eventType.id,
+      name: 'Complete Profile',
+      description: 'Complete your user profile',
+      params: '{}',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  });
+
+  // Create Point
+  await prisma.point.create({
+    data: {
       dataId: 1,
+      userAddress: userAddress,
+      taskId: task.id,
       eventType: eventType.name,
-      points: 100
+      points: 50,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  });
+
+  await prisma.point.create({
+    data: {
+      dataId: 2,
+      userAddress: userAddress,
+      taskId: task.id,
+      eventType: eventType.name,
+      points: 10,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  });
+
+
+  // Create Banner
+  await prisma.banner.create({
+    data: {
+      title: 'Welcome Banner',
+      imageUrl: 'https://example.com/banner.png',
+      redirectUrl: 'https://example.com',
+      startDate: new Date(),
+      endDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
+      position: 1,
+      status: BannerStatus.active,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   });
 
@@ -68,10 +144,11 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
+  .then(async () => {
     await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
   });
