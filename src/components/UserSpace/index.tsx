@@ -23,30 +23,38 @@ export const UserBanner = ({
   const reputationsAmount = useMemo(() => {
     return data?.spaces?.length || 0
   }, [data?.spaces?.length])
-  return  <div>
-    <div className="flex flex-row items-center mt-10 mb-10 gap-6">
-      <div>
-        <div className="h-40 w-40 border flex flex-col items-center justify-center rounded-lg">
-          <div className=" border rounded-full w-20 h-20">
+  return  <div className="flex justify-between items-center">
+    <div>
+      <div className="flex flex-row items-center mt-10 mb-10 gap-6">
+        <div>
+          <div className="h-40 w-40 border flex flex-col items-center justify-center rounded-lg">
+            <div className=" border rounded-full w-20 h-20">
 
+            </div>
+          </div>
+        </div>
+        <div className=" flex h-full flex-col">
+          <div className="text-xl font-bold lg:text-3xl pb-1 capitalize max-w-40 truncate">
+            {data?.name || ''}
+          </div>
+          <div className="text-sm lg:text-base line-clamp-2 max-w-2xl">
+            {`Joined on ${dayjs(data?.createAt).format('YYYY-MM-DD')}`}
+          </div>
+          <div>
+            <span className=" mr-2 font-medium text-2xl">
+              {reputationsAmount}
+            </span>
+            <span>
+              {"Participated Space"}
+            </span>
           </div>
         </div>
       </div>
-      <div className=" flex h-full flex-col">
-        <div className="text-xl font-bold lg:text-3xl pb-1 capitalize max-w-40 truncate">
-          {data?.name || ''}
-        </div>
-        <div className="text-sm lg:text-base line-clamp-2 max-w-2xl">
-          {`Joined on ${dayjs(data?.createAt).format('YYYY-MM-DD')}`}
-        </div>
-        <div>
-          <span className=" mr-2 font-medium text-2xl">
-            {reputationsAmount}
-          </span>
-          <span>
-            {"Participated Space"}
-          </span>
-        </div>
+    </div>
+    <div>
+      <div className=" card card-bordered w-40 h-40 flex items-center justify-center">
+        <div className=" font-extrabold text-5xl">{'98'}</div>
+        <div className=" font-semibold text-2xl">{'Reputation'}</div>
       </div>
     </div>
   </div>
@@ -107,7 +115,7 @@ const userSpacesFetcher = async (url: string) => {
 
 function UserSpace() {
   const { address } = useAccount();
-  const {data, isLoading, mutate} = useSWRImmutable(address ? `/api/user/${address}` : null, userSpacesFetcher);
+  const {data, isLoading, mutate, error} = useSWRImmutable(address ? `/api/user/${address}` : null, userSpacesFetcher);
 
   const spacesList = useMemo(() => {
     return data?.spaces || [];
@@ -121,26 +129,12 @@ function UserSpace() {
         data={data}
         />
       </div>
+
       <div className='max-w-5xl w-full flex flex-col px-2 sm:px-0'>
-        <Tabs position='relative' variant='unstyled'>
-          <TabList>
-            {/* <Tab>Project</Tab> */}
-            <Tab>Space</Tab>
-            {/* <Tab>Reward</Tab> */}
-          </TabList>
-          <TabIndicator mt='-1.5px' height='2px' bg='blue.500' borderRadius='1px' />
-          <TabPanels>
-            {/* <TabPanel>
-            <UserProjectView /> 
-            </TabPanel> */}
-            <TabPanel>
-              <UserSpaceView isLoading={isLoading} list={spacesList}/> 
-            </TabPanel>
-            {/* <TabPanel>
-            <SpaceView /> 
-            </TabPanel> */}
-          </TabPanels>
-        </Tabs>
+        <UserProjectView/> 
+      </div>
+      <div className='max-w-5xl w-full flex flex-col px-2 sm:px-0'>
+        <UserSpaceView isLoading={error || isLoading} list={spacesList}/> 
       </div>
     </div>
   )

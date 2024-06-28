@@ -54,7 +54,7 @@ export default function SpaceView ({
     <div className="w-full my-10">
       <div className="flex justify-between">
         <div className="text-base sm:text-xl font-bold sm:font-semibold">
-          {"Participated Space"}
+          {"Participated Quest"}
         </div>
       </div>
       <div className="flex gap-4 mt-4 w-full overflow-scroll">

@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export const ActivityItem = () => {
@@ -31,7 +31,12 @@ export default function UserProjectView () {
     <div className="w-full my-10">
       <div className="flex justify-between">
         <div className="text-base sm:text-xl font-bold sm:font-semibold">
-          {"Trending Project"}
+          {"My Create Quest"}
+        </div>
+        <div>
+          <Button variant={"outline"}>
+            Create New Quest
+          </Button>
         </div>
       </div>
       <div className="flex gap-4 mt-4 w-full overflow-scroll">
