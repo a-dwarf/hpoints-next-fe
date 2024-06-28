@@ -108,14 +108,14 @@ export const CreateNewSpace = () => {
   </>
 }
 
-const userSpacesFetcher = async (url: string) => {
-  const res = await axios.get(url, {params: {project: '1'}});
+const userSpacesFetcher = async ([url, address]: string[]) => {
+  const res = await axios.get(url, {params: {address}});
   return res.data;
 }
 
 function UserSpace() {
   const { address } = useAccount();
-  const {data, isLoading, mutate, error} = useSWRImmutable(address ? `/api/user/${address}` : null, userSpacesFetcher);
+  const {data, isLoading, mutate, error} = useSWRImmutable(address ? [`/api/quests/participate`, address] : null, userSpacesFetcher);
 
   const spacesList = useMemo(() => {
     return data?.spaces || [];

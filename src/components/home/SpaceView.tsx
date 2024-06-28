@@ -5,6 +5,7 @@ import Link from "next/link";
 import useSWRImmutable from "swr/immutable";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SpaceSkeleton } from "../loading/SkeletonCard";
+import { useMemo } from "react";
 
 export const ActivityItem = () => {
   return <div className=" h-14 border flex items-center px-4">{'Task'}</div>
@@ -44,8 +45,12 @@ export const spaceFetcher = async (url: string) => {
 
 export default function SpaceView () {
 
-  const {data, isLoading, error } = useSWRImmutable('/api/spaces', spaceFetcher);
+  const {data, isLoading, error } = useSWRImmutable('/api/quests', spaceFetcher);
   console.log('SpaceView', data);
+
+  const questsList = useMemo(() => {
+    return data || []
+  }, [data])
 
   return (
     <div className="w-full my-10">
@@ -64,9 +69,14 @@ export default function SpaceView () {
         <SpaceSkeleton  className="w-80 h-72"/>
         <SpaceSkeleton  className="w-80 h-72"/>
         </>}
-        {!error && !isLoading && data?.map((item: any) => {
+        {!error && !isLoading && (questsList.length > 0) ?  data?.map((item: any) => {
           return <SpaceItem key={item.id} data={item}/>
-        })}
+        }): <>
+            <SpaceSkeleton  className="w-80 h-72"/>
+            <SpaceSkeleton  className="w-80 h-72"/>
+            <SpaceSkeleton  className="w-80 h-72"/>
+            <SpaceSkeleton  className="w-80 h-72"/>
+        </>}
         {!error && (isLoading) && <>
         <SpaceSkeleton  className="w-80 h-72"/>
         <SpaceSkeleton  className="w-80 h-72"/>

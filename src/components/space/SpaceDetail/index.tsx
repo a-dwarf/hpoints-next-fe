@@ -72,7 +72,7 @@ export const spaceDetailFetcher = async (url: string) => {
 }
 
 const userSpacesFetcher = async (url: string) => {
-  const res = await axios.get(url, {params: {project: '1'}});
+  const res = await axios.get(url);
   return res.data;
 }
 
@@ -86,7 +86,7 @@ export default function SpaceDetail() {
 
   const {id} = useParams();
 
-  const {data, isLoading, mutate} = useSWRImmutable(id ? `/api/spaces/${id}` : null, spaceDetailFetcher);
+  const {data, isLoading, mutate} = useSWRImmutable(id ? `/api/quests/${id}` : null, spaceDetailFetcher);
   const userInfo = useSWRImmutable(address ? `/api/user/${address}` : null, userSpacesFetcher);
 
 
