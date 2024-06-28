@@ -1,17 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '../../../../lib/prisma';
-// import { auth } from "@/auth"
+import { auth } from "@/auth"
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
-
-  // const session = await auth();
-  // console.log(session)
-
-  // const userId = session.user.id;
-  // const userId = "clxwxox8r0000l62itb8oope6";
-  // const userAddress = session.user.address;
-  const userAddress = "0x1234567890abcdef";
+  const session: any = await auth();
+  const userAddress = session?.user?.address;
 
   const quest = await prisma.quest.findUnique({
     where: { id: parseInt(id) },
@@ -45,4 +39,73 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   };
 
   return NextResponse.json(questWithTotalPoints);
+}
+
+
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+  const session: any = await auth();
+  const userId = session.user.id;
+
+  if (!session || !session.user) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
+
+  const data = await req.json();
+  const { name, avatar, status, rewards, description, startDate, endDate, tasks } = data;
+
+  const existingQuest = await prisma.quest.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+
+  if (existingQuest?.userId !== userId) {
+    return new NextResponse('You are not authorized to update this quest', { status: 403 });
+  }
+
+  if (!existingQuest || existingQuest.status !== 'Draft') {
+    return new NextResponse('Quest not found or not in Draft status', { status: 404 });
+  }
+
+  const quest = await prisma.quest.update({
+    where: { id: parseInt(params.id) },
+    data: {
+      name,
+      avatar,
+      status,
+      rewards,
+      description,
+      startDate,
+      endDate,
+      tasks: {
+        deleteMany: {}, // Delete existing tasks
+        create: tasks.map((task: any) => ({
+          name: task.name,
+          description: task.description,
+          eventTypeId: task.eventTypeId,
+          params: task.params,
+        })),
+      },
+    },
+    include: {
+      tasks: true,
+    },
+  });
+
+  return NextResponse.json(quest);
+}
+
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+  const session = await auth();
+
+  if (!session || !session.user) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
+
+  const quest = await prisma.quest.update({
+    where: { id: parseInt(params.id), userId: session?.user?.id },
+    data: {
+      status: 'Deleted',
+    },
+  });
+
+  return NextResponse.json({ message: 'Quest deleted' });
 }

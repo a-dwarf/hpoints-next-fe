@@ -91,6 +91,7 @@ enum QuestStatus {
   Draft
   Ongoing
   End
+  Deleted
 }
 
 model EventType {

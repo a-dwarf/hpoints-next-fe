@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '../../../../lib/prisma';
+import { auth } from "@/auth"
 
 export async function GET() {
-  const userAddress = "0x1234567890abcdef";
+  const session: any = await auth();
+  const userAddress = session?.user?.address;
   const quests = await prisma.quest.findMany({
     where: {
       tasks: {

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '../../../lib/prisma';
+import { auth } from "@/auth"
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
@@ -44,4 +45,44 @@ export async function GET(req: NextRequest) {
   });
 
   return NextResponse.json(quests);
+}
+
+
+export async function POST(req: NextRequest) {
+  const session: any = await auth();
+
+  if (!session || !session.user) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
+
+  const data = await req.json();
+  const { name, avatar, rewards, description, startDate, endDate, tasks } = data;
+
+  console.log(data)
+
+  const quest = await prisma.quest.create({
+    data: {
+      userId: session.user.id,
+      name,
+      avatar,
+      status: 'Draft',
+      rewards,
+      description,
+      startDate,
+      endDate,
+      tasks: {
+        create: tasks.map((task: any) => ({
+          name: task.name,
+          description: task.description,
+          eventTypeId: task.eventTypeId,
+          params: task.params,
+        })),
+      },
+    },
+    include: {
+      tasks: true,
+    },
+  });
+
+  return NextResponse.json(quest);
 }
