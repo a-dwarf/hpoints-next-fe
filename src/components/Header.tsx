@@ -65,7 +65,7 @@ function Header() {
     await signIn('github')
   }, []);
   const session = useSession();
-  console.log('user session', session);
+  // console.log('user session', session);
 
   const hasTwitter = useMemo(() => {
    return (session.data as any)?.token?.user?.accounts?.find((item: any) => {

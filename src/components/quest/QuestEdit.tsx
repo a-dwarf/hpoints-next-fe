@@ -12,14 +12,15 @@ import { ReloadIcon } from '@radix-ui/react-icons'
 import axios from 'axios';
 import { useAccount, useSignMessage } from 'wagmi'
 import { Hex, verifyMessage } from 'viem';
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, useRouter, usePathname, useSearchParams } from 'next/navigation'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import { DatePicker } from 'antd';
 import { Textarea } from '@/components/ui/textarea'
 import TaskTemplate, { TaskTemplateAction } from '../task/TaskTemplate'
 import { templateTypeMap } from '../project/space/TaskForm'
-import RewardToken from './reward/RewardToken'
+import RewardToken from './reward/RewardToken';
+import dayjs, { Dayjs } from 'dayjs'
 
 interface QuestEditProps {
   title?: ReactNode;
@@ -30,8 +31,8 @@ interface Inputs {
   name?: string;
   description?: string;
   avatar?: string;
-  startTime?: string;
-  endTime?: string;
+  startTime?: Dayjs;
+  endTime?: Dayjs;
 }
 
 export default function QuestEdit({
@@ -39,7 +40,27 @@ export default function QuestEdit({
   icon
 }: QuestEditProps) {
 
+  const pathname = usePathname();
+
+  console.log('pathname', pathname);
+
+  const {id} = useParams()
+
   const form = useForm<Inputs>();
+
+  const router = useRouter();
+
+  const {data, isLoading, error } = useSWRImmutable(id ? `/api/quests/${id}`: null);
+
+  useEffect(() => {
+    if(data) {
+      form.reset(data);
+      form.setValue('startTime', dayjs(data.startDate))
+      form.setValue('endTime', dayjs(data.endDate))
+      // form.setValues(data)
+    }
+  }, [data, form])
+
 
 
   const tasks = useMemo(() => {
@@ -64,6 +85,55 @@ export default function QuestEdit({
   const handleDeleteTask = useCallback(() => {
 
   }, []);
+
+
+  const handleSave = useCallback(async () => {
+
+    const values = form.getValues();
+
+    const postData = {
+      name: values.name,
+      description: values.description,
+      avatar: values.avatar,
+      startDate: values.startTime?.format(),
+      endDate: values.endTime?.format(),
+      tasks: [],
+      reward: [],
+      rewards: '',
+      // ...values,
+    };
+
+    console.log('postData', postData);
+    if(pathname.startsWith('/quest/create')) {
+      const rs = await axios.post('/api/quests', postData);
+
+      console.log(router);
+  
+      console.log(rs);
+  
+      if(rs.data.id) {
+        router.push(`/quests/${rs.data.id}`);
+      }
+      return;
+    }
+
+    const rs = await axios.put(`/api/quests/${id}`, {...postData, id});
+
+    console.log(router);
+
+    console.log(rs);
+
+    // if(rs.data.id) {
+    //   router.push(`/quests/${id}`);
+    // }
+
+
+
+
+  }, [form, id, pathname, router])
+
+
+
 
 
   return <div className="w-full py-6">
@@ -240,7 +310,9 @@ export default function QuestEdit({
         </div>
         <div className=' flex w-full justify-between my-2'>
           <div>
-            <Button variant={"outline"}>Save</Button>
+            <Button variant={"outline"}
+              onClick={handleSave}
+            >Save</Button>
           </div>
           <div>
             <Button variant={"outline"}>Publish</Button>

@@ -9,6 +9,7 @@ import axios from "axios";
 import { useAccount } from "wagmi";
 import { useMemo } from "react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 
 
 export interface UserBannerProps {
@@ -108,25 +109,17 @@ export const CreateNewSpace = () => {
   </>
 }
 
-const userSpacesFetcher = async ([url, address]: string[]) => {
-  const res = await axios.get(url, {params: {address}});
-  return res.data;
-}
+
 
 function UserSpace() {
-  const { address } = useAccount();
-  const {data, isLoading, mutate, error} = useSWRImmutable(address ? [`/api/quests/participate`, address] : null, userSpacesFetcher);
 
-  const spacesList = useMemo(() => {
-    return data?.spaces || [];
-  }, [data?.spaces])
 
 
   return (
     <div className='w-full flex flex-col justify-center items-center'>
       <div className='max-w-5xl w-full flex flex-col px-2 sm:px-0'>
         <UserBanner 
-        data={data}
+        // data={data}
         />
       </div>
 
@@ -134,7 +127,10 @@ function UserSpace() {
         <UserProjectView/> 
       </div>
       <div className='max-w-5xl w-full flex flex-col px-2 sm:px-0'>
-        <UserSpaceView isLoading={error || isLoading} list={spacesList}/> 
+        <UserSpaceView 
+        // isLoading={error || isLoading} 
+        // list={spacesList}
+        /> 
       </div>
     </div>
   )
