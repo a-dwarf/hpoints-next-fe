@@ -160,13 +160,20 @@ enum BannerStatus {
 }
 
 model OperationRecord {
-  id        Int      @id @default(autoincrement()) @map("id")
-  userId    String   @map("user_id")
-  eventType String   @map("event_type")
-  taskId    Int      @map("task_id")
-  params    Json     @map("params")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        Int           @id @default(autoincrement()) @map("id")
+  userId    String        @map("user_id")
+  eventType String        @map("event_type")
+  taskId    Int           @map("task_id")
+  params    Json          @map("params")
+  status    OpCheckStatus @default(INIT) @map("status")
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @updatedAt @map("updated_at")
 
-  @@map("events")
+  @@map("op_records")
+}
+
+enum OpCheckStatus {
+  INIT
+  TURE
+  FALSE
 }
