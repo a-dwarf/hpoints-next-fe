@@ -1,10 +1,11 @@
 'use client'
-import { Button } from "@chakra-ui/react";
+import { Button } from "@/components/ui/button";
 import axios from "axios";
 import Link from "next/link";
 import useSWRImmutable from "swr/immutable";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SpaceSkeleton } from "../loading/SkeletonCard";
+import { useMemo } from "react";
 
 export const ActivityItem = () => {
   return <div className=" h-14 border flex items-center px-4">{'Task'}</div>
@@ -44,29 +45,45 @@ export const spaceFetcher = async (url: string) => {
 
 export default function SpaceView () {
 
-  const {data, isLoading } = useSWRImmutable('/api/spaces', spaceFetcher);
+  const {data, isLoading, error } = useSWRImmutable('/api/quests', spaceFetcher);
   console.log('SpaceView', data);
+
+  const questsList = useMemo(() => {
+    return data || []
+  }, [data])
 
   return (
     <div className="w-full my-10">
       <div className="flex justify-between">
         <div className="text-base sm:text-xl font-bold sm:font-semibold">
-          {"Trending Space"}
+          {"Ongoing Quests"}
         </div>
         <div className="flex items-center justify-center gap-2">
-          <button className="btn btn-outline rounded-2xl border-gray-300">{"View All"}</button>
+          <Button variant={"outline"} className="btn btn-outline rounded-2xl border-gray-300">{"Find More"}</Button>
         </div>
       </div>
       <div className="flex gap-4 mt-4 w-full overflow-scroll">
-        {!isLoading && data?.map((item: any) => {
-          return <SpaceItem key={item.id} data={item}/>
-        })}
-        {isLoading && <>
+        {error && <>
         <SpaceSkeleton  className="w-80 h-72"/>
         <SpaceSkeleton  className="w-80 h-72"/>
         <SpaceSkeleton  className="w-80 h-72"/>
         <SpaceSkeleton  className="w-80 h-72"/>
         </>}
+        {!error && !isLoading && (questsList.length > 0) ?  data?.map((item: any) => {
+          return <SpaceItem key={item.id} data={item}/>
+        }): <>
+            <SpaceSkeleton  className="w-80 h-72"/>
+            <SpaceSkeleton  className="w-80 h-72"/>
+            <SpaceSkeleton  className="w-80 h-72"/>
+            <SpaceSkeleton  className="w-80 h-72"/>
+        </>}
+        {!error && (isLoading) && <>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        </>}
+
       </div>
     </div>
   )

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "prisma generate && next dev --turbo",
+    "dev": "prisma generate && next dev",
     "build": "prisma generate && next build",
     "start": "next start",
     "db:generate": "prisma generate && prisma db push",
@@ -39,6 +39,7 @@
     "embla-carousel-react": "^8.1.3",
     "ethers": "^5",
     "lucide-react": "^0.390.0",
+    "nanoid": "^5.0.7",
     "next": "14.2.3",
     "next-auth": "5.0.0-beta.19",
     "react": "^18",
