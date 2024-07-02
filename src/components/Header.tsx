@@ -92,6 +92,11 @@ function Header() {
   
       </div>
       <div className="navbar-end flex items-center gap-6 mr-6">
+        <div>
+          <Link href={'/reputation'}>
+            Reputation
+          </Link>
+        </div>
         <div className="flex items-center justify-center gap-4">
           <ConnectButton showBalance={false}  />
           {/* <div className=" btn rounded-xl cursor-pointer ">Sign Up</div> */}

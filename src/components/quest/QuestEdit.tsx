@@ -1,7 +1,7 @@
 'use client'
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -18,7 +18,7 @@ import useSWRImmutable from 'swr/immutable'
 import { DatePicker } from 'antd';
 import { Textarea } from '@/components/ui/textarea'
 import TaskTemplate, { TaskTemplateAction } from '../task/TaskTemplate'
-import { templateTypeMap } from '../project/space/TaskForm'
+import { TemplateEventTypeMap, templateTypeMap } from '../project/space/TaskForm'
 import RewardToken from './reward/RewardToken';
 import dayjs, { Dayjs } from 'dayjs'
 
@@ -27,7 +27,16 @@ interface QuestEditProps {
   icon?: ReactNode;
 }
 
+export interface Task {
+  id?: number;
+  title?: string;
+  description?: string;
+  params?: any;
+  [taskField: string]: any
+}
+
 interface Inputs {
+  tasks?: Task[]
   name?: string;
   description?: string;
   avatar?: string;
@@ -52,6 +61,11 @@ export default function QuestEdit({
 
   const {data, isLoading, error } = useSWRImmutable(id ? `/api/quests/${id}`: null);
 
+  const taskFields = useFieldArray({
+    control: form.control, // control props comes from useForm (optional: if you are using FormProvider)
+    name: "tasks", // unique name for your Field Array
+  });
+
   useEffect(() => {
     if(data) {
       form.reset(data);
@@ -74,17 +88,24 @@ export default function QuestEdit({
   }, [])
 
 
-  const handleAddTask = useCallback(() => {
+  const handleAddTask = useCallback((taskValue: any) => {
+    console.log('taskValue', taskValue);
+    taskFields.append({
+      // id: '1',
+      description: "Bind X",
+      templateType: "1",
+      ...taskValue,
+    });
 
-  }, []);
+  }, [taskFields]);
 
-  const handleUpdateTask = useCallback(() => {
+  const handleUpdateTask = useCallback((index: number, value: any) => {
+    taskFields.update(index, value);
+  }, [taskFields]);
 
-  }, []);
-
-  const handleDeleteTask = useCallback(() => {
-
-  }, []);
+  const handleDeleteTask = useCallback((index: number) => {
+    taskFields.remove(index)
+  }, [taskFields]);
 
 
   const handleSave = useCallback(async () => {
@@ -97,7 +118,7 @@ export default function QuestEdit({
       avatar: values.avatar,
       startDate: values.startTime?.format(),
       endDate: values.endTime?.format(),
-      tasks: [],
+      tasks: values.tasks,
       reward: [],
       rewards: '',
       // ...values,
@@ -131,6 +152,9 @@ export default function QuestEdit({
 
 
   }, [form, id, pathname, router])
+
+
+  console.log('taskFields', taskFields);
 
 
 
@@ -230,16 +254,18 @@ export default function QuestEdit({
           </FormLabel>
           <div className=' card card-bordered p-4'>
             <div>{'The tasks is shown directly on your page. Users must complete tasks to earn points. Setting tasks properly can help your project gain user growth'}</div>
-            <div className='my-4'>
-              {tasks.map((t: any) => {
+            <div className='my-4 flex flex-col gap-4'>
+              {taskFields.fields.map((t, index) => {
                 return <TaskTemplate key={t.id}
-                data={t}
+                templateData={t}
                 title={t.description} 
-                templateType={templateTypeMap?.[`${t.eventTypeId ||'1'}`]}       
+                templateType={TemplateEventTypeMap?.[`${t.event_type ||'1'}`]}       
                 description={t.description}
                 actionType={TaskTemplateAction.Exist}
-                onUpdate={handleUpdateTask}
-                onDelete={handleDeleteTask}
+                onUpdate={(value) => {
+                  handleUpdateTask(index, value)
+                }}
+                onDelete={() => handleDeleteTask(index)}
                 />
               })}
             </div>
@@ -247,19 +273,26 @@ export default function QuestEdit({
             <div className=' grid grid-cols-2 gap-4 my-6'>
                 <TaskTemplate 
                   actionType={TaskTemplateAction.List}
-                  templateType='bindX'  title={'bindX'}
-                  description='bindX'
+                  templateType='FollowX'  
+                  // title={'bindX'}
+                  // description='bindX'
                   onAdd={handleAddTask}
                 />
                 <TaskTemplate 
                   actionType={TaskTemplateAction.List}
-                  templateType='bindGithub'  title={'bindGithub'}
+                  templateType='RetweetX'  title={'bindGithub'}
                   description='bindGithub'
                   onAdd={handleAddTask}
                 />
                 <TaskTemplate 
                   actionType={TaskTemplateAction.List}
-                  templateType='NumberOfTransactions'  title={'NumberOfTransactions'}
+                  templateType='LikeX'  title={'NumberOfTransactions'}
+                  description='NumberOfTransactions'
+                  onAdd={handleAddTask}
+                />
+               <TaskTemplate 
+                  actionType={TaskTemplateAction.List}
+                  templateType='VisitPage'  title={'NumberOfTransactions'}
                   description='NumberOfTransactions'
                   onAdd={handleAddTask}
                 />
