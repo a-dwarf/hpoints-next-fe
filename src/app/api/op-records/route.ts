@@ -5,10 +5,15 @@ import { auth } from "@/auth"
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const user_id = url.searchParams.get('user_id');
+  const quest_id = url.searchParams.get('quest_id');
 
   let where: any = {};
   if (user_id) {
     where.userId = user_id;
+  }
+
+  if (quest_id) {
+    where.questId = quest_id;
   }
 
   try {

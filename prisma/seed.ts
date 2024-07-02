@@ -1,4 +1,4 @@
-import { PrismaClient, QuestStatus, BannerStatus } from '@prisma/client';
+import { PrismaClient, QuestStatus, BannerStatus, OpCheckStatus } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -108,38 +108,89 @@ async function main() {
     },
   });
 
-  // Create Tasks
-  const task1 = await prisma.task.create({
-    data: {
-      questId: quest1.id,
-      eventType: "CHECK-IN",
-      name: 'Complete Profile',
-      description: 'Complete your user profile',
-      params: '{}',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  });
 
-  const task2 = await prisma.task.create({
-    data: {
+  const tasks = [
+    {
+      id: 1,
       questId: quest1.id,
-      eventType: "ONLINE-TIME",
+      eventType: "TX-COUNT",
       name: 'Complete Profile',
       description: 'Complete your user profile',
-      params: '{}',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      params: { "network": 1, "address": "0x35A18000230DA775CAc24873d00Ff85BccdeD550", "start_time": 1717313365, "end_time": 1719905365 },
     },
-  });
+    {
+      id: 2,
+      questId: quest2.id,
+      eventType: "TX-DAILY",
+      name: 'Updated Task 1',
+      description: 'Updated task 1 description',
+      params: { "network": 1, "address": "0x35A18000230DA775CAc24873d00Ff85BccdeD550", "start_time": 1717313365, "end_time": 1719905365 },
+    },
+    {
+      id: 3,
+      questId: quest2.id,
+      eventType: "CHECK-IN",
+      name: 'Updated Task 1',
+      description: 'Updated task 1 description',
+      params: {},
+    },
+    {
+      id: 4,
+      questId: quest2.id,
+      eventType: "ONLINE-TIME",
+      name: 'Updated Task 1',
+      description: 'Updated task 1 description',
+      params: {},
+    }
+  ];
+
+
+  for (const task of tasks) {
+    await prisma.task.create({
+      data: {
+        questId: task.questId,
+        eventType: task.eventType || "",
+        name: task.name,
+        description: task.description,
+        params: task.params,
+      },
+    });
+  }
+
+  const operationRecords = [
+    {
+      userId: user1.id,
+      eventType: 'CHECK-IN',
+      taskId: 8,
+      questId: quest2.id,
+      params: { start_time: '', end_time: '' },
+      point: '10',
+      status: OpCheckStatus.INIT,
+    },
+    {
+      userId: user2.id,
+      eventType: 'ONLINE-TIME',
+      taskId: 9,
+      questId: quest2.id,
+      params: { duration: '', start_time: '', end_time: '' },
+      point: '20',
+      status: OpCheckStatus.INIT,
+    }
+  ];
+
+  for (const record of operationRecords) {
+    await prisma.operationRecord.create({
+      data: record,
+    });
+  }
 
   // Create Points with unique dataId
   await prisma.point.create({
     data: {
       dataId: 1,
       userAddress: user1.address as string,
-      taskId: task1.id,
-      eventType: task1.eventType,
+      taskId: tasks[0].id,
+      eventType: tasks[0].eventType || "",
       points: 50,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -150,7 +201,7 @@ async function main() {
     data: {
       dataId: 2,
       userAddress: user1.address as string,
-      taskId: task1.id,
+      taskId: tasks[1].id,
       eventType: eventTypes[1].name,
       points: 10,
       createdAt: new Date(),
