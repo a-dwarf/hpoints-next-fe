@@ -20,6 +20,8 @@ import { WagmiProvider } from 'wagmi';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 
 import { config } from '@/wagmi';
+import {SWRConfig, SWRConfiguration} from 'swr';
+import axios from 'axios';
 
 const queryClient = new QueryClient();
 
@@ -31,20 +33,34 @@ const theme = extendBaseTheme({
     ...chakraTheme.components,
     Button,
   },
-})
+});
+
+
+const swrFetcher =  async (url: string) => {
+  const res = await axios.get(url);
+  return res.data
+}
+
+
+
+const swrConfig: SWRConfiguration = {
+  fetcher: swrFetcher
+};
 
 
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return <ChakraBaseProvider theme={theme} resetCSS={false}>
       <ReduxProvider store={store}>
-        <WagmiProvider config={config}>
-          <QueryClientProvider client={queryClient}>
-            <RainbowKitSiweNextAuthProvider>
-              <RainbowKitProvider>{children}</RainbowKitProvider>
-            </RainbowKitSiweNextAuthProvider>
-          </QueryClientProvider>
-        </WagmiProvider>
+        <SWRConfig value={swrConfig}>
+          <WagmiProvider config={config}>
+            <QueryClientProvider client={queryClient}>
+              <RainbowKitSiweNextAuthProvider>
+                <RainbowKitProvider>{children}</RainbowKitProvider>
+              </RainbowKitSiweNextAuthProvider>
+            </QueryClientProvider>
+          </WagmiProvider>
+        </SWRConfig>
           {/* <PersistGate loading={null} persistor={persistor}>
           </PersistGate> */}
       </ReduxProvider>

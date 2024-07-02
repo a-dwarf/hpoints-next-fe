@@ -8,19 +8,18 @@ export default function HeadBanner () {
     <div className="flex flex-col sm:flex-row justify-between">
       <div className="py-10">
         <div className="text-2xl font-medium sm:text-4xl flex flex-col gap-2">
-          <div>Earn rewards</div>
-          <div>by Contributing to Your</div>
-          <div>Favorite Space on Hetu Ischia</div>
+          <div>Earn points and Reputation with Ischia</div>
+          <div>by you favorite Quest.</div>
         </div>
         <div></div>
         <div className="py-10 flex flex-col sm:flex-row gap-10">
-          <Link href={'/project/space'} className="btn">
-            Create Your Space
+          <Link href={'/quest/create'} className="btn">
+          Create a Quest
           </Link>
 
-          <Link href={'/'} className=" btn btn-outline">
+          {/* <Link href={'/'} className=" btn btn-outline">
             Explore Existing
-          </Link>
+          </Link> */}
         </div>
 
       </div>

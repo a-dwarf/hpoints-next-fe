@@ -90,11 +90,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token
     },
     async session({ session, token, user }: { session: any; token: any, user: any }) {
-      session.address = token.sub;
-      session.user.name = token.sub;
+      // session.address = token.sub;
+      session.user = token.user;
       // session.user.image = "https://www.fillmurray.com/128/128";
       // session.user.userInfo = user;
-      session.token = token;
+      // session.token = token;
       session.userInfo = user;
 
       return session;
