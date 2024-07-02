@@ -80,7 +80,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         create: tasks.map((task: any) => ({
           name: task.name,
           description: task.description,
-          eventTypeId: task.eventTypeId,
+          eventType: task.eventType,
           params: task.params,
         })),
       },
