@@ -27,7 +27,7 @@ async function main() {
       description: "like event",
     },
     {
-      name: "TX-ACCOUNT",
+      name: "TX-COUNT",
       description: "transaction account event",
     },
     {
@@ -112,7 +112,7 @@ async function main() {
   const task1 = await prisma.task.create({
     data: {
       questId: quest1.id,
-      eventTypeId: 1,
+      eventType: "CHECK-IN",
       name: 'Complete Profile',
       description: 'Complete your user profile',
       params: '{}',
@@ -124,7 +124,7 @@ async function main() {
   const task2 = await prisma.task.create({
     data: {
       questId: quest1.id,
-      eventTypeId: 1,
+      eventType: "ONLINE-TIME",
       name: 'Complete Profile',
       description: 'Complete your user profile',
       params: '{}',
@@ -139,7 +139,7 @@ async function main() {
       dataId: 1,
       userAddress: user1.address as string,
       taskId: task1.id,
-      eventType: eventTypes[1].name,
+      eventType: task1.eventType,
       points: 50,
       createdAt: new Date(),
       updatedAt: new Date(),

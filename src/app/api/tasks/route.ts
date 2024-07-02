@@ -3,13 +3,14 @@ import { prisma } from '../../../lib/prisma';
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
-  const eventTypeId = url.searchParams.get('event_type_id');
+  const eventTypeParam = url.searchParams.get('event_types');
   const offset = url.searchParams.get('offset') || 0;
   const limit = url.searchParams.get('limit') || 10;
 
   let whereConditions: any = {};
-  if (eventTypeId !== null) {
-    whereConditions.eventTypeId = Number(eventTypeId);
+  if (eventTypeParam !== null) {
+    const eventTypes = eventTypeParam.split(',');
+    whereConditions.eventType = { in: eventTypes };
   }
 
   const tasks = await prisma.task.findMany({

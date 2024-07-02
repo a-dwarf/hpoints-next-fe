@@ -7,7 +7,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   const task = await prisma.task.findUnique({
     where: { id: Number(id) },
     include: {
-      space: true,
+      quest: true,
     }
   });
   return NextResponse.json(task);

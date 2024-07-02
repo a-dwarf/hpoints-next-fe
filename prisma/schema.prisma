@@ -109,16 +109,16 @@ model EventType {
 model Task {
   id          Int      @id @default(autoincrement()) @map("id")
   questId     Int      @map("quest_id")
-  eventTypeId Int      @map("event_type_id")
+  eventType   String   @map("event_type")
   name        String   @map("name")
   description String?  @map("description")
   params      String?  @map("params")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  quest     Quest     @relation(fields: [questId], references: [id], onDelete: Cascade)
-  eventType EventType @relation(fields: [eventTypeId], references: [id])
-  points    Point[]
+  quest       Quest     @relation(fields: [questId], references: [id], onDelete: Cascade)
+  eventTypeID EventType @relation(fields: [eventType], references: [name])
+  points      Point[]
 
   @@map("tasks")
 }
