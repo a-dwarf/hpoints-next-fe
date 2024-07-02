@@ -8,32 +8,12 @@ export async function GET(request: NextRequest, { params }: { params: { address:
   const user = await prisma.user.findUnique({
     where: {
       address: address
-    }
-  })
-
-  const spaces = await prisma.space.findMany({
-    where: {
-      tasks: {
-        some: {
-          points: {
-            some: {
-              userAddress: String(address)
-            }
-          }
-        }
-      }
     },
     include: {
-      tasks: {
-        include: {
-          points: {
-            where: { userAddress: String(address) }
-          }
-        }
-      },
-    },
-  });
-  return NextResponse.json({ ...user, "spaces": spaces });
+      accounts: true,
+    }
+  })
+  return NextResponse.json(user);
 }
 
 export async function PUT(request: NextRequest) {
