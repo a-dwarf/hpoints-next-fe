@@ -164,7 +164,7 @@ async function main() {
       taskId: 8,
       questId: quest2.id,
       params: { start_time: '', end_time: '' },
-      point: '10',
+      point: 10,
       status: OpCheckStatus.INIT,
     },
     {
@@ -173,7 +173,7 @@ async function main() {
       taskId: 9,
       questId: quest2.id,
       params: { duration: '', start_time: '', end_time: '' },
-      point: '20',
+      point: 20,
       status: OpCheckStatus.INIT,
     }
   ];

@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const { eventType, taskId, params } = await req.json();
+  const { eventType, taskId, questId, params } = await req.json();
   const session: any = await auth();
 
   if (!session || !session.user) {
@@ -36,6 +36,7 @@ export async function POST(req: NextRequest) {
     const operationRecord = await prisma.operationRecord.create({
       data: {
         userId: session.user.id,
+        questId: questId,
         eventType,
         taskId,
         params,
