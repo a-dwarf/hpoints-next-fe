@@ -166,7 +166,7 @@ model OperationRecord {
   taskId    Int           @map("task_id")
   questId   Int           @map("quest_id")
   params    Json          @map("params")
-  point     String        @map("point")
+  point     Int?          @map("point")
   status    OpCheckStatus @default(INIT) @map("status")
   createdAt DateTime      @default(now()) @map("created_at")
   updatedAt DateTime      @updatedAt @map("updated_at")
