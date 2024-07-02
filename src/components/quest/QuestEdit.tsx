@@ -133,7 +133,7 @@ export default function QuestEdit({
       console.log(rs);
   
       if(rs.data.id) {
-        router.push(`/quests/${rs.data.id}`);
+        router.push(`/quest/edit/${rs.data.id}`);
       }
       return;
     }
@@ -259,7 +259,7 @@ export default function QuestEdit({
                 return <TaskTemplate key={t.id}
                 templateData={t}
                 title={t.description} 
-                templateType={TemplateEventTypeMap?.[`${t.event_type ||'1'}`]}       
+                templateType={TemplateEventTypeMap?.[`${t.eventType ||'1'}`]}       
                 description={t.description}
                 actionType={TaskTemplateAction.Exist}
                 onUpdate={(value) => {
@@ -278,7 +278,7 @@ export default function QuestEdit({
                   // description='bindX'
                   onAdd={handleAddTask}
                 />
-                <TaskTemplate 
+                {/* <TaskTemplate 
                   actionType={TaskTemplateAction.List}
                   templateType='RetweetX'  title={'bindGithub'}
                   description='bindGithub'
@@ -301,7 +301,7 @@ export default function QuestEdit({
                   templateType='Interaction'  title={'Interaction'}
                   description='Interaction'
                   onAdd={handleAddTask}
-                />
+                /> */}
       </div>
             </div>
           </div>

@@ -46,6 +46,8 @@ export const TemplateEventTypeMap: Record<string, string> = {
   '5': 'bindX',
   '6': 'bindGithub',
   'FOLLOW-X': 'FollowX',
+  'FOLLOW': 'FollowX',
+
   '8': 'Interaction',
   '9': 'Follow',
 }
