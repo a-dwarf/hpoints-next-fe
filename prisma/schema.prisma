@@ -177,3 +177,12 @@ enum OpCheckStatus {
   TURE
   FALSE
 }
+
+model Reputation {
+  id             Int    @id @default(autoincrement()) @map("id")
+  reputionIdType String @map("repution_id_type")
+  params         Json   @map("params")
+  weight         Int    @map("weight")
+
+  @@map("reputations")
+}
