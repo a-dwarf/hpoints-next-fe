@@ -20,7 +20,7 @@ export const SpaceItem = ({
   data
 }: SpaceItemProps) => {
   
-  return <Link href={`/space/${data?.id}`} className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3 flex-shrink-0">
+  return <Link href={`/quest/${data?.id}`} className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3 flex-shrink-0">
     <div className="h-40 border rounded-2xl w-full">
       <img src={data?.avatar} className="w-full h-full" />
 

@@ -141,10 +141,13 @@ export default function SpaceDetail() {
           {userInfo.isLoading && <NormalSkeleton 
             className="w-full h-40"
           />}
-          {!userInfo.isLoading && <ScoredOverview 
+          {/* {!userInfo.isLoading && <ScoredOverview 
           userPoints={totalUserPoint}
           totalPoints={totalPoints}
-          />}
+          />} */}
+        </div>
+        <div>
+          Task:
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 mt-4 gap-4">
           {/* {tasks.map((task: any) => {
@@ -169,8 +172,8 @@ export default function SpaceDetail() {
           <SpaceSkeleton className=" h-60" />
           </>}
         </div>
-        <div className="flex items-center justify-between">
-          <div>{"Rewards 10 points"}</div>
+        <div className="flex items-center justify-between my-4">
+          <div className=" card-title">{"Rewards 10 points"}</div>
           <div><Button variant={"outline"}> Claim</Button></div>
         </div>
       </div>

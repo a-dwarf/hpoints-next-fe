@@ -154,6 +154,14 @@ export default function QuestEdit({
   }, [form, id, pathname, router])
 
 
+  const handlePublish = useCallback(async () => {
+
+    const rs = await axios.post(`/api/quests/${id}/publish`);
+      router.push(`/quest/${id}`);
+
+  }, [id, router])
+
+
   console.log('taskFields', taskFields);
 
 
@@ -348,7 +356,9 @@ export default function QuestEdit({
             >Save</Button>
           </div>
           <div>
-            <Button variant={"outline"}>Publish</Button>
+            <Button variant={"outline"}
+              onClick={handlePublish}
+            >Publish</Button>
           </div>
         </div>
       </Form>

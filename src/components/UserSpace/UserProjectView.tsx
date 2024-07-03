@@ -17,7 +17,10 @@ export interface SpaceItemProps {
 export const SpaceItem = ({
   data
 }: SpaceItemProps) => {
-  return <div className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3">
+  return <Link href={data?.status === 'Draft' ? `/quest/edit/${data.id}` : `/dashboard/${data.id}`} className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3 relative">
+    <div className=" absolute badge badge-error top-4 right-4">
+      {data?.status}
+    </div>
     <div className="h-40 border rounded-2xl w-full">
 
     </div>
@@ -33,7 +36,7 @@ export const SpaceItem = ({
       <div className="badge badge-success gap-2"> 12 token</div>
 
     </div>
-  </div>
+  </Link>
 }
 
 export default function UserProjectView () {
