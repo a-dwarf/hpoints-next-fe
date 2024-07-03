@@ -1,6 +1,6 @@
 'use client'
 import { NormalSkeleton, SpaceSkeleton } from "@/components/loading/SkeletonCard";
-import { templateTypeMap } from "@/components/project/space/TaskForm";
+import { TemplateEventTypeMap, templateTypeMap } from "@/components/project/space/TaskForm";
 import GiveawaysReward from "@/components/reward/GiveawaysReward";
 import TaskAction from "@/components/task/TaskAction";
 import TaskTemplate, { TaskTemplateAction } from "@/components/task/TaskTemplate";
@@ -156,7 +156,7 @@ export default function SpaceDetail() {
 
           {!isLoading &&  tasks.map((task: any) => {
             return <TaskTemplate 
-            templateType={templateTypeMap[task.eventTypeId || '1']} 
+            templateType={TemplateEventTypeMap[task.eventType || '1']} 
             actionType={TaskTemplateAction.Action} 
             key={task.id} 
             title={task.name} 
