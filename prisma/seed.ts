@@ -161,7 +161,7 @@ async function main() {
     {
       userId: user1.id,
       eventType: 'CHECK-IN',
-      taskId: 8,
+      taskId: 1,
       questId: quest2.id,
       params: { start_time: '', end_time: '' },
       point: 10,
@@ -170,7 +170,7 @@ async function main() {
     {
       userId: user2.id,
       eventType: 'ONLINE-TIME',
-      taskId: 9,
+      taskId: 2,
       questId: quest2.id,
       params: { duration: '', start_time: '', end_time: '' },
       point: 20,

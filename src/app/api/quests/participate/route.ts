@@ -5,6 +5,11 @@ import { auth } from "@/auth"
 export async function GET() {
   const session: any = await auth();
   const userAddress = session?.user?.address;
+
+  if (!session || !session.user) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
+
   const quests = await prisma.quest.findMany({
     where: {
       tasks: {

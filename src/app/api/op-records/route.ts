@@ -33,8 +33,19 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const operationRecord = await prisma.operationRecord.create({
-      data: {
+    const operationRecord = await prisma.operationRecord.upsert({
+      where: {
+        taskId_userId: {
+          taskId: taskId,
+          userId: session.user.id,
+        },
+      },
+      update: {
+        eventType,
+        questId,
+        params,
+      },
+      create: {
         userId: session.user.id,
         questId: questId,
         eventType,
