@@ -48,7 +48,7 @@ interface Inputs {
   message?: string;
 }
 
-const gateway = '/gateway/post_data';
+const gateway = '/api/op-records';
 
 export default function TaskAction({ taskId, title, onAction,
   data

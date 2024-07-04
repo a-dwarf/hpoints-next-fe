@@ -51,7 +51,7 @@ interface Inputs {
   message?: string;
 }
 
-const gateway = '/gateway/post_data';
+const gateway = '/api/op-records';
 
 export default function TaskAction({ taskId, title, onAction,
   data
@@ -72,12 +72,10 @@ export default function TaskAction({ taskId, title, onAction,
 
   const handleSubmit = useCallback(async () => {
     const submitData =  {
-      taskId: data?.id.toString(),
-      event_type: 'follow',
-      timestamp: dayjs().unix(),
-      params: {
-
-      },
+      taskId: data?.id,
+      questId: data?.questId,
+      eventType: data?.eventType,
+      params: data?.params,
     };
     const rs = await axios.post(gateway, submitData)
     if(onAction) {
@@ -85,7 +83,7 @@ export default function TaskAction({ taskId, title, onAction,
       await onAction(submitData);
     }
     actionDialog.onClose();
-  }, [actionDialog, data?.id, onAction]);
+  }, [actionDialog, data?.eventType, data?.id, data?.params, data?.questId, onAction]);
       const handleOpenFollowX = useCallback(() => {
       handleSubmit();
     let frameParams = `scrollbars=no,resizable=yes,status=no,location=no,toolbar=no,menubar=no,
