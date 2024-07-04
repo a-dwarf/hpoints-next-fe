@@ -6,6 +6,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   const { id } = params;
   const session: any = await auth();
   const userAddress = session?.user?.address;
+  const userId = session?.user?.id;
+
+  if (!session || !session.user) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
 
   const quest = await prisma.quest.findUnique({
     where: { id: parseInt(id) },
@@ -13,9 +18,14 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       tasks: {
         include: {
           points: true,
+          opRecords: {
+            where: {
+              userId,
+            },
+          },
         },
       },
-    },
+    }
   });
 
   if (!quest) {
