@@ -8,6 +8,7 @@ import TwitterTemplate from './template/TwitterTemplate';
 import SendMessageTemplate from './template/SendMessageTemplate';
 import checkInTemplate from './template/checkIn/Template';
 import onlineTimeTemplate from './template/onlineTime/Template';
+import FollowXTemplate from './template/FollowX/Template';
 
 export enum TaskTemplateAction  {
   Exist = 'Exist',
@@ -20,6 +21,7 @@ interface TaskTemplateProps {
   icon?: ReactNode;
   description?: string;
   data?: any;
+  templateData?: any;
   templateType: string;
   actionType: TaskTemplateAction;
   onAdd?: (data: any) => void;
@@ -39,6 +41,10 @@ export const TaskTypeRegister: Record<string, FC<any>> = {
   NumberOfTransactions: onlineTimeTemplate,
   Interaction: onlineTimeTemplate,
   Follow: onlineTimeTemplate,
+  FollowX: FollowXTemplate,
+  RetweetX:  onlineTimeTemplate,
+  LikeX:  onlineTimeTemplate,
+  VisitPage: onlineTimeTemplate,
 }
 
 export default function TaskTemplate({
@@ -47,6 +53,7 @@ export default function TaskTemplate({
   onDelete,
   onUpdate,
   onAction,
+  templateData,
   ...props
 }: TaskTemplateProps) {
   const Template = TaskTypeRegister[templateType];
@@ -61,10 +68,12 @@ export default function TaskTemplate({
 
   }, []);
   if(!Template) return;
+  console.log('templateData', templateData)
   return (
     <>
       <Template {...props} onAdd={onAdd} onUpdate={onUpdate} onDelete={onDelete}
         onAction={onAction}
+        templateData={templateData || {}}
       />
     </>
   )

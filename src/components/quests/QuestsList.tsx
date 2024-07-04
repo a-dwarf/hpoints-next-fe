@@ -1,6 +1,10 @@
+'use client'
+import useSWRImmutable from "swr/immutable";
 import { SpaceItem } from "../home/SpaceView";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { useMemo } from "react";
+import { SpaceSkeleton } from "../loading/SkeletonCard";
 
 export interface IncreaseItemProps {
   title?: string;
@@ -48,6 +52,12 @@ export function QuestItem({
 
 
 export default function QuestsList() {
+
+  const {data, isLoading, error } = useSWRImmutable('/api/quests');
+  const questsList = useMemo(() => {
+    return data || []
+  }, [data]);
+
   return (
     <div className=" my-10">
       <div className="my-10">
@@ -65,18 +75,27 @@ export default function QuestsList() {
         </div>
       </div>
       <div className=" grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <SpaceItem 
-        />
-        <SpaceItem 
-        />
-            <SpaceItem 
-        />
-            <SpaceItem 
-        />
-            <SpaceItem 
-        />
-            <SpaceItem 
-        />
+
+      {error && <>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        </>}
+        {!error && !isLoading && (questsList.length > 0) ?  data?.map((item: any) => {
+          return <SpaceItem key={item.id} data={item}/>
+        }): <>
+            <SpaceSkeleton  className="w-80 h-72"/>
+            <SpaceSkeleton  className="w-80 h-72"/>
+            <SpaceSkeleton  className="w-80 h-72"/>
+            <SpaceSkeleton  className="w-80 h-72"/>
+        </>}
+        {!error && (isLoading) && <>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        </>}
         
       </div>
     </div>

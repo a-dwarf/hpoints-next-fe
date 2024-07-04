@@ -1,7 +1,10 @@
+'use client'
+import useSWRImmutable from "swr/immutable";
 import { SpaceItem } from "../home/SpaceView";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { ActivityTable } from "./ActivityTable";
+import { useParams } from "next/navigation";
 
 export interface IncreaseItemProps {
   title?: string;
@@ -49,6 +52,9 @@ export function QuestItem({
 
 
 export default function DashboardActivity() {
+  const {id} = useParams();
+  const {data, isLoading, error } = useSWRImmutable(id? `/api/quests?quest_id=${id}` : null );
+
   return (
     <div className=" my-10">
       <div className="my-10">

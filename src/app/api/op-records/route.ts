@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   }
 
   if (quest_id) {
-    where.questId = quest_id;
+    where.questId = Number(quest_id);
   }
 
   try {

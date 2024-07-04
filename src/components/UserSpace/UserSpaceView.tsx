@@ -2,6 +2,9 @@ import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { SpaceSkeleton } from "../loading/SkeletonCard";
 import { useMemo } from "react";
+import { useAccount } from "wagmi";
+import useSWRImmutable from "swr/immutable";
+import axios from "axios";
 
 export const ActivityItem = () => {
   return <div className=" h-14 border flex items-center px-4">{'Task'}</div>
@@ -41,14 +44,25 @@ export const SpaceItem = ({data = {}}: SpaceItemProps) => {
 }
 
 export interface SpaceViewProps {
-  list: any[];
+  list?: any[];
   isLoading?: boolean;
 }
 
+const userSpacesFetcher = async ([url, address]: string[]) => {
+  const res = await axios.get(url, {params: {address}});
+  return res.data;
+}
 export default function SpaceView ({
-  list = [],
-  isLoading = false,
+  // list = [],
+  // isLoading = false,
 }: SpaceViewProps) {
+
+  const { address } = useAccount();
+  const {data, isLoading, mutate, error} = useSWRImmutable(address ? [`/api/quests/participate`, address] : null, userSpacesFetcher);
+
+  const questsList = useMemo(() => {
+    return data || []
+  }, [data]);
 
   return (
     <div className="w-full my-10">
@@ -58,10 +72,21 @@ export default function SpaceView ({
         </div>
       </div>
       <div className="flex gap-4 mt-4 w-full overflow-scroll">
-        {list.map((item) => {
-          return <SpaceItem key={item.id}  data={item}/>;
-        })}
-        {isLoading && <>
+      {error && <>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="w-80 h-72"/>
+        </>}
+        {!error && !isLoading && (questsList.length > 0) ?  data?.map((item: any) => {
+          return <SpaceItem key={item.id} data={item}/>
+        }): <>
+            <SpaceSkeleton  className="w-80 h-72"/>
+            <SpaceSkeleton  className="w-80 h-72"/>
+            <SpaceSkeleton  className="w-80 h-72"/>
+            <SpaceSkeleton  className="w-80 h-72"/>
+        </>}
+        {!error && (isLoading) && <>
         <SpaceSkeleton  className="w-80 h-72"/>
         <SpaceSkeleton  className="w-80 h-72"/>
         <SpaceSkeleton  className="w-80 h-72"/>

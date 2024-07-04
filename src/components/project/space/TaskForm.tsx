@@ -38,6 +38,20 @@ export const templateTypeMap: Record<string, string> = {
   '9': 'Follow',
 }
 
+export const TemplateEventTypeMap: Record<string, string> = {
+  '1': 'checkIn',
+  '2': 'onlineTime',
+  '3': 'sendMessage',
+  '4': 'twitter',
+  '5': 'bindX',
+  '6': 'bindGithub',
+  'FOLLOW-X': 'FollowX',
+  'FOLLOW': 'FollowX',
+
+  '8': 'Interaction',
+  '9': 'Follow',
+}
+
 interface Inputs {
   name?: string;
   description?: string;
@@ -138,9 +152,9 @@ export default function TaskForm({
         {isLoading && <NormalSkeleton className='h-40'/>}
         {!isLoading && <>{tasks.length > 0 ? tasks.map((t) => {
           return <TaskTemplate key={t.id}
-          data={t}
+          templateData={t}
           title={t.description} 
-          templateType={templateTypeMap?.[`${t.eventTypeId ||'1'}`]}       
+          templateType={TemplateEventTypeMap?.[`${t.event_type ||'1'}`]}       
           description={t.description}
           actionType={TaskTemplateAction.Exist}
           onUpdate={handleUpdateTask}
