@@ -54,33 +54,36 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   const session: any = await auth();
-  const userId = session.user.id;
+  const userId = session?.user?.id;
 
   if (!session || !session.user) {
     return new NextResponse('Unauthorized', { status: 401 });
   }
 
   const data = await req.json();
-  const { name, avatar, status, rewards, description, startDate, endDate, tasks } = data;
+  const { name, avatar, rewards, description, startDate, endDate, tasks } = data;
 
   const existingQuest = await prisma.quest.findUnique({
     where: { id: parseInt(params.id) },
   });
 
-  if (existingQuest?.userId !== userId) {
+  if (!existingQuest) {
+    return new NextResponse('Quest not found', { status: 404 });
+  }
+
+  if (existingQuest.userId !== userId) {
     return new NextResponse('You are not authorized to update this quest', { status: 403 });
   }
 
-  if (!existingQuest || existingQuest.status !== 'Draft') {
-    return new NextResponse('Quest not found or not in Draft status', { status: 404 });
+  if (existingQuest.status !== 'Draft') {
+    return new NextResponse('Only quests in Draft status can be updated', { status: 400 });
   }
 
-  const quest = await prisma.quest.update({
+  const updatedQuest = await prisma.quest.update({
     where: { id: parseInt(params.id) },
     data: {
       name,
       avatar,
-      status,
       rewards,
       description,
       startDate,
@@ -100,7 +103,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     },
   });
 
-  return NextResponse.json(quest);
+  return NextResponse.json(updatedQuest);
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {

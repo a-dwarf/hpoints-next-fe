@@ -119,10 +119,10 @@ model Task {
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
-  quest         Quest             @relation(fields: [questId], references: [id], onDelete: Cascade)
-  eventTypeName EventType         @relation(fields: [eventType], references: [name])
+  quest         Quest            @relation(fields: [questId], references: [id], onDelete: Cascade)
+  eventTypeName EventType        @relation(fields: [eventType], references: [name])
   points        Point[]
-  opRecords     OperationRecord[]
+  opRecords     OperationRecord?
 
   @@map("tasks")
 }
@@ -167,7 +167,7 @@ model OperationRecord {
   id        Int           @id @default(autoincrement()) @map("id")
   userId    String        @map("user_id")
   eventType String        @map("event_type")
-  taskId    Int           @map("task_id")
+  taskId    Int           @unique @map("task_id")
   questId   Int           @map("quest_id")
   params    Json          @map("params")
   point     Int?          @map("point")
@@ -177,6 +177,7 @@ model OperationRecord {
   Task      Task          @relation(fields: [taskId], references: [id], onDelete: Cascade)
   user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([taskId, userId])
   @@map("op_records")
 }
 
