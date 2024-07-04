@@ -121,7 +121,7 @@ width=800,height=600,left=300,top=300`;
           <div className=" text-base text-opacity-80 cursor-pointer text-gray-500 flex items-center"
            onClick={handleOpenFollowX}
           >
-            <div>Followed account: </div>
+            <div>address: </div>
             <div className="badge badge-info ml-2">{params?.target_x_username}</div>
           </div>
           <div className="flex items-center gap-6">
