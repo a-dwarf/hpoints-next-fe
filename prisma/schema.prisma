@@ -8,20 +8,21 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid()) @map("id")
-  address       String?   @unique @map("address")
-  name          String?   @map("name")
+  id            String            @id @default(cuid()) @map("id")
+  address       String?           @unique @map("address")
+  name          String?           @map("name")
   email         String?
-  emailVerified DateTime? @map("email_verified")
+  emailVerified DateTime?         @map("email_verified")
   image         String?
-  avatar        String?   @map("avatar")
-  description   String?   @map("description")
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
+  avatar        String?           @map("avatar")
+  description   String?           @map("description")
+  createdAt     DateTime          @default(now()) @map("created_at")
+  updatedAt     DateTime          @updatedAt @map("updated_at")
   quests        Quest[]
   points        Point[]
   accounts      Account[]
   sessions      Session[]
+  opRecords     OperationRecord[]
 
   @@map("users")
 }
@@ -107,18 +108,21 @@ model EventType {
 }
 
 model Task {
-  id          Int      @id @default(autoincrement()) @map("id")
-  questId     Int      @map("quest_id")
-  eventType   String   @map("event_type")
-  name        String   @map("name")
-  description String?  @map("description")
-  params      Json     @map("params")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id          Int       @id @default(autoincrement()) @map("id")
+  questId     Int       @map("quest_id")
+  eventType   String    @map("event_type")
+  name        String    @map("name")
+  description String?   @map("description")
+  params      Json      @map("params")
+  startDate   DateTime? @map("start_date")
+  endDate     DateTime? @map("end_date")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
 
-  quest         Quest     @relation(fields: [questId], references: [id], onDelete: Cascade)
-  eventTypeName EventType @relation(fields: [eventType], references: [name])
+  quest         Quest            @relation(fields: [questId], references: [id], onDelete: Cascade)
+  eventTypeName EventType        @relation(fields: [eventType], references: [name])
   points        Point[]
+  opRecords     OperationRecord?
 
   @@map("tasks")
 }
@@ -163,14 +167,17 @@ model OperationRecord {
   id        Int           @id @default(autoincrement()) @map("id")
   userId    String        @map("user_id")
   eventType String        @map("event_type")
-  taskId    Int           @map("task_id")
+  taskId    Int           @unique @map("task_id")
   questId   Int           @map("quest_id")
   params    Json          @map("params")
   point     Int?          @map("point")
   status    OpCheckStatus @default(INIT) @map("status")
   createdAt DateTime      @default(now()) @map("created_at")
   updatedAt DateTime      @updatedAt @map("updated_at")
+  Task      Task          @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([taskId, userId])
   @@map("op_records")
 }
 
