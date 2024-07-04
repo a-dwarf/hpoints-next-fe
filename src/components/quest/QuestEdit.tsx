@@ -1,7 +1,7 @@
 'use client'
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -12,26 +12,36 @@ import { ReloadIcon } from '@radix-ui/react-icons'
 import axios from 'axios';
 import { useAccount, useSignMessage } from 'wagmi'
 import { Hex, verifyMessage } from 'viem';
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, useRouter, usePathname, useSearchParams } from 'next/navigation'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import { DatePicker } from 'antd';
 import { Textarea } from '@/components/ui/textarea'
 import TaskTemplate, { TaskTemplateAction } from '../task/TaskTemplate'
-import { templateTypeMap } from '../project/space/TaskForm'
-import RewardToken from './reward/RewardToken'
+import { TemplateEventTypeMap, templateTypeMap } from '../project/space/TaskForm'
+import RewardToken from './reward/RewardToken';
+import dayjs, { Dayjs } from 'dayjs'
 
 interface QuestEditProps {
   title?: ReactNode;
   icon?: ReactNode;
 }
 
+export interface Task {
+  id?: number;
+  title?: string;
+  description?: string;
+  params?: any;
+  [taskField: string]: any
+}
+
 interface Inputs {
+  tasks?: Task[]
   name?: string;
   description?: string;
   avatar?: string;
-  startTime?: string;
-  endTime?: string;
+  startTime?: Dayjs;
+  endTime?: Dayjs;
 }
 
 export default function QuestEdit({
@@ -39,7 +49,32 @@ export default function QuestEdit({
   icon
 }: QuestEditProps) {
 
+  const pathname = usePathname();
+
+  console.log('pathname', pathname);
+
+  const {id} = useParams()
+
   const form = useForm<Inputs>();
+
+  const router = useRouter();
+
+  const {data, isLoading, error } = useSWRImmutable(id ? `/api/quests/${id}`: null);
+
+  const taskFields = useFieldArray({
+    control: form.control, // control props comes from useForm (optional: if you are using FormProvider)
+    name: "tasks", // unique name for your Field Array
+  });
+
+  useEffect(() => {
+    if(data) {
+      form.reset(data);
+      form.setValue('startTime', dayjs(data.startDate))
+      form.setValue('endTime', dayjs(data.endDate))
+      // form.setValues(data)
+    }
+  }, [data, form])
+
 
 
   const tasks = useMemo(() => {
@@ -53,17 +88,84 @@ export default function QuestEdit({
   }, [])
 
 
-  const handleAddTask = useCallback(() => {
+  const handleAddTask = useCallback((taskValue: any) => {
+    console.log('taskValue', taskValue);
+    taskFields.append({
+      // id: '1',
+      description: "Bind X",
+      templateType: "1",
+      ...taskValue,
+    });
 
-  }, []);
+  }, [taskFields]);
 
-  const handleUpdateTask = useCallback(() => {
+  const handleUpdateTask = useCallback((index: number, value: any) => {
+    taskFields.update(index, value);
+  }, [taskFields]);
 
-  }, []);
+  const handleDeleteTask = useCallback((index: number) => {
+    taskFields.remove(index)
+  }, [taskFields]);
 
-  const handleDeleteTask = useCallback(() => {
 
-  }, []);
+  const handleSave = useCallback(async () => {
+
+    const values = form.getValues();
+
+    const postData = {
+      name: values.name,
+      description: values.description,
+      avatar: values.avatar,
+      startDate: values.startTime?.format(),
+      endDate: values.endTime?.format(),
+      tasks: values.tasks,
+      reward: [],
+      rewards: '',
+      // ...values,
+    };
+
+    console.log('postData', postData);
+    if(pathname.startsWith('/quest/create')) {
+      const rs = await axios.post('/api/quests', postData);
+
+      console.log(router);
+  
+      console.log(rs);
+  
+      if(rs.data.id) {
+        router.push(`/quest/edit/${rs.data.id}`);
+      }
+      return;
+    }
+
+    const rs = await axios.put(`/api/quests/${id}`, {...postData, id});
+
+    console.log(router);
+
+    console.log(rs);
+
+    // if(rs.data.id) {
+    //   router.push(`/quests/${id}`);
+    // }
+
+
+
+
+  }, [form, id, pathname, router])
+
+
+  const handlePublish = useCallback(async () => {
+
+    const rs = await axios.post(`/api/quests/${id}/publish`);
+      router.push(`/quest/${id}`);
+
+  }, [id, router])
+
+
+  console.log('taskFields', taskFields);
+
+
+
 
 
   return <div className="w-full py-6">
@@ -160,16 +262,18 @@ export default function QuestEdit({
           </FormLabel>
           <div className=' card card-bordered p-4'>
             <div>{'The tasks is shown directly on your page. Users must complete tasks to earn points. Setting tasks properly can help your project gain user growth'}</div>
-            <div className='my-4'>
-              {tasks.map((t: any) => {
+            <div className='my-4 flex flex-col gap-4'>
+              {taskFields.fields.map((t, index) => {
                 return <TaskTemplate key={t.id}
-                data={t}
+                templateData={t}
                 title={t.description} 
-                templateType={templateTypeMap?.[`${t.eventTypeId ||'1'}`]}       
+                templateType={TemplateEventTypeMap?.[`${t.eventType ||'1'}`]}       
                 description={t.description}
                 actionType={TaskTemplateAction.Exist}
-                onUpdate={handleUpdateTask}
-                onDelete={handleDeleteTask}
+                onUpdate={(value) => {
+                  handleUpdateTask(index, value)
+                }}
+                onDelete={() => handleDeleteTask(index)}
                 />
               })}
             </div>
@@ -177,19 +281,26 @@ export default function QuestEdit({
             <div className=' grid grid-cols-2 gap-4 my-6'>
                 <TaskTemplate 
                   actionType={TaskTemplateAction.List}
-                  templateType='bindX'  title={'bindX'}
-                  description='bindX'
+                  templateType='FollowX'  
+                  // title={'bindX'}
+                  // description='bindX'
                   onAdd={handleAddTask}
                 />
-                <TaskTemplate 
+                {/* <TaskTemplate 
                   actionType={TaskTemplateAction.List}
-                  templateType='bindGithub'  title={'bindGithub'}
+                  templateType='RetweetX'  title={'bindGithub'}
                   description='bindGithub'
                   onAdd={handleAddTask}
                 />
                 <TaskTemplate 
                   actionType={TaskTemplateAction.List}
-                  templateType='NumberOfTransactions'  title={'NumberOfTransactions'}
+                  templateType='LikeX'  title={'NumberOfTransactions'}
+                  description='NumberOfTransactions'
+                  onAdd={handleAddTask}
+                />
+               <TaskTemplate 
+                  actionType={TaskTemplateAction.List}
+                  templateType='VisitPage'  title={'NumberOfTransactions'}
                   description='NumberOfTransactions'
                   onAdd={handleAddTask}
                 />
@@ -198,7 +309,7 @@ export default function QuestEdit({
                   templateType='Interaction'  title={'Interaction'}
                   description='Interaction'
                   onAdd={handleAddTask}
-                />
+                /> */}
       </div>
             </div>
           </div>
@@ -240,10 +351,14 @@ export default function QuestEdit({
         </div>
         <div className=' flex w-full justify-between my-2'>
           <div>
-            <Button variant={"outline"}>Save</Button>
+            <Button variant={"outline"}
+              onClick={handleSave}
+            >Save</Button>
           </div>
           <div>
-            <Button variant={"outline"}>Publish</Button>
+            <Button variant={"outline"}
+              onClick={handlePublish}
+            >Publish</Button>
           </div>
         </div>
       </Form>

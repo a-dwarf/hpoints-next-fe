@@ -65,7 +65,7 @@ function Header() {
     await signIn('github')
   }, []);
   const session = useSession();
-  console.log('user session', session);
+  // console.log('user session', session);
 
   const hasTwitter = useMemo(() => {
    return (session.data as any)?.token?.user?.accounts?.find((item: any) => {
@@ -92,6 +92,11 @@ function Header() {
   
       </div>
       <div className="navbar-end flex items-center gap-6 mr-6">
+        <div>
+          <Link href={'/reputation'}>
+            Reputation
+          </Link>
+        </div>
         <div className="flex items-center justify-center gap-4">
           <ConnectButton showBalance={false}  />
           {/* <div className=" btn rounded-xl cursor-pointer ">Sign Up</div> */}
@@ -131,7 +136,7 @@ function Header() {
           {<ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
             <li>
               <Link href={'/userSpace'} className="justify-between">
-                Profile
+                My Quest
                 <span className="badge">New</span>
               </Link>
             </li>

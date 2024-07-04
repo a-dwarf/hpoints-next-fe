@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+'use client'
 import HeadBanner from "@/components/home/HeadBanner";
 import SpaceView from "@/components/home/SpaceView";
 import ReputationHeader from "@/components/reputation/ReputationHeader";

@@ -1,6 +1,6 @@
 'use client'
 import { NormalSkeleton, SpaceSkeleton } from "@/components/loading/SkeletonCard";
-import { templateTypeMap } from "@/components/project/space/TaskForm";
+import { TemplateEventTypeMap, templateTypeMap } from "@/components/project/space/TaskForm";
 import GiveawaysReward from "@/components/reward/GiveawaysReward";
 import TaskAction from "@/components/task/TaskAction";
 import TaskTemplate, { TaskTemplateAction } from "@/components/task/TaskTemplate";
@@ -141,10 +141,13 @@ export default function SpaceDetail() {
           {userInfo.isLoading && <NormalSkeleton 
             className="w-full h-40"
           />}
-          {!userInfo.isLoading && <ScoredOverview 
+          {/* {!userInfo.isLoading && <ScoredOverview 
           userPoints={totalUserPoint}
           totalPoints={totalPoints}
-          />}
+          />} */}
+        </div>
+        <div>
+          Task:
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 mt-4 gap-4">
           {/* {tasks.map((task: any) => {
@@ -153,7 +156,7 @@ export default function SpaceDetail() {
 
           {!isLoading &&  tasks.map((task: any) => {
             return <TaskTemplate 
-            templateType={templateTypeMap[task.eventTypeId || '1']} 
+            templateType={TemplateEventTypeMap[task.eventType || '1']} 
             actionType={TaskTemplateAction.Action} 
             key={task.id} 
             title={task.name} 
@@ -169,8 +172,8 @@ export default function SpaceDetail() {
           <SpaceSkeleton className=" h-60" />
           </>}
         </div>
-        <div className="flex items-center justify-between">
-          <div>{"Rewards 10 points"}</div>
+        <div className="flex items-center justify-between my-4">
+          <div className=" card-title">{"Rewards 10 points"}</div>
           <div><Button variant={"outline"}> Claim</Button></div>
         </div>
       </div>

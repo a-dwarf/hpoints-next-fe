@@ -1,7 +1,13 @@
+'use client'
 import dayjs from "dayjs";
 import { Button } from "../ui/button";
+import useSWRImmutable from "swr/immutable";
+import { useParams } from "next/navigation";
 
 export default function DashboardHeader() {
+  const {id} = useParams();
+  const {data, isLoading, error } = useSWRImmutable(id ? `/api/quests?quest_id=${id}` : null );
+
   return (
     <div className=" flex flex-col gap-4 sm:flex-row justify-between items-center">
       <div>

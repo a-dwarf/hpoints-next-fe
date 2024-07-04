@@ -1,3 +1,4 @@
+import useSWRImmutable from "swr/immutable";
 import { Button } from "../ui/button";
 
 export interface IncreaseItemProps {
@@ -46,6 +47,9 @@ export function IncreaseItem({
 
 
 export default function ReputationIncrease() {
+
+  const {data, isLoading, mutate, error} = useSWRImmutable('/api/reputations');
+
   return (
     <div className=" my-10">
       <div>

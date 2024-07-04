@@ -6,6 +6,7 @@ import useSWRImmutable from "swr/immutable";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SpaceSkeleton } from "../loading/SkeletonCard";
 import { useMemo } from "react";
+import { useRouter } from "next/navigation";
 
 export const ActivityItem = () => {
   return <div className=" h-14 border flex items-center px-4">{'Task'}</div>
@@ -19,7 +20,7 @@ export const SpaceItem = ({
   data
 }: SpaceItemProps) => {
   
-  return <Link href={`/space/${data?.id}`} className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3 flex-shrink-0">
+  return <Link href={`/quest/${data?.id}`} className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3 flex-shrink-0">
     <div className="h-40 border rounded-2xl w-full">
       <img src={data?.avatar} className="w-full h-full" />
 
@@ -50,7 +51,9 @@ export default function SpaceView () {
 
   const questsList = useMemo(() => {
     return data || []
-  }, [data])
+  }, [data]);
+
+  const router = useRouter();
 
   return (
     <div className="w-full my-10">
@@ -59,7 +62,11 @@ export default function SpaceView () {
           {"Ongoing Quests"}
         </div>
         <div className="flex items-center justify-center gap-2">
-          <Button variant={"outline"} className="btn btn-outline rounded-2xl border-gray-300">{"Find More"}</Button>
+          <Button variant={"outline"} className="btn btn-outline rounded-2xl border-gray-300"
+            onClick={() => {
+              router.push(`/quests`);
+            }}
+          >{"Find More"}</Button>
         </div>
       </div>
       <div className="flex gap-4 mt-4 w-full overflow-scroll">
