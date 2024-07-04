@@ -286,30 +286,34 @@ export default function QuestEdit({
                   // description='bindX'
                   onAdd={handleAddTask}
                 />
-                {/* <TaskTemplate 
+                <TaskTemplate 
                   actionType={TaskTemplateAction.List}
-                  templateType='RetweetX'  title={'bindGithub'}
-                  description='bindGithub'
+                  templateType='RetweetX'  
+                  // title={'bindX'}
+                  // description='bindX'
+                  onAdd={handleAddTask}
+                />
+                      <TaskTemplate 
+                  actionType={TaskTemplateAction.List}
+                  templateType='LikeX'  
+                  // title={'bindX'}
+                  // description='bindX'
+                  onAdd={handleAddTask}
+                />
+                      <TaskTemplate 
+                  actionType={TaskTemplateAction.List}
+                  templateType='VisitPage'  
+                  // title={'bindX'}
+                  // description='bindX'
                   onAdd={handleAddTask}
                 />
                 <TaskTemplate 
                   actionType={TaskTemplateAction.List}
-                  templateType='LikeX'  title={'NumberOfTransactions'}
-                  description='NumberOfTransactions'
+                  templateType='Interaction'  
+                  // title={'bindX'}
+                  // description='bindX'
                   onAdd={handleAddTask}
                 />
-               <TaskTemplate 
-                  actionType={TaskTemplateAction.List}
-                  templateType='VisitPage'  title={'NumberOfTransactions'}
-                  description='NumberOfTransactions'
-                  onAdd={handleAddTask}
-                />
-                <TaskTemplate 
-                  actionType={TaskTemplateAction.List}
-                  templateType='Interaction'  title={'Interaction'}
-                  description='Interaction'
-                  onAdd={handleAddTask}
-                /> */}
       </div>
             </div>
           </div>

@@ -90,7 +90,7 @@ export default function TaskAction({ taskId, title, onAction,
       handleSubmit();
     let frameParams = `scrollbars=no,resizable=yes,status=no,location=no,toolbar=no,menubar=no,
 width=800,height=600,left=300,top=300`;
-    window.open(`https://x.com/intent/follow?screen_name=${params?.target_x_username}`, "Follow" , frameParams)
+    window.open(`${params?.target_x_username}`, "_blank")
   }, [handleSubmit, params?.target_x_username]);
 
   const [status, setStatus] = useState("INIT");
@@ -121,7 +121,7 @@ width=800,height=600,left=300,top=300`;
           <div className=" text-base text-opacity-80 cursor-pointer text-gray-500 flex items-center"
            onClick={handleOpenFollowX}
           >
-            <div>address: </div>
+            <div>Visit: </div>
             <div className="badge badge-info ml-2">{params?.target_x_username}</div>
           </div>
           <div className="flex items-center gap-6">

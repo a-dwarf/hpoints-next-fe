@@ -47,6 +47,10 @@ export const TemplateEventTypeMap: Record<string, string> = {
   '6': 'bindGithub',
   'FOLLOW-X': 'FollowX',
   'FOLLOW': 'FollowX',
+  'LIKE': 'LikeX',
+  'RETWEET': 'RetweetX',
+  'VIEW_URL': 'VisitPage',
+  'TX-COUNT': 'Interaction',
 
   '8': 'Interaction',
   '9': 'Follow',

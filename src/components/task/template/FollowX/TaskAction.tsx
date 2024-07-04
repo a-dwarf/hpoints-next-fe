@@ -1,7 +1,8 @@
-import { ReactNode, useCallback, useEffect, useMemo } from "react";
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   ArchiveXIcon,
+  CheckIcon,
   ChevronRight,
   ChevronRightIcon,
   Delete,
@@ -9,6 +10,7 @@ import {
   Edit,
   PlusIcon,
   RefreshCcwDotIcon,
+  RotateCwIcon,
 } from "lucide-react";
 import { useDisclosure } from "@chakra-ui/react";
 import {
@@ -91,8 +93,16 @@ width=800,height=600,left=300,top=300`;
     window.open(`https://x.com/intent/follow?screen_name=${params?.target_x_username}`, "Follow" , frameParams)
   }, [handleSubmit, params?.target_x_username]);
 
+  const [status, setStatus] = useState("INIT");
+  const taskStatus = useMemo(() => {
+    return status;
+  }, [status])
+
   const handleVerify = useCallback(async () => {
     const rs = await axios.get(`/api/tasks/${data.id}/check`);
+    if(rs.data.is_check) {
+      setStatus('FINISH')
+    }
 
     console.log('handleVerify', rs);
 
@@ -108,26 +118,22 @@ width=800,height=600,left=300,top=300`;
             <PlusIcon className="w-6 h-6" />
             <div className=" card-title">{title}</div>
           </div>
-          <div className=" text-base text-opacity-80 text-gray-500 flex items-center"
+          <div className=" text-base text-opacity-80 cursor-pointer text-gray-500 flex items-center"
            onClick={handleOpenFollowX}
           >
             <div>Followed account: </div>
             <div className="badge badge-info ml-2">{params?.target_x_username}</div>
           </div>
           <div className="flex items-center gap-6">
-            <div className=" badge badge-secondary badge-outline">
+            {/* <div className=" badge badge-secondary badge-outline">
             {"1 Point"}
-            </div>
+            </div> */}
             {/* <div className=" badge badge-warning badge-outline">{"Token2"}</div> */}
           </div>
         </div>
         <div>
           <div onClick={handleVerify} className=" cursor-pointer">
-            <label className="swap swap-rotate">
-              <input type="checkbox" className="theme-controller" value="synthwave" />
-                <RefreshCcwDotIcon className="swap-off h-10 w-10"  />
-                <RefreshCcwDotIcon className="swap-on h-10 w-10"  />
-            </label>
+            {taskStatus === 'FINISH' ? <CheckIcon className="swap-off h-10 w-10"  /> : <RotateCwIcon className="swap-off h-10 w-10"  />}
           </div>
           {/* <ChevronRightIcon className="h-10 w-10" /> */}
         </div>
