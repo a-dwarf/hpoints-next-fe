@@ -81,10 +81,10 @@ export default function SendMessageTemplate({
     };
     await onAdd?.({
       // eventTypeId: 2,
-      name: 'LIKE',
-      description: 'LIKE',
-      event_type: "LIKE",
-      eventType: "LIKE",
+      name: 'VIEW_URL',
+      description: 'VIEW_URL',
+      event_type: "VIEW_URL",
+      eventType: "VIEW_URL",
       status: 'ongoing',
       params: JSON.stringify(params),
       startDate: dayjs().add(1, 'hour').toISOString(),
@@ -99,10 +99,10 @@ export default function SendMessageTemplate({
     };
     await onUpdate?.({
       ...templateData,
-      name: 'LIKE',
-      description: 'LIKE',
-      event_type: "LIKE",
-      eventType: "LIKE",
+      name: 'VIEW_URL',
+      description: 'VIEW_URL',
+      event_type: "VIEW_URL",
+      eventType: "VIEW_URL",
       status: 'ongoing',
       params: JSON.stringify(params),
       startDate: dayjs().add(1, 'hour').toISOString(),
@@ -147,14 +147,14 @@ export default function SendMessageTemplate({
         <div className=" w-full flex gap-6 items-center justify-between ">
           <div className="flex items-center gap-6">
             <PlusIcon className="w-6 h-6" />
-            <div>{title || 'Like X'}</div>
+            <div>{title || 'Visit Page'}</div>
           </div>
           <div className="flex items-center gap-4">
             {/* <Edit className='w-6 h-6 cursor-pointer'/>
             <ArchiveXIcon className='w-6 h-6 cursor-pointer'/> */}
           </div>
         </div>
-        <div className="my-6 h-20">{description || "Like X"}</div>
+        <div className="my-6 h-20">{description || "Visit Page"}</div>
       </div>}
       <Dialog
         open={templateDialog.isOpen}
@@ -181,9 +181,9 @@ export default function SendMessageTemplate({
                   name="message"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>{"Like X Id"}</FormLabel>
+                      <FormLabel>{"Page Url"}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Like X Id" {...field} />
+                        <Input placeholder="Page Url" {...field} />
                       </FormControl>
                       <FormDescription />
                       <FormMessage />

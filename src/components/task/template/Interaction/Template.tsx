@@ -1,4 +1,4 @@
-import { ReactNode, useCallback } from "react";
+import { ReactNode, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { ArchiveXIcon, Delete, DeleteIcon, Edit, PlusIcon } from "lucide-react";
 import { useDisclosure } from "@chakra-ui/react";
@@ -34,6 +34,7 @@ interface TaskTemplateProps {
   icon?: ReactNode;
   description?: string;
   templateType?: string;
+  templateData: any;
   data?: any;
   actionType: TaskTemplateAction;
   onAdd?: (data: any) => void;
@@ -49,7 +50,8 @@ interface Inputs {
 export default function SendMessageTemplate({
   taskTemplateId,
   title,
-  data = {},
+  templateData = {},
+  data={},
   icon,
   description,
   actionType,
@@ -57,37 +59,57 @@ export default function SendMessageTemplate({
   onUpdate,
   onDelete,
   onAction,
+  ...props
 }: TaskTemplateProps) {
   const templateDialog = useDisclosure();
   const form = useForm<Inputs>();
-  const handleSubmit = useCallback(async () => {
-    const res = await axios.post('/api/tasks')
 
-  }, []);
+  console.log()
+
+  // const templateData = props?.templateData;
+
+  useEffect(() => {
+    if(templateData?.params) {
+      const value = JSON.parse(templateData.params);
+      form.setValue('message', value?.target_x_username)
+    }
+    console.log('data', templateData);
+  }, [templateData, templateData?.params, form])
   const handleAdd = useCallback(async () => {
+    const params = {
+      target_x_username: form.getValues()?.message,
+    };
     await onAdd?.({
-      eventTypeId: 2,
-      name: 'Online',
-      description: 'Online',
+      // eventTypeId: 2,
+      name: 'TX-COUNT',
+      description: 'TX-COUNT',
+      event_type: "TX-COUNT",
+      eventType: "TX-COUNT",
       status: 'ongoing',
+      params: JSON.stringify(params),
       startDate: dayjs().add(1, 'hour').toISOString(),
       endDate: dayjs().add(1, 'day').toISOString(),
     })
     templateDialog.onClose();
-  }, [onAdd, templateDialog]);
+  }, [form, onAdd, templateDialog]);
 
   const handleUpdate = useCallback(async () => {
+    const params = {
+      target_x_username: form.getValues()?.message,
+    };
     await onUpdate?.({
-      id: data.id,
-      eventTypeId: 2,
-      name: 'Online',
-      description: 'Online',
+      ...templateData,
+      name: 'TX-COUNT',
+      description: 'TX-COUNT',
+      event_type: "TX-COUNT",
+      eventType: "TX-COUNT",
       status: 'ongoing',
+      params: JSON.stringify(params),
       startDate: dayjs().add(1, 'hour').toISOString(),
       endDate: dayjs().add(1, 'day').toISOString(),
     })
     templateDialog.onClose();
-  }, [data.id, onUpdate, templateDialog]);
+  }, [form, onUpdate, templateData, templateDialog]);
 
   const handleDelete = useCallback(async () => {
     await onDelete?.({
@@ -125,14 +147,14 @@ export default function SendMessageTemplate({
         <div className=" w-full flex gap-6 items-center justify-between ">
           <div className="flex items-center gap-6">
             <PlusIcon className="w-6 h-6" />
-            <div>{title}</div>
+            <div>{title || 'TX-COUNT'}</div>
           </div>
           <div className="flex items-center gap-4">
             {/* <Edit className='w-6 h-6 cursor-pointer'/>
             <ArchiveXIcon className='w-6 h-6 cursor-pointer'/> */}
           </div>
         </div>
-        <div className="my-6 h-20">{description}</div>
+        <div className="my-6 h-20">{description || "TX-COUNT"}</div>
       </div>}
       <Dialog
         open={templateDialog.isOpen}
@@ -157,11 +179,11 @@ export default function SendMessageTemplate({
                 <FormField
                   control={form.control}
                   name="message"
-                  render={(field) => (
+                  render={({field}) => (
                     <FormItem>
-                      <FormLabel>{"Message"}</FormLabel>
+                      <FormLabel>{"contract address"}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Message" {...field} />
+                        <Input placeholder="contract address" {...field} />
                       </FormControl>
                       <FormDescription />
                       <FormMessage />

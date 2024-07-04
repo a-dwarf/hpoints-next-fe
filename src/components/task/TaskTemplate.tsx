@@ -9,6 +9,10 @@ import SendMessageTemplate from './template/SendMessageTemplate';
 import checkInTemplate from './template/checkIn/Template';
 import onlineTimeTemplate from './template/onlineTime/Template';
 import FollowXTemplate from './template/FollowX/Template';
+import RetweetXTemplate from './template/RetweetX/Template';
+import LikeXTemplate from './template/LikeX/Template';
+import VisitPageTemplate from './template/VisitPage/Template';
+import InteractionTemplate from './template/Interaction/Template';
 
 export enum TaskTemplateAction  {
   Exist = 'Exist',
@@ -39,12 +43,12 @@ export const TaskTypeRegister: Record<string, FC<any>> = {
   bindX: onlineTimeTemplate,
   bindGithub: onlineTimeTemplate,
   NumberOfTransactions: onlineTimeTemplate,
-  Interaction: onlineTimeTemplate,
+  Interaction: InteractionTemplate,
   Follow: onlineTimeTemplate,
   FollowX: FollowXTemplate,
-  RetweetX:  onlineTimeTemplate,
-  LikeX:  onlineTimeTemplate,
-  VisitPage: onlineTimeTemplate,
+  RetweetX:  RetweetXTemplate,
+  LikeX:  LikeXTemplate,
+  VisitPage: VisitPageTemplate,
 }
 
 export default function TaskTemplate({
