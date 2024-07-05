@@ -42,6 +42,7 @@ import {
 import { EditIcon } from "lucide-react"
 import Link from "next/link"
 import { useMemo } from "react"
+import { Table as AntDTable} from 'antd';
 
 export type Payment = {
   id: string
@@ -193,7 +194,7 @@ export function ActivityTable({
       },
     ]
     return columnsRef
-  }, [])
+  }, [onDelete])
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -302,3 +303,35 @@ export function ActivityTable({
     </div>
   )
 }
+
+
+export function AntTable({
+  data = [],
+  onDelete
+}: ActivityTableProps) {
+
+  const columns = [
+    {
+      title: 'userId',
+      dataIndex: 'userId',
+      key: 'userId',
+    },
+    {
+      title: 'point',
+      dataIndex: 'point',
+      key: 'point',
+    },
+    {
+      title: 'eventType',
+      dataIndex: 'eventType',
+      key: 'eventType',
+    },
+  ];
+
+  return (
+    <div className="w-full">
+      <AntDTable dataSource={data} columns={columns} />
+    </div>
+  )
+}
+

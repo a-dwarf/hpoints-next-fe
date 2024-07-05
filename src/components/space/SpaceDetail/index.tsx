@@ -174,7 +174,7 @@ export default function SpaceDetail() {
         </div>
         <div className="flex items-center justify-between my-4">
           <div className=" card-title">{"Rewards 10 points"}</div>
-          <div><Button variant={"outline"}> Claim</Button></div>
+          {/* <div><Button variant={"outline"}> Claim</Button></div> */}
         </div>
       </div>
     </div>
