@@ -120,7 +120,7 @@ async function main() {
     },
     {
       id: 2,
-      questId: quest2.id,
+      questId: quest1.id,
       eventType: "TX-DAILY",
       name: 'Updated Task 1',
       description: 'Updated task 1 description',
@@ -128,7 +128,7 @@ async function main() {
     },
     {
       id: 3,
-      questId: quest2.id,
+      questId: quest1.id,
       eventType: "CHECK-IN",
       name: 'Updated Task 1',
       description: 'Updated task 1 description',
@@ -183,31 +183,6 @@ async function main() {
       data: record,
     });
   }
-
-  // Create Points with unique dataId
-  await prisma.point.create({
-    data: {
-      dataId: 1,
-      userAddress: user1.address as string,
-      taskId: tasks[0].id,
-      eventType: tasks[0].eventType || "",
-      points: 50,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  });
-
-  await prisma.point.create({
-    data: {
-      dataId: 2,
-      userAddress: user1.address as string,
-      taskId: tasks[1].id,
-      eventType: eventTypes[1].name,
-      points: 10,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  });
 
   // Create Banner
   await prisma.banner.create({

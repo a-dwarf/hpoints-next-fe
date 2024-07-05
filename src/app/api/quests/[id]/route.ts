@@ -5,7 +5,6 @@ import { auth } from "@/auth"
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
   const session: any = await auth();
-  const userAddress = session?.user?.address;
   const userId = session?.user?.id;
 
   if (!session || !session.user) {
@@ -17,7 +16,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     include: {
       tasks: {
         include: {
-          points: true,
           opRecord: {
             where: {
               userId,
@@ -33,13 +31,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 
   const total_points = quest.tasks.reduce((sum, task) => {
-    return sum + task.points.reduce((taskSum, point) => taskSum + point.points, 0);
+    return task.opRecord ? sum + (task.opRecord.point || 0) : sum;
   }, 0);
 
   const user_points = quest.tasks.reduce((userSum, task) => {
-    return userSum + task.points.reduce((taskUserSum, point) => {
-      return point.userAddress === userAddress ? taskUserSum + point.points : taskUserSum;
-    }, 0);
+    return task.opRecord && task.opRecord.userId === userId ? userSum + (task.opRecord.point || 0) : userSum;
   }, 0);
 
   const questWithTotalPoints = {
