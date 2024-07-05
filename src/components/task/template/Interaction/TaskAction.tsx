@@ -51,7 +51,7 @@ interface Inputs {
   message?: string;
 }
 
-const gateway = '/gateway/post_data';
+const gateway = '/api/op-records';
 
 export default function TaskAction({ taskId, title, onAction,
   data
@@ -72,12 +72,10 @@ export default function TaskAction({ taskId, title, onAction,
 
   const handleSubmit = useCallback(async () => {
     const submitData =  {
-      taskId: data?.id.toString(),
-      event_type: 'follow',
-      timestamp: dayjs().unix(),
-      params: {
-
-      },
+      taskId: data?.id,
+      questId: data?.questId,
+      eventType: data?.eventType,
+      params: data?.params,
     };
     const rs = await axios.post(gateway, submitData)
     if(onAction) {
@@ -85,7 +83,7 @@ export default function TaskAction({ taskId, title, onAction,
       await onAction(submitData);
     }
     actionDialog.onClose();
-  }, [actionDialog, data?.id, onAction]);
+  }, [actionDialog, data?.eventType, data?.id, data?.params, data?.questId, onAction]);
       const handleOpenFollowX = useCallback(() => {
       handleSubmit();
     let frameParams = `scrollbars=no,resizable=yes,status=no,location=no,toolbar=no,menubar=no,
@@ -93,10 +91,10 @@ width=800,height=600,left=300,top=300`;
     window.open(`https://x.com/intent/follow?screen_name=${params?.target_x_username}`, "Follow" , frameParams)
   }, [handleSubmit, params?.target_x_username]);
 
-  const [status, setStatus] = useState("INIT");
+  const [status, setStatus] = useState(data?.opRecord?.status || "INIT");
   const taskStatus = useMemo(() => {
-    return status;
-  }, [status])
+    return status || data?.opRecord?.status;
+  }, [data?.opRecord?.status, status])
 
   const handleVerify = useCallback(async () => {
     const rs = await axios.get(`/api/tasks/${data.id}/check`);

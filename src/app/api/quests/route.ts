@@ -42,6 +42,9 @@ export async function GET(req: NextRequest) {
       startDate: true,
       endDate: true,
     },
+    orderBy: {
+      id: 'desc',
+    },
   });
 
   return NextResponse.json(quests);

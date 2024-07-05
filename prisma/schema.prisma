@@ -19,7 +19,6 @@ model User {
   createdAt     DateTime          @default(now()) @map("created_at")
   updatedAt     DateTime          @updatedAt @map("updated_at")
   quests        Quest[]
-  points        Point[]
   accounts      Account[]
   sessions      Session[]
   opRecords     OperationRecord[]
@@ -120,26 +119,9 @@ model Task {
 
   quest         Quest            @relation(fields: [questId], references: [id], onDelete: Cascade)
   eventTypeName EventType        @relation(fields: [eventType], references: [name])
-  points        Point[]
-  opRecords     OperationRecord?
+  opRecord     OperationRecord?
 
   @@map("tasks")
-}
-
-model Point {
-  id          Int      @id @default(autoincrement()) @map("id")
-  dataId      Int      @unique @map("data_id")
-  userAddress String   @map("user_address")
-  taskId      Int      @map("task_id")
-  eventType   String   @map("event_type")
-  points      Int      @map("points")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-
-  user User @relation(fields: [userAddress], references: [address])
-  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
-
-  @@map("points")
 }
 
 model Banner {

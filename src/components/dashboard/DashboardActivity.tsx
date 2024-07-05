@@ -3,7 +3,7 @@ import useSWRImmutable from "swr/immutable";
 import { SpaceItem } from "../home/SpaceView";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { ActivityTable } from "./ActivityTable";
+import { ActivityTable, AntTable } from "./ActivityTable";
 import { useParams } from "next/navigation";
 
 export interface IncreaseItemProps {
@@ -53,7 +53,7 @@ export function QuestItem({
 
 export default function DashboardActivity() {
   const {id} = useParams();
-  const {data, isLoading, error } = useSWRImmutable(id? `/api/quests?quest_id=${id}` : null );
+  const {data, isLoading, error } = useSWRImmutable(id? `/api/op-records?quest_id=${id}` : null );
 
   return (
     <div className=" my-10">
@@ -70,7 +70,7 @@ export default function DashboardActivity() {
         </div>
       </div>
       <div className="">
-        <ActivityTable />
+        <AntTable data={data}/>
       </div>
     </div>
   );

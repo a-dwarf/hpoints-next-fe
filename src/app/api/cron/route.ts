@@ -26,11 +26,11 @@ export async function GET() {
     }
   })
 
-  const points = await prisma.point.createMany({
-    data: res,
-    skipDuplicates: true
+  // const points = await prisma.point.createMany({
+  //   data: res,
+  //   skipDuplicates: true
 
-  })
+  // })
 
-  return NextResponse.json(points);
+  return NextResponse.json({});
 }

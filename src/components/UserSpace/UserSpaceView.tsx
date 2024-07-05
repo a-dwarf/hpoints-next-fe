@@ -22,7 +22,7 @@ export const SpaceItem = ({data = {}}: SpaceItemProps) => {
     }, 0)
     return allPoint;
   }, [data?.tasks])
-  return <div className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3">
+  return <Link href={`/quest/${data?.id}`} className="flex flex-col items-center card-bordered rounded-2xl w-80 h-72 p-3">
     <div className="h-40 border rounded-2xl w-full">
       <img src={data?.avatar} className="w-full h-full" />
 
@@ -40,25 +40,19 @@ export const SpaceItem = ({data = {}}: SpaceItemProps) => {
         <div className="badge badge-info gap-2">points</div>
       </div>
     </div>
-  </div>
+  </Link>
 }
 
 export interface SpaceViewProps {
   list?: any[];
   isLoading?: boolean;
 }
-
-const userSpacesFetcher = async ([url, address]: string[]) => {
-  const res = await axios.get(url, {params: {address}});
-  return res.data;
-}
 export default function SpaceView ({
   // list = [],
   // isLoading = false,
 }: SpaceViewProps) {
 
-  const { address } = useAccount();
-  const {data, isLoading, mutate, error} = useSWRImmutable(address ? [`/api/quests/participate`, address] : null, userSpacesFetcher);
+  const {data, isLoading, mutate, error} = useSWRImmutable(`/api/quests/participate`);
 
   const questsList = useMemo(() => {
     return data || []
