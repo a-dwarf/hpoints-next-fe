@@ -55,7 +55,7 @@ async function main() {
   // Create Users
   const user1 = await prisma.user.create({
     data: {
-      address: '0x1234567890abcdef211',
+      address: '0xe56d1Dcf934A1d2Ff1Fc27fF3B12ea57C8687Fcf',
       name: 'John Doew',
       email: 'john.doe@example.com',
       avatar: 'https://example.com/avatar.png',
@@ -95,7 +95,7 @@ async function main() {
 
   const quest2 = await prisma.quest.create({
     data: {
-      userId: user1.id,
+      userId: user2.id,
       name: 'First Quest 2',
       avatar: 'https://example.com/quest-avatar.png',
       status: QuestStatus.Draft,
@@ -129,7 +129,7 @@ async function main() {
     {
       id: 3,
       questId: quest1.id,
-      eventType: "CHECK-IN",
+      eventType: "FOLLOW",
       name: 'Updated Task 1',
       description: 'Updated task 1 description',
       params: {},
@@ -160,9 +160,9 @@ async function main() {
   const operationRecords = [
     {
       userId: user1.id,
-      eventType: 'CHECK-IN',
+      eventType: 'FOLLOW',
       taskId: 1,
-      questId: quest2.id,
+      questId: quest1.id,
       params: { start_time: '', end_time: '' },
       point: 10,
       status: OpCheckStatus.INIT,
@@ -171,7 +171,7 @@ async function main() {
       userId: user2.id,
       eventType: 'ONLINE-TIME',
       taskId: 2,
-      questId: quest2.id,
+      questId: quest1.id,
       params: { duration: '', start_time: '', end_time: '' },
       point: 20,
       status: OpCheckStatus.INIT,
