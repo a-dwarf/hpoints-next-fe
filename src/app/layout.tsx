@@ -6,6 +6,8 @@ import { Providers } from '@/components/Providers';
 import Header from "@/components/Header";
 import '@rainbow-me/rainbowkit/styles.css';
 import { SessionProvider } from "next-auth/react";
+import NextTopLoader from 'nextjs-toploader';
+
 
 
 import {
@@ -44,6 +46,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+      <NextTopLoader />
       <SessionProvider session={session}>
         <Providers>
           <main id="app" className="min-h-screen">

@@ -1,5 +1,8 @@
+import useSWRImmutable from "swr/immutable";
 
 export default function ReputationHeader() {
+  const {data, isLoading, error } = useSWRImmutable(`/api/reputations`);
+
   return (
     <div className=" flex flex-col gap-4 sm:flex-row justify-between items-center">
       <div className=" sm:max-w-xl">
@@ -13,7 +16,7 @@ export default function ReputationHeader() {
       <div>
         <div className=" card card-bordered w-40 h-40 flex flex-col items-center justify-center">
           <div className=" font-bold text-4xl">{"Score"}</div>
-          <div className=" font-semibold text-4xl">{"98"}</div>
+          <div className=" font-semibold text-4xl">{data?.finalScore}</div>
         </div>
         <div className=" font-semibold text-2xl mt-2">{"My Reputation"}</div>
       </div>

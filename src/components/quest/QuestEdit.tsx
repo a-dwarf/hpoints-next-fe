@@ -42,6 +42,7 @@ interface Inputs {
   avatar?: string;
   startTime?: Dayjs;
   endTime?: Dayjs;
+  rewards?: string;
 }
 
 export default function QuestEdit({
@@ -92,8 +93,8 @@ export default function QuestEdit({
     console.log('taskValue', taskValue);
     taskFields.append({
       // id: '1',
-      description: "Bind X",
-      templateType: "1",
+      // description: "Bind X",
+      // templateType: "1",
       ...taskValue,
     });
 
@@ -319,7 +320,7 @@ export default function QuestEdit({
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <FormLabel>
               {'Reward With Token'}
           </FormLabel>
@@ -330,7 +331,7 @@ export default function QuestEdit({
             <RewardToken />
 
           </div>
-        </div>
+        </div> */}
 
 
         <div>
@@ -340,8 +341,28 @@ export default function QuestEdit({
           <div>
             {'Set points for your Quest. points can help you filter your quality users for early project participation.Points is free for peoject party'}
           </div>
-          <div className=' card card-bordered p-4 px-4'>
-              <RewardToken />
+          <div className=' card card-bordered p-6'>
+
+            <FormField
+              control={form.control}
+              name="rewards"
+              render={({field}) => (
+                <FormItem>
+                  <div className='flex items-center'>
+                    <div>
+                      Set 
+                    </div>
+
+                    <FormControl>
+                      <Input className=' w-10 mx-4' placeholder="point" {...field} />
+                    </FormControl>
+                    <div>{'Points for people who finish all task'}</div>
+                  </div>
+                  {/* <FormDescription />
+                  <FormMessage /> */}
+                </FormItem>
+              )}
+            />
           </div>
         </div>
 
