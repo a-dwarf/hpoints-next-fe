@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     where: { id: Number(id) },
     include: {
       quest: false,
-      opRecords: {
+      opRecord: {
         where: {
           userId
         }
@@ -25,7 +25,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
   switch (task?.eventType) {
     case 'FOLLOW':
-      // task?.opRecords?.params?.user_x_id
+      // task?.opRecord?.params?.user_x_id
       // followCheck()
       return NextResponse.json({ is_check: true });
     default:

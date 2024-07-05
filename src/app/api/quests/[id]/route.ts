@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       tasks: {
         include: {
           points: true,
-          opRecords: {
+          opRecord: {
             where: {
               userId,
             },

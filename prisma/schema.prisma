@@ -121,7 +121,7 @@ model Task {
   quest         Quest            @relation(fields: [questId], references: [id], onDelete: Cascade)
   eventTypeName EventType        @relation(fields: [eventType], references: [name])
   points        Point[]
-  opRecords     OperationRecord?
+  opRecord     OperationRecord?
 
   @@map("tasks")
 }

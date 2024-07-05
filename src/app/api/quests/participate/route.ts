@@ -4,7 +4,7 @@ import { auth } from "@/auth"
 
 export async function GET() {
   const session: any = await auth();
-  const userAddress = session?.user?.address;
+  const userId = session?.user?.id;
 
   if (!session || !session.user) {
     return new NextResponse('Unauthorized', { status: 401 });
@@ -14,10 +14,8 @@ export async function GET() {
     where: {
       tasks: {
         some: {
-          points: {
-            some: {
-              userAddress: userAddress,
-            },
+          opRecord: {
+            userId: userId,
           },
         },
       },
