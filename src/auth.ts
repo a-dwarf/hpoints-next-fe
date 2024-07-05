@@ -4,7 +4,6 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import Credentials from "next-auth/providers/credentials";
 import { SiweMessage } from "siwe";
-import { getCsrfToken } from "next-auth/react";
 import GitHub from "next-auth/providers/github"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -50,7 +49,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           if (result.success) {
             const user = await prisma.user.findUnique({
-              where: { 
+              where: {
                 address: siwe.address,
               },
               include: {
@@ -83,20 +82,42 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     GitHub,
   ],
   callbacks: {
+    async signIn({ account, profile }: any) {
+      const session: any = await auth();
+
+      if (account?.provider === 'twitter' || account?.provider === 'github') {
+        await prisma.account.upsert({
+          where: {
+            provider_providerAccountId: {
+              provider: account.provider,
+              providerAccountId: account.providerAccountId,
+            },
+          },
+          update: {
+            username: profile?.data?.username || profile?.login,
+            image: profile?.data?.profile_image_url || profile?.avatar_url,
+          },
+          create: {
+            userId: session?.user?.id,
+            provider: account.provider,
+            type: account.type,
+            providerAccountId: account.providerAccountId,
+            username: profile?.data?.username || profile?.login,
+            image: profile?.data?.profile_image_url || profile?.avatar_url,
+          },
+        });
+      }
+      return true;
+    },
     async jwt({ token, user }) {
-      if (user) { 
+      if (user) {
         token.user = user
       }
       return token
     },
     async session({ session, token, user }: { session: any; token: any, user: any }) {
-      // session.address = token.sub;
       session.user = token.user;
-      // session.user.image = "https://www.fillmurray.com/128/128";
-      // session.user.userInfo = user;
-      // session.token = token;
       session.userInfo = user;
-
       return session;
     },
   },
