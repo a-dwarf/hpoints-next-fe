@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import Credentials from "next-auth/providers/credentials";
 import { SiweMessage } from "siwe";
 import GitHub from "next-auth/providers/github"
+import Google from "next-auth/providers/google"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   // debug: true,
@@ -80,6 +81,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
     Twitter,
     GitHub,
+    Google,
   ],
   callbacks: {
     async signIn({ account, profile }: any) {
@@ -104,6 +106,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             providerAccountId: account.providerAccountId,
             username: profile?.data?.username || profile?.login,
             image: profile?.data?.profile_image_url || profile?.avatar_url,
+          },
+        });
+      }
+      if (account?.provider === 'google') {
+        await prisma.user.update({
+          where: { id: session?.user.id },
+          data: {
+            email: profile?.email
           },
         });
       }
