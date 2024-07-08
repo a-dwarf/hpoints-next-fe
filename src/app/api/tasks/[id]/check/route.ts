@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     return new NextResponse('Unauthorized', { status: 401 });
   }
 
-  const opRecord = await prisma.operationRecord.findUnique({
+  const opRecord: any = await prisma.operationRecord.findUnique({
     where: { taskId: Number(id), userId },
   });
 
@@ -24,7 +24,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   switch (opRecord?.eventType) {
     case 'FOLLOW':
       let xprovider = session?.user?.accounts.find((ele: any) => ele.provider == "twitter")
-      // let isFollow = followCheck(xprovider?.providerAccountId, opRecord?.params?.target_x_name)
       let isFollow = followCheck(opRecord?.params?.target_x_name, xprovider?.providerAccountId)
       return NextResponse.json({ is_check: isFollow });
     case 'RETWEET':
