@@ -1,30 +1,37 @@
 import { NextResponse } from 'next/server';
-// import { prisma } from '../../../lib/prisma';
+import { auth } from "@/auth"
 
 export async function GET() {
+
+  const session: any = await auth();
+
+  if (!session || !session.user) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
+
+  console.log(JSON.stringify(session))
   try {
-    // const reputationList = await prisma.reputation.findMany();
     const reputationList = {
       "finalScore": "90",
       "completeReplutions": [
         {
-          "isComplete": true,
+          "isComplete": session?.user?.accounts.find((ele: any) => ele.provider == "github") ? true : false,
           "rpputionIdType": "github",
           "scroe": 10,
         },
         {
           "reputionIdType": "x",
-          "isComplete": false,
+          "isComplete": session?.user?.accounts.find((ele: any) => ele.provider == "twitter") ? true : false,
           "scroe": 10,
         },
         {
           "reputionIdType": "email",
-          "isComplete": false,
+          "isComplete": session?.user?.accounts.find((ele: any) => ele.provider == "google") ? true : false,
           "scroe": 10,
         },
         {
           "reputionIdType": "uniswap_2_tx",
-          "isComplete": false,
+          "isComplete": true,
           "scroe": 20,
         }
       ]
