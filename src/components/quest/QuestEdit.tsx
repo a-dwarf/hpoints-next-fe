@@ -20,7 +20,8 @@ import { Textarea } from '@/components/ui/textarea'
 import TaskTemplate, { TaskTemplateAction } from '../task/TaskTemplate'
 import { TemplateEventTypeMap, templateTypeMap } from '../project/space/TaskForm'
 import RewardToken from './reward/RewardToken';
-import dayjs, { Dayjs } from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs';
+import { ConfigProvider } from 'antd';
 
 interface QuestEditProps {
   title?: ReactNode;
@@ -169,18 +170,20 @@ export default function QuestEdit({
 
 
 
-  return <div className="w-full py-6">
+  return <div className="w-full py-6 text-white">
             <Form {...form}>
       <FormField
           control={form.control}
           name="name"
           render={({field}) => (
-            <FormItem>
-              <FormLabel>
+            <FormItem className=''>
+              <FormLabel className=' text-white font-semibold text-2xl'>
                 {'Quest Name'}
+                <span className='text-[#FDFF7B]'> * </span>
+                {":"}
               </FormLabel>
               <FormControl>
-                <Input placeholder="Quest Name" {...field} />
+                <Input className='text-white' placeholder="Quest Name" {...field} />
               </FormControl>
               <FormDescription />
               <FormMessage />
@@ -191,9 +194,11 @@ export default function QuestEdit({
           control={form.control}
           name="description"
           render={({field}) => (
-            <FormItem>
-              <FormLabel>
+            <FormItem className='mt-10'>
+              <FormLabel className=' text-white font-semibold text-2xl  mt-6'>
                 {'Quest Description'}
+                <span className='text-[#FDFF7B]'> * </span>
+                {":"}
               </FormLabel>
               <FormControl>
                 <Textarea placeholder="Quest Description" {...field} />
@@ -203,51 +208,62 @@ export default function QuestEdit({
             </FormItem>
           )}
         />
+        <div className=' mt-10 mb-2'>
+          <FormLabel className=' text-white font-semibold text-2xl '>
+                  {'Time'}
+            <span className='text-[#FDFF7B]'> * </span>
+            {":"}
+          </FormLabel>
+        </div>
         <div className='grid grid-cols-2 gap-2'>
-          <FormField
-              control={form.control}
-              name="startTime"
-              render={({field}) => (
-                <FormItem className=''>
-                  <FormLabel className=''>
-                      {'Start Time'}
-                  </FormLabel>
-                  <FormControl>
-                    <div>
-                      <DatePicker showTime placeholder="Start Time" {...field} />
-                    </div>
-                  </FormControl>
-                  <FormDescription />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-                  <FormField
-              control={form.control}
-              name="endTime"
-              render={({field}) => (
-                <FormItem>
-                  <FormLabel className=''>
-                    {'End Time'}
-                  </FormLabel>
-                  <FormControl>
-                    <div>
-                      <DatePicker showTime placeholder="End Time" {...field} />
-                    </div>
-                  </FormControl>
-                  <FormDescription />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          {/* <ConfigProvider
+          theme={{
+            token: {
+              colorBgBase: 'red',
+            }
+          }}
+          > */}
+            <FormField
+                control={form.control}
+                name="startTime"
+                render={({field}) => (
+                  <FormItem className=''>
+                    <FormControl>
+                      <div>
+                        <DatePicker showTime placeholder="Start Time" {...field} />
+                      </div>
+                    </FormControl>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="endTime"
+                render={({field}) => (
+                  <FormItem>
+                    <FormControl>
+                      <div>
+                        <DatePicker showTime placeholder="End Time" {...field} />
+                      </div>
+                    </FormControl>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+          {/* </ConfigProvider> */}
         </div>
         <FormField
           control={form.control}
           name="avatar"
           render={({field}) => (
-            <FormItem>
-              <FormLabel>
+            <FormItem  className=' mt-10'>
+              <FormLabel className=' text-white font-semibold text-2xl mt-6'>
                 {'Quest Avatar'}
+                <span className='text-[#FDFF7B]'> * </span>
+                {":"}
               </FormLabel>
               <FormControl>
                 <Input placeholder="Quest Avatar" {...field} />
@@ -257,12 +273,14 @@ export default function QuestEdit({
             </FormItem>
           )}
         />
-        <div>
-          <FormLabel>
-              {'Task'}
-          </FormLabel>
-          <div className=' card card-bordered p-4'>
-            <div>{'The tasks is shown directly on your page. Users must complete tasks to earn points. Setting tasks properly can help your project gain user growth'}</div>
+        <div  className=' mt-10'>
+          <FormLabel className=' text-white font-semibold text-2xl mt-6'>
+                {'Task'}
+                <span className='text-[#FDFF7B]'> * </span>
+                {":"}
+              </FormLabel>
+          <div className='p-4 mt-2 bg-background rounded-xl'>
+            <div className=' text-muted-foreground'>{'The tasks is shown directly on your page. Users must complete tasks to earn points. Setting tasks properly can help your project gain user growth'}</div>
             <div className='my-4 flex flex-col gap-4'>
               {taskFields.fields.map((t, index) => {
                 return <TaskTemplate key={t.id}
@@ -320,10 +338,12 @@ export default function QuestEdit({
           </div>
         </div>
 
-        {/* <div>
-          <FormLabel>
-              {'Reward With Token'}
-          </FormLabel>
+        <div  className=' mt-10'>
+          <FormLabel className=' text-white font-semibold text-2xl mt-6'>
+                {'Reward With Token'}
+                <span className='text-[#FDFF7B]'> * </span>
+                {":"}
+              </FormLabel>
           <div>
             {'reward tokens will be more attractive, users will be more willing to participate in the incentive quest, and the project side will have to pay a certain cost.'}
           </div>
@@ -331,13 +351,15 @@ export default function QuestEdit({
             <RewardToken />
 
           </div>
-        </div> */}
+        </div>
 
 
-        <div>
-          <FormLabel>
-              {'Reward With Points'}
-          </FormLabel>
+        <div  className=' mt-10'>
+          <FormLabel className=' text-white font-semibold text-2xl mt-6'>
+                {'Reward With Points'}
+                <span className='text-[#FDFF7B]'> * </span>
+                {":"}
+              </FormLabel>
           <div>
             {'Set points for your Quest. points can help you filter your quality users for early project participation.Points is free for peoject party'}
           </div>
@@ -366,10 +388,12 @@ export default function QuestEdit({
           </div>
         </div>
 
-        <div className='my-6 flex justify-between items-center'>
-          <FormLabel>
-              {'Chain'}
-          </FormLabel>
+        <div className='my-6 flex justify-between items-center mt-10'>
+          <FormLabel className=' text-white font-semibold text-2xl mt-6'>
+                {'Chain'}
+                <span className='text-[#FDFF7B]'> * </span>
+                {":"}
+              </FormLabel>
           <div>
             <Button>Ethereum</Button>
           </div>

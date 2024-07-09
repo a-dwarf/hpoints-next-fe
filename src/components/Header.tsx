@@ -211,8 +211,11 @@ function Header() {
      })
    }, [session.data]);
   return (
-    <div className={clsx("w-full backdrop-blur-md", showBlur ? ' backdrop-blur-md': '')} ref={scrollRef}>
-      <div className=" max-w-5xl w-full mx-auto flex items-center py-7">
+    <div className={clsx("w-full relative backdrop-blur-md", showBlur ? ' backdrop-blur-md': '')} ref={scrollRef}>
+      <div className=" absolute -translate-y-20">
+        <img className=" w-96 h-60" src="/images/quest/questBg1.png" />
+      </div>
+      <div className=" max-w-5xl w-full mx-auto flex items-center py-7 relative z-10">
         <div className="navbar-start">
           <Link className="" href="/">
             <img className="w-52" src="/images/header/headerIcon.png"/>
