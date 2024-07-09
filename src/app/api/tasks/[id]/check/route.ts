@@ -21,18 +21,15 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     return NextResponse.json({ is_check: true });
   }
 
+  let xprovider = session?.user?.accounts.find((ele: any) => ele.provider == "twitter")
   switch (opRecord?.eventType) {
     case 'FOLLOW':
-      let xprovider = session?.user?.accounts.find((ele: any) => ele.provider == "twitter")
       let isFollow = followCheck(opRecord?.params?.target_x_name, xprovider?.providerAccountId)
       return NextResponse.json({ is_check: isFollow });
     case 'RETWEET':
-      let x_provider = session?.user?.accounts.find((ele: any) => ele.provider == "twitter")
-      let isRetweet = await getRetweetData(x_provider?.providerAccountId, x_provider?.params?.target_tweet_id)
+      let isRetweet = await getRetweetData(xprovider?.providerAccountId, xprovider?.params?.target_tweet_id)
       return NextResponse.json({ is_check: isRetweet });
     default:
-      break;
+      return NextResponse.json({ is_check: false });
   }
-
-  return NextResponse.json({ is_check: true });
 }

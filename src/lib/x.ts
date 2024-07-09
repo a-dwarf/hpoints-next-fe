@@ -1,6 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { encode } from 'querystring';
-
 export async function followCheck(user_x_id: any, target_x_username: any) {
   console.log(user_x_id, target_x_username)
   const url = `https://api.apidance.pro/1.1/followers/ids.json?screen_name=${user_x_id}&count=5000&stringify_ids=true`;

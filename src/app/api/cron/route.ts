@@ -26,7 +26,7 @@ export async function GET() {
     }
   })
 
-  // const points = await prisma.point.createMany({
+  // const points = await prisma.OperationRecord.createMany({
   //   data: res,
   //   skipDuplicates: true
 
