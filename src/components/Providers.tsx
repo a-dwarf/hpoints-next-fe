@@ -50,8 +50,7 @@ const swrConfig: SWRConfiguration = {
 
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <ChakraBaseProvider theme={theme} resetCSS={false}>
-      <ReduxProvider store={store}>
+  return <ReduxProvider store={store}>
         <SWRConfig value={swrConfig}>
           <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
@@ -64,5 +63,4 @@ export function Providers({ children }: { children: React.ReactNode }) {
           {/* <PersistGate loading={null} persistor={persistor}>
           </PersistGate> */}
       </ReduxProvider>
-    </ChakraBaseProvider>
 }

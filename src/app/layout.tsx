@@ -53,7 +53,7 @@ export default async function RootLayout({
             <div className="fixed w-screen z-40">
               <Header />
             </div>
-            <div className='pt-20'>
+            <div className=''>
               {children}
             </div>
           </main>
