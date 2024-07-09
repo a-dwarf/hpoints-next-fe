@@ -19,11 +19,15 @@ export interface UserBannerProps {
 
 
 export const UserBanner = ({
-  data = {}
+  // data = {}
 }: UserBannerProps) => {
-  const reputationsAmount = useMemo(() => {
-    return data?.spaces?.length || 0
-  }, [data?.spaces?.length])
+  const {data, isLoading, error } = useSWRImmutable('/api/user');
+
+  const {data: questData } = useSWRImmutable(`/api/quests/participate`);
+
+  const questsList = useMemo(() => {
+    return questData || []
+  }, [questData]);
   return  <div className="flex justify-between items-center">
     <div>
       <div className="flex flex-row items-center mt-10 mb-10 gap-6">
@@ -33,21 +37,23 @@ export const UserBanner = ({
 
             </div>
           </div>
+          <div>
+            <div className="text-sm lg:text-base line-clamp-2 max-w-2xl">
+              {`Joined on ${dayjs(data?.createAt).format('YYYY-MM-DD')}`}
+            </div>
+            <div>
+              <span className=" mr-2 font-medium text-2xl">
+                {questsList.length}
+              </span>
+              <span>
+                {"Participated Space"}
+              </span>
+            </div>
+          </div>
         </div>
         <div className=" flex h-full flex-col">
           <div className="text-xl font-bold lg:text-3xl pb-1 capitalize max-w-40 truncate">
             {data?.name || ''}
-          </div>
-          <div className="text-sm lg:text-base line-clamp-2 max-w-2xl">
-            {`Joined on ${dayjs(data?.createAt).format('YYYY-MM-DD')}`}
-          </div>
-          <div>
-            <span className=" mr-2 font-medium text-2xl">
-              {reputationsAmount}
-            </span>
-            <span>
-              {"Participated Space"}
-            </span>
           </div>
         </div>
       </div>

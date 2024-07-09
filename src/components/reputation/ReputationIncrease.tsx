@@ -1,16 +1,19 @@
 import useSWRImmutable from "swr/immutable";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 export interface IncreaseItemProps {
   title?: string;
   description?: string;
   action?: string;
+  url?: string;
 }
 
 export function IncreaseItem({
   title,
   description,
   action,
+  url,
 }: IncreaseItemProps) {
   return (
     <div className=" card card-bordered h-60 p-2">
@@ -35,9 +38,13 @@ export function IncreaseItem({
           {description}
         </div>
         <div className="flex items-center justify-center pt-1">
-          <Button>
-            {action}
-          </Button>
+
+            <Link href={url || ''}>
+              <Button variant={"outline"}>
+              {action}
+              </Button>
+            </Link>
+
         </div>
       </div>
     </div>
@@ -62,27 +69,35 @@ export default function ReputationIncrease() {
           title={"bind Github"}
           description={"confirm your github id"}
           action={"Bind"}
+          url="/userSpace"
         />
         <IncreaseItem 
           title={"bind X"}
           description={"confirm your X id"}
           action={"Check"}
+          url="/userSpace"
+
         />
-        <IncreaseItem 
+        {/* <IncreaseItem 
           title={"bind Github"}
           description={"confirm your github id"}
           action={"Bind"}
-        />
+          url="/userSpace"
+
+        /> */}
         <IncreaseItem 
           title={"Onlin time"}
           description={"need at least online 1 hours"}
           action={"Check"}
+          url="/userSpace"
+
         />
-        <IncreaseItem 
+        {/* <IncreaseItem 
           title={"bind X"}
           description={"confirm your X id"}
           action={"Check"}
-        />
+          url="/userSpace"
+        /> */}
       </div>
     </div>
   );

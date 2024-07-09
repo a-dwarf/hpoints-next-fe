@@ -17,11 +17,12 @@ import {
 import * as React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 
 import { config } from '@/wagmi';
 import {SWRConfig, SWRConfiguration} from 'swr';
 import axios from 'axios';
+import { ConfigProvider } from 'antd';
 
 const queryClient = new QueryClient();
 
@@ -50,19 +51,25 @@ const swrConfig: SWRConfiguration = {
 
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return <ChakraBaseProvider theme={theme} resetCSS={false}>
-      <ReduxProvider store={store}>
+  return <ReduxProvider store={store}>
+      <ConfigProvider
+        theme={{
+        token: {
+          // colorBgBase: 'red',
+        }
+      }}
+      >
         <SWRConfig value={swrConfig}>
           <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
               <RainbowKitSiweNextAuthProvider>
-                <RainbowKitProvider>{children}</RainbowKitProvider>
+                <RainbowKitProvider theme={darkTheme()}>{children}</RainbowKitProvider>
               </RainbowKitSiweNextAuthProvider>
             </QueryClientProvider>
           </WagmiProvider>
         </SWRConfig>
+      </ConfigProvider>
           {/* <PersistGate loading={null} persistor={persistor}>
           </PersistGate> */}
       </ReduxProvider>
-    </ChakraBaseProvider>
 }
