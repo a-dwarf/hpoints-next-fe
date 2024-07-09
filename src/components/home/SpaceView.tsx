@@ -160,24 +160,24 @@ export default function SpaceView () {
       </div>
       <div className="gap-4 mt-4 w-full grid grid-cols-2">
         {error && <>
-        <SpaceSkeleton  className="w-80 h-72"/>
-        <SpaceSkeleton  className="w-80 h-72"/>
-        <SpaceSkeleton  className="w-80 h-72"/>
-        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="h-72 self-center"/>
+        <SpaceSkeleton  className="h-72 self-center"/>
+        <SpaceSkeleton  className="h-72 self-center"/>
+        <SpaceSkeleton  className="h-72 self-center"/>
         </>}
         {!error && !isLoading && ((questsList.length > 0) ?  data?.map((item: any) => {
           return <SpaceItem key={item.id} data={item}/>
         }): <>
-            <SpaceSkeleton  className="w-80 h-72"/>
-            <SpaceSkeleton  className="w-80 h-72"/>
-            <SpaceSkeleton  className="w-80 h-72"/>
-            <SpaceSkeleton  className="w-80 h-72"/>
+            <SpaceSkeleton  className="h-72 self-center"/>
+            <SpaceSkeleton  className="h-72 self-center"/>
+            <SpaceSkeleton  className="h-72 self-center"/>
+            <SpaceSkeleton  className="h-72 self-center"/>
         </>)}
         {!error && (isLoading) && <>
-        <SpaceSkeleton  className="w-80 h-72"/>
-        <SpaceSkeleton  className="w-80 h-72"/>
-        <SpaceSkeleton  className="w-80 h-72"/>
-        <SpaceSkeleton  className="w-80 h-72"/>
+        <SpaceSkeleton  className="h-72 self-center"/>
+        <SpaceSkeleton  className="h-72 self-center"/>
+        <SpaceSkeleton  className="h-72 self-center"/>
+        <SpaceSkeleton  className="h-72 self-center"/>
         </>}
 
       </div>
