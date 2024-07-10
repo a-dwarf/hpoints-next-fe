@@ -5,10 +5,10 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
+import { Icon, Plus, SaveIcon, TvIcon } from 'lucide-react'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { useDisclosure } from '@chakra-ui/react'
-import { ReloadIcon } from '@radix-ui/react-icons'
+import { ReloadIcon, TwitterLogoIcon } from '@radix-ui/react-icons'
 import axios from 'axios';
 import { useAccount, useSignMessage } from 'wagmi'
 import { Hex, verifyMessage } from 'viem';
@@ -22,6 +22,7 @@ import { TemplateEventTypeMap, templateTypeMap } from '../project/space/TaskForm
 import RewardToken from './reward/RewardToken';
 import dayjs, { Dayjs } from 'dayjs';
 import { ConfigProvider } from 'antd';
+import TaskSwitch from './form/TaskSwitch'
 
 interface QuestEditProps {
   title?: ReactNode;
@@ -115,6 +116,7 @@ export default function QuestEdit({
     const values = form.getValues();
 
     const postData = {
+      ...values,
       name: values.name,
       description: values.description,
       avatar: values.avatar,
@@ -122,11 +124,12 @@ export default function QuestEdit({
       endDate: values.endTime?.format(),
       tasks: values.tasks,
       reward: [],
-      rewards: '',
+      rewards: values.rewards,
       // ...values,
     };
 
     console.log('postData', postData);
+    return;
     if(pathname.startsWith('/quest/create')) {
       const rs = await axios.post('/api/quests', postData);
 
@@ -281,59 +284,69 @@ export default function QuestEdit({
               </FormLabel>
           <div className='p-4 mt-2 bg-background rounded-xl'>
             <div className=' text-muted-foreground'>{'The tasks is shown directly on your page. Users must complete tasks to earn points. Setting tasks properly can help your project gain user growth'}</div>
-            <div className='my-4 flex flex-col gap-4'>
-              {taskFields.fields.map((t, index) => {
-                return <TaskTemplate key={t.id}
-                templateData={t}
-                title={t.description} 
-                templateType={TemplateEventTypeMap?.[`${t.eventType ||'1'}`]}       
-                description={t.description}
-                actionType={TaskTemplateAction.Exist}
-                onUpdate={(value) => {
-                  handleUpdateTask(index, value)
-                }}
-                onDelete={() => handleDeleteTask(index)}
-                />
-              })}
-            </div>
+            <div>   
+              <div className='my-4 flex flex-col gap-10'>
+                {taskFields.fields.map((t, index) => {
+                  return <div key={t.id}
+                    className=' flex items-center'
+                    >
+                        <div className=' flex-shrink-0 bg-[#323232] w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl m-6'>
+                          {index + 1}
+                        </div>
+                        <div className=' flex-grow h-full'>
+                          <TaskTemplate key={t.id}
+                            form={form}
+                            formKey={`tasks.${index}`}
+                            templateData={t}
+                            title={t.description} 
+                            templateType={TemplateEventTypeMap?.[`${t.eventType ||'1'}`]}       
+                            description={t.description}
+                            actionType={TaskTemplateAction.Exist}
+                            onUpdate={(value) => {
+                              handleUpdateTask(index, value)
+                            }}
+                            onDelete={() => handleDeleteTask(index)}
+                            />
+                        </div>
+          
+                    </div>
+                  
+                })}
+              </div>
+              </div>
+              <div className=' grid grid-cols-3 gap-3 my-6'>
+                  <TaskTemplate 
+                    actionType={TaskTemplateAction.List}
+                    templateType='FollowX'  
+                    onAdd={handleAddTask}
+                    value={taskFields.fields.some((f) => f.eventType == 'FOLLOW')}
+                  />
+                  <TaskTemplate 
+                    actionType={TaskTemplateAction.List}
+                    templateType='RetweetX'  
+                    onAdd={handleAddTask}
+                    value={taskFields.fields.some((f) => f.eventType == 'RETWEET')}
+                  />
+                        <TaskTemplate 
+                    actionType={TaskTemplateAction.List}
+                    templateType='LikeX'  
+                    onAdd={handleAddTask}
+                    value={taskFields.fields.some((f) => f.eventType == 'LIKE')}
+                  />
+                        <TaskTemplate 
+                    actionType={TaskTemplateAction.List}
+                    templateType='VisitPage'  
+                    onAdd={handleAddTask}
+                    value={taskFields.fields.some((f) => f.eventType == 'VIEW_URL')}
+                  />
+                  <TaskTemplate 
+                    actionType={TaskTemplateAction.List}
+                    templateType='Interaction'  
+                    onAdd={handleAddTask}
+                    value={taskFields.fields.some((f) => f.eventType == 'TX-COUNT')}
+                  />
+              </div>
             <div>
-            <div className=' grid grid-cols-2 gap-4 my-6'>
-                <TaskTemplate 
-                  actionType={TaskTemplateAction.List}
-                  templateType='FollowX'  
-                  // title={'bindX'}
-                  // description='bindX'
-                  onAdd={handleAddTask}
-                />
-                <TaskTemplate 
-                  actionType={TaskTemplateAction.List}
-                  templateType='RetweetX'  
-                  // title={'bindX'}
-                  // description='bindX'
-                  onAdd={handleAddTask}
-                />
-                      <TaskTemplate 
-                  actionType={TaskTemplateAction.List}
-                  templateType='LikeX'  
-                  // title={'bindX'}
-                  // description='bindX'
-                  onAdd={handleAddTask}
-                />
-                      <TaskTemplate 
-                  actionType={TaskTemplateAction.List}
-                  templateType='VisitPage'  
-                  // title={'bindX'}
-                  // description='bindX'
-                  onAdd={handleAddTask}
-                />
-                <TaskTemplate 
-                  actionType={TaskTemplateAction.List}
-                  templateType='Interaction'  
-                  // title={'bindX'}
-                  // description='bindX'
-                  onAdd={handleAddTask}
-                />
-      </div>
             </div>
           </div>
         </div>
@@ -344,41 +357,58 @@ export default function QuestEdit({
                 <span className='text-[#FDFF7B]'> * </span>
                 {":"}
               </FormLabel>
-          <div>
-            {'reward tokens will be more attractive, users will be more willing to participate in the incentive quest, and the project side will have to pay a certain cost.'}
+          <div className='text-muted-foreground my-5'>
+            {'Reward tokens will be more attractive, users will be more willing to participate in the incentive quest, and the project side will have to pay a certain cost.'}
           </div>
-          <div className=' card card-bordered p-4 px-4'>
-            <RewardToken />
-
+          <div className=' bg-background rounded-xl'>
+            <RewardToken form={form} formKey={'tokens'} />
           </div>
         </div>
 
 
         <div  className=' mt-10'>
-          <FormLabel className=' text-white font-semibold text-2xl mt-6'>
+          <FormLabel className=' font-semibold text-2xl mt-6'>
                 {'Reward With Points'}
                 <span className='text-[#FDFF7B]'> * </span>
                 {":"}
               </FormLabel>
-          <div>
+          <div className='text-muted-foreground my-5'>
             {'Set points for your Quest. points can help you filter your quality users for early project participation.Points is free for peoject party'}
           </div>
-          <div className=' card card-bordered p-6'>
+          <div className=' bg-background rounded-xl'>
 
             <FormField
               control={form.control}
               name="rewards"
+              defaultValue='100'
               render={({field}) => (
                 <FormItem>
-                  <div className='flex items-center'>
+                  <div className='flex items-center gap-4 p-4 font-semibold text-[#A9A9A9] text-sm'>
+                  <div className=' flex-shrink-0 bg-[#323232] w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl'>
+                    {'1'}
+                  </div>
                     <div>
                       Set 
                     </div>
-
-                    <FormControl>
-                      <Input className=' w-10 mx-4' placeholder="point" {...field} />
-                    </FormControl>
-                    <div>{'Points for people who finish all task'}</div>
+                      <div className='flex items-center justify-center bg-[#323232] py-4 px-20 rounded-lg'>
+                        <FormControl>
+                          <input className=' text-white bg-transparent border-none outline-none w-10 text-right' {...field}/>
+                        </FormControl>
+                        <div className=' ml-4'>
+                          <img className='h-6 w-6' src='/images/icons/points.png' />
+                          {/* <TvIcon className='h-6 w-6' /> */}
+                        </div>
+                      </div>
+                      {/* <Input className=' w-10 mx-4' placeholder="point"  /> */}
+                    <div></div>
+                    <div className='flex items-center justify-between flex-grow'>
+                      <div>
+                      {'For people'}
+                      </div>
+                      <div className='text-[#FDFF7B] text-xs font-normal'>
+                        {'who finish all Task'}
+                      </div>
+                    </div>
                   </div>
                   {/* <FormDescription />
                   <FormMessage /> */}
@@ -387,28 +417,40 @@ export default function QuestEdit({
             />
           </div>
         </div>
+        <div className=' border-t border-[#323232] w-full mt-16'></div>
 
-        <div className='my-6 flex justify-between items-center mt-10'>
-          <FormLabel className=' text-white font-semibold text-2xl mt-6'>
-                {'Chain'}
-                <span className='text-[#FDFF7B]'> * </span>
-                {":"}
+        <div className=' flex justify-between py-6'>
+          <div className='my-6 flex justify-between items-center'>
+            <div className='w-32'>
+              <FormLabel className=' text-white font-semibold text-2xl'>
+                  {'Chain'}
+                  <span className='text-[#FDFF7B]'> * </span>
+                  {":"}
               </FormLabel>
-          <div>
-            <Button>Ethereum</Button>
+            </div>
+            <div>
+              <Button>Ethereum</Button>
+            </div>
           </div>
+          <div className=' flex items-center justify-between my-2'>
+            <div className=' flex items-center gap-2 justify-center mr-4 cursor-pointer border border-[#A9A9A9] rounded-lg py-2.5 px-3'>
+              <SaveIcon className='h-6 w-6' />
+              <div
+                onClick={handleSave}
+              >
+                Save Draft
+              </div>
+            </div>
+            <div className='cursor-pointer rounded-xl py-4 px-16 text-white font-bold'
+            style={{
+              backgroundImage: 'linear-gradient( 43deg, #0C8A5D 0%, #149B6B 42%, #33C993 100%)',
+            }}
+            >
+              <div
+                onClick={handlePublish}
+              >Publish</div>
+            </div>
         </div>
-        <div className=' flex w-full justify-between my-2'>
-          <div>
-            <Button variant={"outline"}
-              onClick={handleSave}
-            >Save</Button>
-          </div>
-          <div>
-            <Button variant={"outline"}
-              onClick={handlePublish}
-            >Publish</Button>
-          </div>
         </div>
       </Form>
   </div>

@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -24,9 +24,11 @@ import {
 import { Input } from "@/components/ui/input";
 import axios from 'axios';
 import { TaskTemplateAction } from "../../TaskTemplate";
-import TaskExist from "../../TaskExist";
+import TaskExist from "./TaskExist";
 import dayjs from 'dayjs';
 import TaskAction from "./TaskAction";
+import TaskSwitch from "@/components/quest/form/TaskSwitch";
+import { TwitterLogoIcon } from "@radix-ui/react-icons";
 
 interface TaskTemplateProps {
   taskTemplateId?: string;
@@ -41,6 +43,9 @@ interface TaskTemplateProps {
   onUpdate?: (data: any) => void;
   onDelete?: (data: any) => void;
   onAction?: (data: any) => void;
+  form?: UseFormReturn;
+  formKey?: string;
+  value?: any;
 }
 
 interface Inputs {
@@ -59,6 +64,7 @@ export default function SendMessageTemplate({
   onUpdate,
   onDelete,
   onAction,
+  value,
   ...props
 }: TaskTemplateProps) {
   const templateDialog = useDisclosure();
@@ -68,13 +74,13 @@ export default function SendMessageTemplate({
 
   // const templateData = props?.templateData;
 
-  useEffect(() => {
-    if(templateData?.params) {
-      const value = JSON.parse(templateData.params);
-      form.setValue('message', value?.target_x_username)
-    }
-    console.log('data', templateData);
-  }, [templateData, templateData?.params, form])
+  // useEffect(() => {
+  //   if(templateData?.params) {
+  //     const value = JSON.parse(templateData.params);
+  //     form.setValue('message', value?.target_x_username)
+  //   }
+  //   console.log('data', templateData);
+  // }, [templateData, templateData?.params, form])
   const handleAdd = useCallback(async () => {
     const params = {
       target_x_username: form.getValues()?.message,
@@ -117,6 +123,13 @@ export default function SendMessageTemplate({
     })
     templateDialog.onClose();
   }, [data.id, onDelete, templateDialog]);
+  const handleSwitch = useCallback(async (v: boolean) => {
+    if(v) {
+      await handleAdd();
+    }else {
+      await handleDelete();
+    }
+  }, [handleAdd, handleDelete])
   return (
     <>
       {actionType === TaskTemplateAction.Exist &&
@@ -125,6 +138,8 @@ export default function SendMessageTemplate({
     >
       <TaskExist title= {description} onEdit={templateDialog.onOpen}
       onDelete={handleDelete}
+      form={props.form}
+      formKey={props.formKey}
       />
     </div>
     
@@ -140,22 +155,12 @@ export default function SendMessageTemplate({
         </div>
         
         }
-    {actionType === TaskTemplateAction.List && <div
-        className="w-full flex flex-col card card-bordered p-6 shadow cursor-pointer"
-        onClick={templateDialog.onOpen}
-      >
-        <div className=" w-full flex gap-6 items-center justify-between ">
-          <div className="flex items-center gap-6">
-            <PlusIcon className="w-6 h-6" />
-            <div>{title || 'Follow X'}</div>
-          </div>
-          <div className="flex items-center gap-4">
-            {/* <Edit className='w-6 h-6 cursor-pointer'/>
-            <ArchiveXIcon className='w-6 h-6 cursor-pointer'/> */}
-          </div>
-        </div>
-        <div className="my-6 h-20">{description || "Follow the X"}</div>
-      </div>}
+    {actionType === TaskTemplateAction.List && <TaskSwitch 
+         title='FollowX'
+         icon={<TwitterLogoIcon className='h-6 w-6' />}
+         onChange={handleSwitch}
+         value={value}
+        />}
       <Dialog
         open={templateDialog.isOpen}
         onOpenChange={(v) => {

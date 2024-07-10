@@ -24,9 +24,11 @@ import {
 import { Input } from "@/components/ui/input";
 import axios from 'axios';
 import { TaskTemplateAction } from "../../TaskTemplate";
-import TaskExist from "../../TaskExist";
+import TaskExist from "./TaskExist";
 import dayjs from 'dayjs';
 import TaskAction from "./TaskAction";
+import { TwitterLogoIcon } from "@radix-ui/react-icons";
+import TaskSwitch from "@/components/quest/form/TaskSwitch";
 
 interface TaskTemplateProps {
   taskTemplateId?: string;
@@ -41,6 +43,7 @@ interface TaskTemplateProps {
   onUpdate?: (data: any) => void;
   onDelete?: (data: any) => void;
   onAction?: (data: any) => void;
+  value?: any;
 }
 
 interface Inputs {
@@ -59,6 +62,7 @@ export default function SendMessageTemplate({
   onUpdate,
   onDelete,
   onAction,
+  value,
   ...props
 }: TaskTemplateProps) {
   const templateDialog = useDisclosure();
@@ -117,6 +121,13 @@ export default function SendMessageTemplate({
     })
     templateDialog.onClose();
   }, [data.id, onDelete, templateDialog]);
+  const handleSwitch = useCallback(async (v: boolean) => {
+    if(v) {
+      await handleAdd();
+    }else {
+      await handleDelete();
+    }
+  }, [handleAdd, handleDelete])
   return (
     <>
       {actionType === TaskTemplateAction.Exist &&
@@ -140,22 +151,12 @@ export default function SendMessageTemplate({
         </div>
         
         }
-    {actionType === TaskTemplateAction.List && <div
-        className="w-full flex flex-col card card-bordered p-6 shadow cursor-pointer"
-        onClick={templateDialog.onOpen}
-      >
-        <div className=" w-full flex gap-6 items-center justify-between ">
-          <div className="flex items-center gap-6">
-            <PlusIcon className="w-6 h-6" />
-            <div>{title || 'Visit Page'}</div>
-          </div>
-          <div className="flex items-center gap-4">
-            {/* <Edit className='w-6 h-6 cursor-pointer'/>
-            <ArchiveXIcon className='w-6 h-6 cursor-pointer'/> */}
-          </div>
-        </div>
-        <div className="my-6 h-20">{description || "Visit Page"}</div>
-      </div>}
+  {actionType === TaskTemplateAction.List && <TaskSwitch 
+         title='VisitPage'
+         icon={<TwitterLogoIcon className='h-6 w-6' />}
+         onChange={handleSwitch}
+         value={value}
+        />}
       <Dialog
         open={templateDialog.isOpen}
         onOpenChange={(v) => {

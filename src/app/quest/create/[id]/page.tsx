@@ -7,7 +7,7 @@ export default function ProjectSpacePage() {
 
         <img className=" absolute w-96 right-0 top-[800px]" src="/images/quest/questBg2.png" />
 
-      <div className="max-w-5xl w-full flex items-center flex-col px-2 sm:px-0 mx-auto">
+      <div className="max-w-5xl w-full flex items-center flex-col px-2 sm:px-0 mx-auto relative z-10">
         <div className=" max-w-3xl w-full">
           <QuestEdit />
         </div>

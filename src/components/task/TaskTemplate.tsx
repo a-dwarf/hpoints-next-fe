@@ -13,26 +13,29 @@ import RetweetXTemplate from './template/RetweetX/Template';
 import LikeXTemplate from './template/LikeX/Template';
 import VisitPageTemplate from './template/VisitPage/Template';
 import InteractionTemplate from './template/Interaction/Template';
+import { UseFormReturn } from 'react-hook-form';
 
 export enum TaskTemplateAction  {
   Exist = 'Exist',
   List = 'List',
   Action = 'Action',
 }
-interface TaskTemplateProps {
+export interface TaskTemplateProps {
   taskTemplateId?: string;
   title?: ReactNode;
   icon?: ReactNode;
   description?: string;
   data?: any;
   templateData?: any;
+  form?: UseFormReturn;
+  formKey?: string;
   templateType: string;
   actionType: TaskTemplateAction;
   onAdd?: (data: any) => void;
   onUpdate?: (data: any) => void;
   onDelete?: (data: any) => void;
   onAction?: (data: any) => void;
-
+  value?: any,
 }
 
 export const TaskTypeRegister: Record<string, FC<any>> = {

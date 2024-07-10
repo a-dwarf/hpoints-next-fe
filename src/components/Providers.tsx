@@ -22,7 +22,7 @@ import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { config } from '@/wagmi';
 import {SWRConfig, SWRConfiguration} from 'swr';
 import axios from 'axios';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, theme as antdTheme } from 'antd';
 
 const queryClient = new QueryClient();
 
@@ -54,8 +54,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return <ReduxProvider store={store}>
       <ConfigProvider
         theme={{
+          algorithm: antdTheme.darkAlgorithm,
         token: {
-          // colorBgBase: 'red',
+          colorPrimary: '#A9A9A9',
+          // colorBgBase: '#1A1A1A',
+          // colorPrimaryText: '#FFFFFF',
         }
       }}
       >

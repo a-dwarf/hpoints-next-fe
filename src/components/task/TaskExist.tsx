@@ -1,14 +1,19 @@
 import { ReactNode } from 'react'
 import Link from 'next/link'
 import { ArchiveXIcon, Delete, DeleteIcon, Edit, PlusIcon } from 'lucide-react'
+import { UseFormReturn } from 'react-hook-form';
 
-interface TaskExistProps {
+
+export interface TaskExistProps {
   taskId?: string;
   title?: ReactNode;
   icon?: ReactNode;
   onEdit?: () =>void;
   onDelete?: () =>void;
+  form?: UseFormReturn;
+  formKey?: string;
 }
+
 
 export default function TaskExist({
   taskId,
