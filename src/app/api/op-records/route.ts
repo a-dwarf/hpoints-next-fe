@@ -85,4 +85,19 @@ async function handle(opRecord: any) {
   });
 
   // http => point service
+  const result = await fetch(`${process.env.HSERVICE_URL}/event`, {
+    cache: 'no-store',
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      "pk_user": opRecord?.userId,
+      "pk_owner": opRecord?.taskId,
+      "event_meta": [],
+      "event_type": opRecord?.event_type
+    })
+  });
+  const data = await result.json();
+  return data;
 }

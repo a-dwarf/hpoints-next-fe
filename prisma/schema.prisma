@@ -154,6 +154,7 @@ model OperationRecord {
   eventType String        @map("event_type")
   taskId    Int           @unique @map("task_id")
   questId   Int           @map("quest_id")
+  dataId    String?       @map("data_id")
   params    Json          @map("params")
   point     Int?          @map("point")
   status    OpCheckStatus @default(INIT) @map("status")
