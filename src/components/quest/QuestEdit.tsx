@@ -429,7 +429,7 @@ export default function QuestEdit({
               </FormLabel>
             </div>
             <div>
-              <Button>Ethereum</Button>
+              <div className=' bg-background text-[#A9A9A9] rounded-lg px-6 py-2 cursor-pointer'>Ethereum</div>
             </div>
           </div>
           <div className=' flex items-center justify-between my-2'>
