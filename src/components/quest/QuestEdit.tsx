@@ -129,7 +129,7 @@ export default function QuestEdit({
     };
 
     console.log('postData', postData);
-    return;
+    // return;
     if(pathname.startsWith('/quest/create')) {
       const rs = await axios.post('/api/quests', postData);
 
