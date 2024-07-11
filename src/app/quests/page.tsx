@@ -2,7 +2,7 @@ import QuestsHeader from "@/components/quests/QuestsHeader";
 import QuestsList from "@/components/quests/QuestsList";
 import Image from "next/image";
 
-export default function Reputation() {
+export default function QuestsPage() {
   return (
     <div className="pt-40 relative">
       <img className=" absolute w-96 left-0 top-[400px]" src="/images/quest/questBg1.png" />
@@ -18,6 +18,7 @@ export default function Reputation() {
         <div className='max-w-5xl w-full flex flex-col px-2 sm:px-0'>
           <QuestsHeader />
         </div>
+        <div className=" border-t border-solid border-[#323232] mt-20"></div>
         <div className='max-w-5xl w-full flex flex-col px-2 sm:px-0'>
           <QuestsList />
         </div>

@@ -3,6 +3,8 @@ import useSWRImmutable from "swr/immutable";
 import { SpaceItem } from "../home/SpaceView";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Select } from "antd";
+
 import { useMemo } from "react";
 import { SpaceSkeleton } from "../loading/SkeletonCard";
 
@@ -61,17 +63,28 @@ export default function QuestsList() {
   return (
     <div className=" my-10">
       <div className="my-10">
-        <div className=" card-title font-semibold my-6">
-        All Quest:
+        <div className=" text-white text-2xl font-semibold my-6">
+          All Quest
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3">
+        <div className=" flex items-center justify-between">
           <div>
+            <div>
+              <Select className=" w-40 h-10"
+              options={[
+                {
+                  value: 'Ongoing', label: <span>Ongoing</span>
+                },
+                {
+                  value: 'Draft', label: <span>Draft</span>
+                }
+              ]} 
+              defaultValue={"Ongoing"}
+              // value={'Ongoing'}
+              />
 
+            </div>
           </div>
-          <div>
-
-          </div>
-          <Input placeholder="Quest"/> 
+          <Input className=" text-white w-60 text-center" placeholder="Search Title"/> 
         </div>
       </div>
       <div className=" grid grid-cols-1 sm:grid-cols-3 gap-4">
