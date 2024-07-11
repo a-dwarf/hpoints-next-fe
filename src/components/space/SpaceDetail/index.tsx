@@ -1,4 +1,5 @@
 'use client'
+import { RewardItem } from "@/components/home/SpaceView";
 import { NormalSkeleton, SpaceSkeleton } from "@/components/loading/SkeletonCard";
 import { TemplateEventTypeMap, templateTypeMap } from "@/components/project/space/TaskForm";
 import GiveawaysReward from "@/components/reward/GiveawaysReward";
@@ -123,57 +124,108 @@ export default function SpaceDetail() {
   return (
     <div className='w-full flex flex-col justify-center items-center'>
       <div className='max-w-5xl w-full py-10 px-2 sm:px-0'>
-        <div className="flex items-center">
-          <ChevronLeftIcon className="h-6 w-6 cursor-pointer" 
-           onClick={() => {
-            router.back();
-          }}
-          />
-          <div className=" card-title ml-4">{'Ischia'}</div>
-        </div>
-        <div className="mt-4">
-          <div className=" card-title text-2xl">{data?.name}</div>
-          <div className=" text-base text-gray-500 mt-2">
-            {data?.description}
+        <div className=" flex justify-between gap-6">
+          <div className=" flex-grow">
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <ChevronLeftIcon className="h-6 w-6 cursor-pointer" 
+                onClick={() => {
+                  router.back();
+                }}
+                />
+                <div className=" text-[#A9A9A9] text-3xl ml-4">{'Ischia'}</div>
+              </div>
+              <div className="flex items-center gap-4">
+
+                <RewardItem icon={'/images/icons/usdt.png'} 
+                  amount={'100'}
+                  />
+                <RewardItem icon={'/images/icons/points.png'} 
+                  amount={'100'}
+                  />
+
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className=" text-white font-semibold text-4xl">{data?.name}</div>
+              <div className=" text-base text-[#A9A9A9] mt-6">
+                {data?.description}
+              </div>
+            </div>
           </div>
+          <div className=" w-[360px] h-[360px] rounded-xl  bg-background">
+
+
+          </div>
+
         </div>
-        <div className="mt-4">
+        <div className=" border-t w-full border-[#323232] mt-16"></div>
+        {/* <div className="mt-4">
           {userInfo.isLoading && <NormalSkeleton 
             className="w-full h-40"
           />}
-          {/* {!userInfo.isLoading && <ScoredOverview 
-          userPoints={totalUserPoint}
-          totalPoints={totalPoints}
-          />} */}
-        </div>
-        <div>
-          Task:
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 mt-4 gap-4">
-          {/* {tasks.map((task: any) => {
-            return <TaskAction key={task.id} title={'Follow  on Twitter'} />
-          })} */}
+        </div> */}
+        <div className=" px-40">
+          <div className=" text-white text-3xl mt-20 font-bold">
+            Increase Reputation
+          </div>
+          <div className="flex flex-col mt-10 gap-4">
+            {/* {tasks.map((task: any) => {
+              return <TaskAction key={task.id} title={'Follow  on Twitter'} />
+            })} */}
 
-          {!isLoading &&  tasks.map((task: any) => {
-            return <TaskTemplate 
-            templateType={TemplateEventTypeMap[task.eventType || '1']} 
-            actionType={TaskTemplateAction.Action} 
-            key={task.id} 
-            title={task.name} 
-            description={task.description} 
-            onAction={handleAction}
-            data={task}
-            />
-          })}
-          {isLoading && <>
-          <SpaceSkeleton className=" h-60" />
-          <SpaceSkeleton className=" h-60" />
-          <SpaceSkeleton className=" h-60" />
-          <SpaceSkeleton className=" h-60" />
-          </>}
+            {!isLoading &&  tasks.map((task: any, index: number) => {
+              return <div key={task.id} className=" flex items-center">
+                          <div className=" flex-shrink-0 bg-[#323232] w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl m-6">
+                          {index + 1}
+                        </div>
+                        <div className=" flex-grow">
+
+                          <TaskTemplate 
+                          templateType={TemplateEventTypeMap[task.eventType || '1']} 
+                          actionType={TaskTemplateAction.Action} 
+                          key={task.id} 
+                          title={task.name} 
+                          description={task.description} 
+                          onAction={handleAction}
+                          data={task}
+                          />
+                        </div>
+              </div>
+              
+            })}
+            {isLoading && <>
+            <SpaceSkeleton className=" h-60" />
+            <SpaceSkeleton className=" h-60" />
+            <SpaceSkeleton className=" h-60" />
+            <SpaceSkeleton className=" h-60" />
+            </>}
+          </div>
         </div>
-        <div className="flex items-center justify-between my-4">
-          <div className=" card-title">{`Rewards ${data?.rewards || ''} points`}</div>
+        <div className="flex items-center justify-between my-4  px-40 mt-10">
+          <div className=" text-white font-semibold text-2xl flex items-center gap-4">
+            <div>
+            {`Rewards: `}
+            </div>
+            <div className="flex items-center justify-center gap-2 ml-6">
+              <span className=" text-base">
+                {` ${data?.rewards || ''}`}
+              </span>
+              <span>
+                <img className="w-6 h-6" src="/images/icons/points.png" />
+              </span>
+            </div>
+          </div>
+          <div
+              className="cursor-pointer rounded-xl py-2 px-16 text-white font-bold text-xl"
+              style={{
+                backgroundImage:
+                  "linear-gradient( 43deg, #0C8A5D 0%, #149B6B 42%, #33C993 100%)",
+              }}
+            >
+              <div>Claim</div>
+            </div>
           {/* <div><Button variant={"outline"}> Claim</Button></div> */}
         </div>
       </div>

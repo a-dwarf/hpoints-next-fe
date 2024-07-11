@@ -37,6 +37,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { useSignApiMessage } from "@/hooks/sign";
 import { useAccount } from "wagmi";
+import { TwitterLogoIcon } from "@radix-ui/react-icons";
 
 interface TaskExistProps {
   taskId?: string;
@@ -107,33 +108,34 @@ width=800,height=600,left=300,top=300`;
   }, [data.id]);
   return (
     <>
-      <div
-        className="w-full flex card card-bordered p-6 items-center flex-row"
-        // onClick={actionDialog.onOpen}
-      >
-        <div className=" w-full flex-col flex gap-4  justify-between  flex-grow p-6">
-          <div className="flex items-center gap-6">
-            <PlusIcon className="w-6 h-6" />
-            <div className=" card-title">{title}</div>
+        <div className="w-full bg-[#323232] rounded-lg">
+        <div className=" w-full flex gap-6 items-center justify-between  flex-grow p-5">
+          <div className="flex items-center gap-6 ">
+            <div className="p-6 bg-black rounded-lg">
+              <TwitterLogoIcon className="w-8 h-8 text-white" />
+            </div>
           </div>
-          <div className=" text-base text-opacity-80 cursor-pointer text-gray-500 flex items-center"
-           onClick={handleOpenFollowX}
-          >
-            <div>Visit: </div>
-            <div className="badge badge-info ml-2">{params?.target_x_username}</div>
+          <div className="flex justify-between items-center gap-2 relative flex-grow">
+            <div className=" text-[#A9A9A9] flex-grow">{`Visit ${params?.target_x_username || ''}`}</div>
+            <div className=" flex-shrink-0">
+              <div
+                className=" cursor-pointer border border-white border-opacity-50 rounded-lg py-4 px-20 text-white font-bold text-base"
+                onClick={handleOpenFollowX}
+              >
+                {"Visit"}
+              </div>
+            </div>
+            <div>
+              <div onClick={handleVerify} className=" cursor-pointer">
+                {taskStatus === "FINISH" ? (
+                  <CheckIcon className="h-10 w-10 text-green-700" />
+                ) : (
+                  <RotateCwIcon className=" text-white h-10 w-10" />
+                )}
+              </div>
+              {/* <ChevronRightIcon className="h-10 w-10" /> */}
+            </div>
           </div>
-          <div className="flex items-center gap-6">
-            {/* <div className=" badge badge-secondary badge-outline">
-            {"1 Point"}
-            </div> */}
-            {/* <div className=" badge badge-warning badge-outline">{"Token2"}</div> */}
-          </div>
-        </div>
-        <div>
-          <div onClick={handleVerify} className=" cursor-pointer">
-            {taskStatus === 'FINISH' ? <CheckIcon className="swap-off h-10 w-10"  /> : <RotateCwIcon className="swap-off h-10 w-10"  />}
-          </div>
-          {/* <ChevronRightIcon className="h-10 w-10" /> */}
         </div>
       </div>
       <Dialog

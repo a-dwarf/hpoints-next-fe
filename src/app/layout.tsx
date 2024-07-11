@@ -27,6 +27,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { auth } from "@/auth";
+import Footer from "@/components/Layout/Footer";
 
 
 
@@ -56,6 +57,7 @@ export default async function RootLayout({
             <div className=''>
               {children}
             </div>
+            <Footer />
           </main>
           
         </Providers>
