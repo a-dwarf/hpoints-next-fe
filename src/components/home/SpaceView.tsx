@@ -152,11 +152,11 @@ export default function SpaceView () {
           </div>
         </div>
         <div className="flex items-center justify-center gap-2 absolute h-full right-0 ">
-          <div className="rounded text-base cursor-pointer px-5 py-3 text-[#FDFF7B] bg-[#1C211F] border border-white border-opacity-10"
-            onClick={() => {
-              router.push(`/quests`);
-            }}
-          >{"Find More"}</div>
+          <Link href={`/quests`} className="rounded text-base cursor-pointer px-5 py-3 text-[#FDFF7B] bg-[#1C211F] border border-white border-opacity-10"
+            // onClick={() => {
+            //   router.push(`/quests`);
+            // }}
+          >{"Find More"}</Link>
         </div>
       </div>
       <div className="gap-4 mt-4 w-full grid grid-cols-2">

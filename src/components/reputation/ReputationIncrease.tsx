@@ -56,31 +56,31 @@ export default function ReputationIncrease() {
           title={"bind Github"}
           description={"confirm your github id"}
           action={"Bind"}
-          url="/userSpace"
+          url="/user"
         />
         <IncreaseItem
           title={"bind X"}
           description={"confirm your X id"}
           action={"Bind"}
-          url="/userSpace"
+          url="/user"
         />
         <IncreaseItem
           title={"bind email"}
           description={"confirm your email"}
           action={"Bind"}
-          url="/userSpace"
+          url="/user"
         />
         <IncreaseItem
           title={"interacted with a contract"}
           description={"need more than 3 tx"}
           action={"Check"}
-          url="/userSpace"
+          url="/user"
         />
         <IncreaseItem
           title={"Onlin time"}
           description={"need at least online 1 hours"}
           action={"Check"}
-          url="/userSpace"
+          url="/user"
         />
         {/* <IncreaseItem 
           title={"bind X"}
