@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { ActivityTable, AntTable } from "./ActivityTable";
 import { useParams } from "next/navigation";
+import { ShareIcon } from "lucide-react";
 
 export interface IncreaseItemProps {
   title?: string;
@@ -57,15 +58,13 @@ export default function DashboardActivity() {
 
   return (
     <div className=" my-10">
-      <div className="my-10">
-        <div className=" card-title font-semibold my-6">
-        Activity:
+      <div className="my-10 flex items-center justify-between">
+        <div className=" text-white font-bold text-3xl my-6">
+        Activity
         </div>
         <div className="flex justify-end">
-          <div>
-            <Button variant={"link"}>
-              Download CSV
-            </Button>
+          <div className=" w-8 h-8 bg-[#585858] rounded-lg flex items-center justify-center text-white">
+            <ShareIcon className=" w-4 h-4" />
           </div>
         </div>
       </div>

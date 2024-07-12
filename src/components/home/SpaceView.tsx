@@ -27,7 +27,7 @@ export const RewardItem = ({
 }: RewardItemProps) => {
   return <div className=" p-1.5  w-20 flex items-center gap-2 bg-[#1C211F] rounded border border-solid border-white border-opacity-10">
           <img className=" w-6 h-6" src={icon} />
-          <span className=" text-white">
+          <span className=" text-white text-sm">
             {amount}
           </span>
 
