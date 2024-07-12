@@ -39,6 +39,7 @@ import RewardToken from "./reward/RewardToken";
 import dayjs, { Dayjs } from "dayjs";
 import { ConfigProvider } from "antd";
 import TaskSwitch from "./form/TaskSwitch";
+import NoData from "../base/NoData";
 
 interface QuestEditProps {
   title?: ReactNode;
@@ -300,7 +301,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
             </div>
             <div className=" px-20">
               <div>
-                <div className="my-4 flex flex-col gap-10">
+                { taskFields.fields.length > 0 ? <div className="my-4 flex flex-col gap-10">
                   {taskFields.fields.map((t, index) => {
                     return (
                       <div key={t.id} className=" flex items-center">
@@ -328,7 +329,12 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
                       </div>
                     );
                   })}
-                </div>
+                </div> : <div className=" flex flex-col items-center justify-center my-6">
+                  <div className=" w-80 h-40">
+                    <NoData />
+                  </div>
+                  <div className=" text-white text-xs mt-6 max-w-96 text-center">{'No task is currently set, please click the taskbar below to add a task. Multiple tasks can be added.'}</div>
+                  </div>}
               </div>
               <div className=" border-t  border-solid border-[#323232] mt-10"></div>
               <div className=" grid grid-cols-3 gap-3 my-6">

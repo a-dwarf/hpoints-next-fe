@@ -11,6 +11,7 @@ import Points from '@/../public/images/icons/points.png'
 import clsx from "clsx";
 import dayjs from "dayjs";
 import Image from "next/image";
+import ListNoData from "../base/ListNoData";
 
 export const ActivityItem = () => {
   return <div className=" h-14 border flex items-center px-4">{'Task'}</div>
@@ -168,10 +169,9 @@ export default function SpaceView () {
         {!error && !isLoading && ((questsList.length > 0) ?  data?.map((item: any) => {
           return <SpaceItem key={item.id} data={item}/>
         }): <>
-            <SpaceSkeleton  className="h-72 self-center"/>
-            <SpaceSkeleton  className="h-72 self-center"/>
-            <SpaceSkeleton  className="h-72 self-center"/>
-            <SpaceSkeleton  className="h-72 self-center"/>
+            <div className=" flex items-center justify-center w-full">
+              <ListNoData />
+            </div>
         </>)}
         {!error && (isLoading) && <>
         <SpaceSkeleton  className="h-72 self-center"/>

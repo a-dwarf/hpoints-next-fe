@@ -1,6 +1,7 @@
 // import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { SpaceCarousel } from "./SpaceCarousel";
+// import { SpaceCarousel } from "./SpaceAntdCarousel";
 
 export default function HeadBanner () {
 
@@ -41,7 +42,7 @@ export default function HeadBanner () {
         </div>
 
       </div>
-      <div className="py-10 flex justify-center items-center">
+      <div className="py-10 flex justify-center items-center w-[350px]">
         <SpaceCarousel />
       </div>
     </div>

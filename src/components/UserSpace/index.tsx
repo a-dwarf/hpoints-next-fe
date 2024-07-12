@@ -9,7 +9,9 @@ import axios from "axios";
 import { useAccount } from "wagmi";
 import { useMemo } from "react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { GitHubLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
+import { BookTextIcon, MailIcon } from "lucide-react";
 
 
 export interface UserBannerProps {
@@ -30,14 +32,12 @@ export const UserBanner = ({
   }, [questData]);
   return  <div className="flex justify-between items-center">
     <div>
-      <div className="flex flex-row items-center mt-10 mb-10 gap-6">
-        <div>
-          <div className="h-40 w-40 border flex flex-col items-center justify-center rounded-lg">
-            <div className=" border rounded-full w-20 h-20">
-
-            </div>
+      <div className="flex flex-row items-start mt-10 mb-10 gap-6">
+        <div className="flex flex-col items-center justify-center">
+          <div className=" h-80 w-80 flex flex-col items-center justify-center rounded-lg">
+            <img className="h-80 w-80 rounded-lg"  src="/images/quest/cover.png"/>
           </div>
-          <div>
+          <div className=" text-[#A9A9A9] mt-6">
             <div className="text-sm lg:text-base line-clamp-2 max-w-2xl">
               {`Joined on ${dayjs(data?.createAt).format('YYYY-MM-DD')}`}
             </div>
@@ -46,24 +46,75 @@ export const UserBanner = ({
                 {questsList.length}
               </span>
               <span>
-                {"Participated Space"}
+                {"Participated Quest"}
               </span>
             </div>
           </div>
         </div>
-        <div className=" flex h-full flex-col">
-          <div className="text-xl font-bold lg:text-3xl pb-1 capitalize max-w-40 truncate">
-            {data?.name || ''}
+        <div className=" flex h-full flex-col gap-6 pt-10">
+
+          <div className=" flex items-center gap-6">
+            <div className=" h-10 w-10 bg-[#5AEAB7] bg-opacity-30 border-[#2ED197] flex items-center justify-center rounded border-solid border">
+              <BookTextIcon className="h-8 w-8 text-white" />
+            </div>
+            <div className=" text-[#A9A9A9] font-medium">
+              Go to bind
+            </div>
+          </div>
+
+          <div className=" flex items-center gap-6">
+            <div className=" h-10 w-10 bg-[#5AEAB7] bg-opacity-30 border-[#2ED197] flex items-center justify-center rounded border-solid border">
+              <TwitterLogoIcon className="h-8 w-8 text-white" />
+            </div>
+            <div className=" text-[#A9A9A9] font-medium">
+              <div className=" cursor-pointer" onClick={() => {
+                   signIn('twitter');
+              }}>
+                Go to bind
+              </div>
+            </div>
+          </div>
+
+          <div className=" flex items-center gap-6">
+            <div className=" h-10 w-10 bg-[#5AEAB7] bg-opacity-30 border-[#2ED197] flex items-center justify-center rounded border-solid border">
+              <MailIcon className="h-8 w-8 text-white" />
+            </div>
+            <div className=" text-[#A9A9A9] font-medium">
+              <div className=" cursor-pointer" onClick={() => {
+                    signIn('google');
+                }}>
+                  Go to bind
+                </div>
+            </div>
+          </div>
+
+          <div className=" flex items-center gap-6">
+            <div className=" h-10 w-10 bg-[#5AEAB7] bg-opacity-30 border-[#2ED197] flex items-center justify-center rounded border-solid border">
+              <GitHubLogoIcon className="h-8 w-8 text-white" />
+            </div>
+            <div className=" text-[#A9A9A9] font-medium">
+              <div className=" cursor-pointer" onClick={() => {
+                   signIn('github');
+              }}>
+                Go to bind
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div>
-      <div className=" card card-bordered w-40 h-40 flex items-center justify-center">
-        <div className=" font-extrabold text-5xl">{'98'}</div>
-        <div className=" font-semibold text-2xl">{'Reputation'}</div>
+    <div className=" flex flex-col items-center mr-20 pb-40">
+        <div className=" w-40 h-40 flex flex-col items-center justify-center">
+          <div className=" text-9xl font-extrabold"
+          style={{
+            background: 'linear-gradient(93.69201727794098deg, #2ED197 0%, #5AEAB7 100%)',
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+          >{98}</div>
+        </div>
+        <div className=" font-semibold text-4xl mt-2 text-white">{"Reputation"}</div>
       </div>
-    </div>
   </div>
 }
 
@@ -127,6 +178,7 @@ function UserSpace() {
         <UserBanner 
         // data={data}
         />
+        <div className=" border-t border-solid border-[#323232] mt-10 mb-10"></div>
       </div>
 
       <div className='max-w-5xl w-full flex flex-col px-2 sm:px-0'>
