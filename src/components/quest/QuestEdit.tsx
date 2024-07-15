@@ -28,7 +28,7 @@ import {
 } from "next/navigation";
 import useSWR from "swr";
 import useSWRImmutable from "swr/immutable";
-import { DatePicker } from "antd";
+import { DatePicker, GetProp, UploadFile, UploadProps } from "antd";
 import { Textarea } from "@/components/ui/textarea";
 import TaskTemplate, { TaskTemplateAction } from "../task/TaskTemplate";
 import {
@@ -40,6 +40,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { ConfigProvider } from "antd";
 import TaskSwitch from "./form/TaskSwitch";
 import NoData from "../base/NoData";
+import { Upload, Image } from 'antd';
 
 interface QuestEditProps {
   title?: ReactNode;
@@ -64,6 +65,16 @@ interface Inputs {
   rewards?: string;
 }
 
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+
+const getBase64 = (file: FileType): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+
 export default function QuestEdit({ title, icon }: QuestEditProps) {
   const pathname = usePathname();
 
@@ -84,11 +95,30 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
     name: "tasks", // unique name for your Field Array
   });
 
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  const handlePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj as FileType);
+    }
+
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewOpen(true);
+  };
+
+  const handleChange = useCallback(({ fileList: newFileList } :{fileList: UploadFile[]}) =>{
+    setFileList(newFileList)
+    // form.setValue('avatar', newFileList?.[0]?.url)
+  }, [form]);
+
   useEffect(() => {
     if (data) {
       form.reset(data);
       form.setValue("startTime", dayjs(data.startDate));
       form.setValue("endTime", dayjs(data.endDate));
+      setFileList([{url: data?.avatar, uid: '-1', name: "Image"}])
       // form.setValues(data)
     }
   }, [data, form]);
@@ -137,7 +167,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
       ...values,
       name: values.name,
       description: values.description,
-      avatar: values.avatar,
+      avatar: values.avatar || '/images/quest/cover.png',
       startDate: values.startTime?.format(),
       endDate: values.endTime?.format(),
       tasks: values.tasks,
@@ -269,19 +299,45 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
           />
           {/* </ConfigProvider> */}
         </div>
+        <div className=" mt-10 mb-4">
+          <FormLabel className=" text-white font-semibold text-2xl">
+                  {"Quest Avatar"}
+                  <span className="text-[#FDFF7B]"> * </span>
+                  {":"}
+          </FormLabel>
+
+        </div>
         <FormField
           control={form.control}
           name="avatar"
           render={({ field }) => (
-            <FormItem className=" mt-10">
-              <FormLabel className=" text-white font-semibold text-2xl mt-6">
-                {"Quest Avatar"}
-                <span className="text-[#FDFF7B]"> * </span>
-                {":"}
-              </FormLabel>
+            <FormItem className=" ">
               <FormControl>
-                <Input placeholder="Quest Avatar" {...field} />
+                {<Upload
+                  listType="picture-card"
+                  // listType="picture"
+                  fileList={fileList}
+                  maxCount={1}
+                  onPreview={handlePreview}
+                  onChange={handleChange}
+                  // className="w-40 h-40 border border-[#2C2C2C] rounded-xl flex items-center justify-center"
+                >
+                       {/* <Input placeholder="Quest Avatar" {...field} /> */}
+                  <div className=" w-40 h-40">
+                  </div>
+                </Upload>}
               </FormControl>
+              {previewImage && (
+                      <Image
+                        wrapperStyle={{ display: 'none' }}
+                        preview={{
+                          visible: previewOpen,
+                          onVisibleChange: (visible) => setPreviewOpen(visible),
+                          afterOpenChange: (visible) => !visible && setPreviewImage(''),
+                        }}
+                        src={previewImage}
+                      />
+                )}
               <FormDescription />
               <FormMessage />
             </FormItem>
@@ -466,7 +522,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
               <SaveIcon className="h-6 w-6" />
               <div onClick={handleSave}>Save Draft</div>
             </div>
-            <div
+            {data?.status === 'Draft' && <div
               className="cursor-pointer rounded-xl py-4 px-16 text-white font-bold"
               style={{
                 backgroundImage:
@@ -474,7 +530,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
               }}
             >
               <div onClick={handlePublish}>Publish</div>
-            </div>
+            </div>}
           </div>
         </div>
       </Form>

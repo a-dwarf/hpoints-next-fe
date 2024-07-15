@@ -74,13 +74,13 @@ export default function SpaceView ({
         <SpaceSkeleton  className="w-80 h-72"/>
         <SpaceSkeleton  className="w-80 h-72"/>
         </>}
-        {!error && !isLoading && (questsList.length > 0) ?  data?.map((item: any) => {
+        {!error && !isLoading && ((questsList.length > 0) ?  data?.map((item: any) => {
           return <SpaceItem key={item.id} data={item}/>
         }): <>
           <div className=" flex items-center justify-center w-full">
             <ListNoData />
           </div>
-        </>}
+        </>)}
         {!error && (isLoading) && <>
         <SpaceSkeleton  className="w-80 h-72"/>
         <SpaceSkeleton  className="w-80 h-72"/>
