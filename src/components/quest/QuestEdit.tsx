@@ -167,7 +167,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
       ...values,
       name: values.name,
       description: values.description,
-      avatar: values.avatar,
+      avatar: values.avatar || '/images/quest/cover.png',
       startDate: values.startTime?.format(),
       endDate: values.endTime?.format(),
       tasks: values.tasks,
