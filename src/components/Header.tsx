@@ -14,6 +14,7 @@ import { Button } from "./ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { GitHubLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import { Wallet2Icon } from "lucide-react";
+import { Dropdown, Menu } from "antd";
 
 export const WalletSignButton = () => {
   return (
@@ -96,47 +97,64 @@ export const WalletSignButton = () => {
                 );
               }
               return (
-                <div 
-                className={clsx("flex items-center cursor-pointer justify-center gap-1.5  px-3 py-2.5 rounded-[6px] border border-transparent border-solid ml-20"
-                  ," text-xs text-white font-bold")}
-                style={{ display: 'flex', gap: 12,
-                  background: 'linear-gradient( 44deg, #414141 0%, #434343 46%, #585858 100%)',
+                <Dropdown
+                menu={{items: [
+            
+                  {
+                    key: 'provile',
+                    type: 'item',
+                    label: <Link href={'/user'}>Profile</Link>,
+                  },
 
-                }}>
-                  <button
-                    onClick={openChainModal}
-                    style={{ display: 'flex', alignItems: 'center' }}
-                    type="button"
-                  >
-                    {chain.hasIcon && (
-                      <div
-                        style={{
-                          background: chain.iconBackground,
-                          width: 24,
-                          height: 24,
-                          borderRadius: 999,
-                          overflow: 'hidden',
-                          marginRight: 4,
-                        }}
-                      >
-                        {chain.iconUrl && (
-                          <img
-                            alt={chain.name ?? 'Chain icon'}
-                            src={chain.iconUrl}
-                            style={{ width: 24, height: 24 }}
-                          />
-                        )}
-                      </div>
-                    )}
-                    {/* {chain.name} */}
-                  </button>
-                  <button onClick={openAccountModal} type="button">
-                    {account.displayName}
-                    {/* {account.displayBalance
-                      ? ` (${account.displayBalance})`
-                      : ''} */}
-                  </button>
-                </div>
+                  {
+                    key: 'logout',
+                    type: 'item',
+                    label: <div onClick={openAccountModal} >Logout</div>,
+                  }
+                ]}}
+                >
+
+                  <div 
+                  className={clsx("flex items-center cursor-pointer justify-center gap-1.5  px-3 py-2.5 rounded-[6px] border border-transparent border-solid ml-20"
+                    ," text-xs text-white font-bold")}
+                  style={{ display: 'flex', gap: 12,
+                    background: 'linear-gradient( 44deg, #414141 0%, #434343 46%, #585858 100%)',
+
+                  }}>
+                    <button
+                      onClick={openChainModal}
+                      style={{ display: 'flex', alignItems: 'center' }}
+                      type="button"
+                    >
+                      {chain.hasIcon && (
+                        <div
+                          style={{
+                            background: chain.iconBackground,
+                            width: 24,
+                            height: 24,
+                            borderRadius: 999,
+                            overflow: 'hidden',
+                            marginRight: 4,
+                          }}
+                        >
+                          {chain.iconUrl && (
+                            <img
+                              alt={chain.name ?? 'Chain icon'}
+                              src={chain.iconUrl}
+                              style={{ width: 24, height: 24 }}
+                            />
+                          )}
+                        </div>
+                      )}
+                    </button>
+                    <button type="button">
+                      {account.displayName}
+                      {/* {account.displayBalance
+                        ? ` (${account.displayBalance})`
+                        : ''} */}
+                    </button>
+                  </div>
+                </Dropdown>
               );
             })()}
           </div>

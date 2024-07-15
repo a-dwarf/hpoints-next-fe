@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import { signIn, useSession } from "next-auth/react";
 import { GitHubLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import { BookTextIcon, MailIcon } from "lucide-react";
+import { Skeleton } from "../ui/skeleton";
 
 
 export interface UserBannerProps {
@@ -74,16 +75,20 @@ export const UserBanner = ({
             <div className=" h-10 w-10 bg-[#5AEAB7] bg-opacity-30 border-[#2ED197] flex items-center justify-center rounded border-solid border">
               <BookTextIcon className="h-8 w-8 text-white" />
             </div>
-            <div className=" text-[#A9A9A9] font-medium w-40 truncate">
+            {isLoading ? <div className="flex-grow">
+        <Skeleton className="w-40 h-10 rounded-xl" />
+      </div> : <div className=" text-[#A9A9A9] font-medium w-40 truncate">
               {(data?.address)}
-            </div>
+            </div>}
           </div>
 
           <div className=" flex items-center gap-6">
             <div className=" h-10 w-10 bg-[#5AEAB7] bg-opacity-30 border-[#2ED197] flex items-center justify-center rounded border-solid border">
               <TwitterLogoIcon className="h-8 w-8 text-white" />
             </div>
-            <div className=" text-[#A9A9A9] font-medium">
+            {isLoading ? <div className="flex-grow">
+        <Skeleton className="w-40 h-10 rounded-xl" />
+      </div> :<div className=" text-[#A9A9A9] font-medium">
               {hasTwitter ? <div>
                 {hasTwitter?.username}
               </div> :<div className=" cursor-pointer" onClick={() => {
@@ -91,14 +96,16 @@ export const UserBanner = ({
               }}>
                 Go to bind
               </div>}
-            </div>
+            </div>}
           </div>
 
           <div className=" flex items-center gap-6">
             <div className=" h-10 w-10 bg-[#5AEAB7] bg-opacity-30 border-[#2ED197] flex items-center justify-center rounded border-solid border">
               <MailIcon className="h-8 w-8 text-white" />
             </div>
-            <div className=" text-[#A9A9A9] font-medium">
+            {isLoading ? <div className="flex-grow">
+        <Skeleton className="w-40 h-10 rounded-xl" />
+      </div> :<div className=" text-[#A9A9A9] font-medium">
               {googleUser ? <div>
                 {googleUser?.username}
               </div>:<div className=" cursor-pointer" onClick={() => {
@@ -106,14 +113,16 @@ export const UserBanner = ({
                 }}>
                   Go to bind
                 </div>}
-            </div>
+            </div>}
           </div>
 
           <div className=" flex items-center gap-6">
             <div className=" h-10 w-10 bg-[#5AEAB7] bg-opacity-30 border-[#2ED197] flex items-center justify-center rounded border-solid border">
               <GitHubLogoIcon className="h-8 w-8 text-white" />
             </div>
-            <div className=" text-[#A9A9A9] font-medium">
+            {isLoading ? <div className="flex-grow">
+        <Skeleton className="w-40 h-10 rounded-xl" />
+      </div> :<div className=" text-[#A9A9A9] font-medium">
               {githubUser ? <div>
                 {githubUser?.username}
               </div> :<div className=" cursor-pointer" onClick={() => {
@@ -121,7 +130,7 @@ export const UserBanner = ({
               }}>
                 Go to bind
               </div>}
-            </div>
+            </div>}
           </div>
         </div>
       </div>

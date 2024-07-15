@@ -53,7 +53,7 @@ export function IncreaseItem({
               {action}
             </div>}
             {onCheck && isLoading && <div>
-              <RotateCwIcon className="h-6 w-6 text-white" />
+              <RotateCwIcon className="h-6 w-6 text-white animate-spin" />
             </div>}
           </div>}
         </div>
@@ -63,7 +63,7 @@ export function IncreaseItem({
 }
 
 export default function ReputationIncrease() {
-  const { data, isLoading, mutate, error } = useSWRImmutable("/api/reputations");
+  const { data, isLoading, isValidating, mutate, error } = useSWRImmutable("/api/reputations");
 
   const handleCheck = useCallback(() => {
     console.log('handleCheck')
@@ -107,7 +107,7 @@ export default function ReputationIncrease() {
           // url="/user"
           onCheck={handleCheck}
           isComplete = {data?.completeReplutions.find((item: any) => item?.reputionIdType === 'uniswap_2_tx')?.isComplete}
-          isLoading = { isLoading}
+          isLoading = { isLoading || isValidating}
         />
         <IncreaseItem
           title={"Onlin time"}
@@ -115,7 +115,7 @@ export default function ReputationIncrease() {
           action={"Check"}
           // url="/user"
           onCheck={handleCheck}
-          isLoading = { isLoading}
+          isLoading = { isLoading || isValidating}
           isComplete = {data?.completeReplutions.find((item: any) => item?.reputionIdType === 'contract')?.isComplete}
 
         />

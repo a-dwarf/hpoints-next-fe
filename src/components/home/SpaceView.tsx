@@ -12,6 +12,7 @@ import clsx from "clsx";
 import dayjs from "dayjs";
 import Image from "next/image";
 import ListNoData from "../base/ListNoData";
+import { Edit2Icon, Edit3Icon } from "lucide-react";
 
 export const ActivityItem = () => {
   return <div className=" h-14 border flex items-center px-4">{'Task'}</div>
@@ -26,9 +27,9 @@ export const RewardItem = ({
   icon,
   amount,
 }: RewardItemProps) => {
-  return <div className=" p-1.5  w-20 flex items-center gap-2 bg-[#1C211F] rounded border border-solid border-white border-opacity-10">
-          <img className=" w-6 h-6" src={icon} />
-          <span className=" text-white text-sm">
+  return <div className=" p-1.5  h-10 w-14 flex items-center gap-2 bg-[#1C211F] rounded border border-solid border-white border-opacity-10">
+          <img className=" w-4 h-4" src={icon} />
+          <span className=" text-white text-xs">
             {amount}
           </span>
 
@@ -51,12 +52,12 @@ export const StatusIcon = ({
     }
     return status
   }, [status]);
-  return <div className={clsx(" p-1.5  w-34 flex flex-col justify-center h-10 items-center gap-0.5 bg-[#1C211F] rounded border border-solid",
+  return <div className={clsx(" p-1.5 text-xs  w-34 flex flex-col justify-center h-10 items-center gap-0.5 bg-[#1C211F] rounded border border-solid",
     {
       'border-[#2A96F3]': status === 'Ended',
       'border-[#FEEA31]': status === 'Ongoing',
       'border-[#5AEAB7]': status !== 'Ongoing',
-      ' text-xs': status === 'Draft',
+      // ' text-xs': status === 'Draft',
     }
   )}>
     {status === 'Draft' && <div className=" text-[#A9A9A9]">start with</div>}
@@ -76,15 +77,17 @@ export const StatusIcon = ({
 
 export interface SpaceItemProps {
   data?: any
+  hasDraft?: boolean;
 }
 
 export const SpaceItem = ({
-  data
+  data,
+  hasDraft,
 }: SpaceItemProps) => {
   
   return <Link href={`/quest/${data?.id}`} className="flex flex-col items-center bg-[#141414] rounded-2xl  h-72 p-5 flex-shrink-0">
     <div className="flex items-center justify-between w-full">
-      <div className="flex items-center  gap-4">
+      <div className="flex items-center gap-2">
         <RewardItem icon={'/images/icons/points.png'} 
         amount={'100'}
         />
@@ -92,6 +95,9 @@ export const SpaceItem = ({
         amount={'100'}
         />
       </div>
+      {hasDraft && data?.status === 'Draft' && <Link href={`/quest/edit/${data?.id}`} className=" flex items-center justify-center h-6 w-6 rounded-sm bg-[#2ED197]">
+        <Edit2Icon className=" w-4 h-4 text-white" />
+      </Link>}
       <div>
         <StatusIcon status={data?.status} />
       </div>
@@ -128,7 +134,7 @@ export const spaceFetcher = async (url: string) => {
 
 export default function SpaceView () {
 
-  const {data, isLoading, error } = useSWRImmutable('/api/quests', spaceFetcher);
+  const {data, isLoading, error } = useSWRImmutable('/api/quests?status=Ongoing', spaceFetcher);
   console.log('SpaceView', data);
 
   const questsList = useMemo(() => {
@@ -159,7 +165,7 @@ export default function SpaceView () {
           >{"Find More"}</Link>
         </div>
       </div>
-      <div className="gap-4 mt-4 w-full grid grid-cols-2">
+      <div className="gap-4 mt-4 w-full grid grid-cols-1 sm:grid-cols-3">
         {error && <>
         <SpaceSkeleton  className="h-72 self-center"/>
         <SpaceSkeleton  className="h-72 self-center"/>
