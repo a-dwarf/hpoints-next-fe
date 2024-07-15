@@ -30,6 +30,23 @@ export const UserBanner = ({
   const questsList = useMemo(() => {
     return questData || []
   }, [questData]);
+  const hasTwitter = useMemo(() => {
+    return data?.accounts.find((item: any) => {
+      return item.provider === 'twitter'
+    })
+  }, [data?.accounts]);
+
+  const githubUser = useMemo(() => {
+    return data?.accounts.find((item: any) => {
+      return item.provider === 'github'
+    })
+  }, [data?.accounts]);
+
+  const googleUser = useMemo(() => {
+    return data?.accounts.find((item: any) => {
+      return item.provider === 'google'
+    })
+  }, [data?.accounts]);
   return  <div className="flex justify-between items-center">
     <div>
       <div className="flex flex-row items-start mt-10 mb-10 gap-6">
@@ -57,8 +74,8 @@ export const UserBanner = ({
             <div className=" h-10 w-10 bg-[#5AEAB7] bg-opacity-30 border-[#2ED197] flex items-center justify-center rounded border-solid border">
               <BookTextIcon className="h-8 w-8 text-white" />
             </div>
-            <div className=" text-[#A9A9A9] font-medium">
-              Go to bind
+            <div className=" text-[#A9A9A9] font-medium w-40 truncate">
+              {(data?.address)}
             </div>
           </div>
 
@@ -67,11 +84,13 @@ export const UserBanner = ({
               <TwitterLogoIcon className="h-8 w-8 text-white" />
             </div>
             <div className=" text-[#A9A9A9] font-medium">
-              <div className=" cursor-pointer" onClick={() => {
+              {hasTwitter ? <div>
+                {hasTwitter?.username}
+              </div> :<div className=" cursor-pointer" onClick={() => {
                    signIn('twitter');
               }}>
                 Go to bind
-              </div>
+              </div>}
             </div>
           </div>
 
@@ -80,11 +99,13 @@ export const UserBanner = ({
               <MailIcon className="h-8 w-8 text-white" />
             </div>
             <div className=" text-[#A9A9A9] font-medium">
-              <div className=" cursor-pointer" onClick={() => {
+              {googleUser ? <div>
+                {googleUser?.username}
+              </div>:<div className=" cursor-pointer" onClick={() => {
                     signIn('google');
                 }}>
                   Go to bind
-                </div>
+                </div>}
             </div>
           </div>
 
@@ -93,11 +114,13 @@ export const UserBanner = ({
               <GitHubLogoIcon className="h-8 w-8 text-white" />
             </div>
             <div className=" text-[#A9A9A9] font-medium">
-              <div className=" cursor-pointer" onClick={() => {
+              {githubUser ? <div>
+                {githubUser?.username}
+              </div> :<div className=" cursor-pointer" onClick={() => {
                    signIn('github');
               }}>
                 Go to bind
-              </div>
+              </div>}
             </div>
           </div>
         </div>
