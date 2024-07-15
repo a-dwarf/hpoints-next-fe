@@ -3,7 +3,7 @@ import { prisma } from '../../../lib/prisma';
 
 export async function GET() {
 
-  const result = await fetch(String(process.env.HSERVICE_URL), {
+  const result = await fetch(`${process.env.HSERVICE_URL}/range_query`, {
     cache: 'no-store',
     method: 'POST',
     headers: {
@@ -18,19 +18,18 @@ export async function GET() {
 
   const res = data?.message.map((ele: any) => {
     return {
-      "dataId": ele.id,
-      "userAddress": ele.pk_user,
-      "taskId": parseInt(ele.pk_owner),
-      "eventType": ele.event_type,
-      "points": ele.point_amount,
+      "data_id": ele.id,
+      "user_id": ele.pk_user,
+      "task_id": parseInt(ele.pk_owner),
+      "event_type": ele.event_type,
+      "point": ele.point_amount,
     }
   })
 
-  // const points = await prisma.point.createMany({
-  //   data: res,
-  //   skipDuplicates: true
+  const operationRecord = await prisma.operationRecord.createMany({
+    data: res,
+    skipDuplicates: true
+  })
 
-  // })
-
-  return NextResponse.json({});
+  return NextResponse.json(operationRecord);
 }
