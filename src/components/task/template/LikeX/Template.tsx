@@ -75,13 +75,13 @@ export default function SendMessageTemplate({
   useEffect(() => {
     if(templateData?.params) {
       const value = JSON.parse(templateData.params);
-      form.setValue('message', value?.target_x_username)
+      form.setValue('message', value?.tweet_id)
     }
     console.log('data', templateData);
   }, [templateData, templateData?.params, form])
   const handleAdd = useCallback(async () => {
     const params = {
-      target_x_username: form.getValues()?.message,
+      tweet_id: form.getValues()?.message,
     };
     await onAdd?.({
       // eventTypeId: 2,
@@ -99,7 +99,7 @@ export default function SendMessageTemplate({
 
   const handleUpdate = useCallback(async () => {
     const params = {
-      target_x_username: form.getValues()?.message,
+      tweet_id: form.getValues()?.message,
     };
     await onUpdate?.({
       ...templateData,

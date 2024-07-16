@@ -53,7 +53,7 @@ export const UserBanner = ({
       <div className="flex flex-row items-start mt-10 mb-10 gap-6">
         <div className="flex flex-col items-center justify-center">
           <div className=" h-80 w-80 flex flex-col items-center justify-center rounded-lg">
-            <img className="h-80 w-80 rounded-lg"  src="/images/quest/cover.png"/>
+            <img className="h-80 w-80 rounded-lg"  src={data?.avatar || "/images/quest/cover.png"}/>
           </div>
           <div className=" text-[#A9A9A9] mt-6">
             <div className="text-sm lg:text-base line-clamp-2 max-w-2xl">
@@ -123,8 +123,8 @@ export const UserBanner = ({
             {isLoading ? <div className="flex-grow">
         <Skeleton className="w-40 h-10 rounded-xl" />
       </div> :<div className=" text-[#A9A9A9] font-medium">
-              {githubUser ? <div>
-                {githubUser?.username}
+              {data?.email ? <div>
+                {data?.email}
               </div> :<div className=" cursor-pointer" onClick={() => {
                    signIn('github');
               }}>

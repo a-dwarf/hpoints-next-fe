@@ -92,8 +92,8 @@ export default function TaskAction({ taskId, title, onAction,
       handleSubmit();
     let frameParams = `scrollbars=no,resizable=yes,status=no,location=no,toolbar=no,menubar=no,
 width=800,height=600,left=300,top=300`;
-    window.open(`https://x.com/intent/retweet?tweet_id=${params?.target_x_username}`, "Retweet" , frameParams)
-  }, [handleSubmit, params?.target_x_username]);
+    window.open(`https://x.com/intent/retweet?tweet_id=${params?.tweet_id}`, "Retweet" , frameParams)
+  }, [handleSubmit, params?.tweet_id]);
 
   const [status, setStatus] = useState(data?.opRecord?.status || "INIT");
   const taskStatus = useMemo(() => {
@@ -119,7 +119,7 @@ width=800,height=600,left=300,top=300`;
             </div>
           </div>
           <div className="flex justify-between items-center gap-2 relative flex-grow">
-            <div className=" text-[#A9A9A9] flex-grow">{`Retweet ${params?.target_x_username || ''} on Twitter`}</div>
+            <div className=" text-[#A9A9A9] flex-grow">{`Retweet ${params?.tweet_id || ''} on Twitter`}</div>
             <div className=" flex-shrink-0">
               <div
                 className=" cursor-pointer border border-white border-opacity-50 rounded-lg py-4 px-20 text-white font-bold text-base"
@@ -165,7 +165,7 @@ width=800,height=600,left=300,top=300`;
           <div className=" w-full">
             <div>
               <div>Followed account: </div>
-              <div>{params?.target_x_username}</div>
+              <div>{params?.tweet_id}</div>
             </div>
             {/* <Form {...form}>
               <FormField

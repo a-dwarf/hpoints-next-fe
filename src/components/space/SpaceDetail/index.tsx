@@ -155,8 +155,7 @@ export default function SpaceDetail() {
             </div>
           </div>
           <div className=" w-[360px] h-[360px] rounded-xl  bg-background">
-
-
+            <img className=" w-full object-cover object-center" src={data?.avatar} />
           </div>
 
         </div>
