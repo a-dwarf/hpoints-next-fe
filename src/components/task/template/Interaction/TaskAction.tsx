@@ -64,10 +64,11 @@ export default function TaskAction({ taskId, title, onAction,
     const p = data?.params
     let a: any = {};
     try {
-      a = JSON.parse(p);
-    } catch (error) {
-      
-    }
+      if (typeof p === "string") {
+        a = JSON.parse(p);
+      }
+      a = p || {};
+    } catch (error) {}
     return a;
   }, [data?.params])
 
@@ -116,7 +117,7 @@ width=800,height=600,left=300,top=300`;
             </div>
           </div>
           <div className="flex justify-between items-center gap-2 relative flex-grow">
-            <div className=" text-[#A9A9A9] flex-grow">{`Interaction ${params?.target_x_username || ''}`}</div>
+            <div className=" text-[#A9A9A9] flex-grow">{`Interaction Count ${params?.address || ''}`}</div>
             <div className=" flex-shrink-0">
               {/* <div
                 className=" cursor-pointer border border-white border-opacity-50 rounded-lg py-4 px-20 text-white font-bold text-base"

@@ -51,7 +51,7 @@ export const TemplateEventTypeMap: Record<string, string> = {
   'RETWEET': 'RetweetX',
   'VIEW_URL': 'VisitPage',
   'TX-COUNT': 'Interaction',
-
+  'TX-DAILY': 'InteractionDaily',
   '8': 'Interaction',
   '9': 'Follow',
 }

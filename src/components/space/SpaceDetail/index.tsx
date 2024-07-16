@@ -123,8 +123,8 @@ export default function SpaceDetail() {
 
   return (
     <div className='w-full flex flex-col justify-center items-center'>
-      <div className='max-w-5xl w-full py-10 px-2 sm:px-0'>
-        <div className=" flex justify-between gap-6">
+      <div className='max-w-5xl w-full py-10 sm:px-0'>
+        <div className=" flex flex-col sm:flex-row  items-center sm:items-start sm:justify-between gap-6">
           <div className=" flex-grow">
 
             <div className="flex items-center justify-between">
@@ -165,7 +165,7 @@ export default function SpaceDetail() {
             className="w-full h-40"
           />}
         </div> */}
-        <div className=" px-40">
+        <div className="px-2 sm:px-40">
           <div className=" text-white text-3xl mt-20 font-bold">
             Increase Reputation
           </div>
@@ -176,7 +176,7 @@ export default function SpaceDetail() {
 
             {!isLoading &&  tasks.map((task: any, index: number) => {
               return <div key={task.id} className=" flex items-center">
-                          <div className=" flex-shrink-0 bg-[#323232] w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl m-6">
+                          <div className=" flex-shrink-0 bg-[#323232] sm:w-16 sm:h-16 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-xl m-2 sm:m-6">
                           {index + 1}
                         </div>
                         <div className=" flex-grow">
@@ -202,7 +202,7 @@ export default function SpaceDetail() {
             </>}
           </div>
         </div>
-        <div className="flex items-center justify-between my-4  px-40 mt-10">
+        <div className="flex flex-col gap-3 sm:flex-row items-center justify-between my-4  sm:px-40 mt-10">
           <div className=" text-white font-semibold text-2xl flex items-center gap-4">
             <div>
             {`Rewards: `}

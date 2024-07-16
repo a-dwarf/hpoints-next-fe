@@ -25,21 +25,26 @@ export function IncreaseItem({
   isLoading,
 }: IncreaseItemProps) {
   return (
-    <div className=" bg-[#323232] h-24 p-5 rounded-xl flex items-center justify-between">
-      <div className="flex items-center">
+    <div className=" bg-[#323232] p-5 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="flex items-center flex-grow w-full">
         <div className=" flex justify-center items-center h-14 w-14 bg-black rounded-lg">
           <TwitterLogoIcon className="h-8 w-8 text-white" />
         </div>
-        <div className="ml-4">
-          <div className=" text-white text-base font-semibold">{title}</div>
-          <div className="text-[#A9A9A9] text-sm">{description}</div>
+        <div className=" flex justify-between flex-grow">
+          <div className="flex items-center">
+            <div className="ml-4">
+              <div className=" text-white text-base font-semibold">{title}</div>
+              <div className="text-[#A9A9A9] text-sm">{description}</div>
+            </div>
+          </div>
+          <div className="flex items-center justify-center rounded-md gap-1 bg-[#1C211F]  h-11 w-20">
+            <span className=" text-white">+10</span>
+            <img className="w-4 h-4" src="/images/icons/points.png" />
+          </div>
         </div>
       </div>
       <div className="flex items-center justify-center gap-3">
-        <div className="flex items-center justify-center rounded-md gap-1 bg-[#1C211F]  h-11 w-20">
-          <span className=" text-white">+10</span>
-          <img className="w-4 h-4" src="/images/icons/points.png" />
-        </div>
+
         <div className=" flex items-center justify-center min-w-40">          
           {isComplete ? <div>
             <CheckIcon className=" h-6 w-6 text-green-800" />
@@ -71,7 +76,7 @@ export default function ReputationIncrease() {
   }, [mutate])
 
   return (
-    <div className=" px-40">
+    <div className="px-2 sm:px-40">
       <div>
         <div className="text-white text-3xl mt-20 mb-10 font-bold">
           Increase Reputation

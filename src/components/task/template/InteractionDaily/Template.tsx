@@ -27,8 +27,8 @@ import { TaskTemplateAction, TaskTemplateProps } from "../../TaskTemplate";
 import TaskExist from "./TaskExist";
 import dayjs from 'dayjs';
 import TaskAction from "./TaskAction";
-import { TwitterLogoIcon } from "@radix-ui/react-icons";
 import TaskSwitch from "@/components/quest/form/TaskSwitch";
+import { TwitterLogoIcon } from "@radix-ui/react-icons";
 
 interface Inputs {
   message?: string;
@@ -57,14 +57,14 @@ export default function SendMessageTemplate({
   // const templateData = props?.templateData;
   const handleAdd = useCallback(async () => {
     const params = {
-      tweet_id: form.getValues()?.message,
+      target_x_username: form.getValues()?.message,
     };
     await onAdd?.({
       // eventTypeId: 2,
-      name: 'RETWEET',
-      description: 'RETWEET',
-      event_type: "RETWEET",
-      eventType: "RETWEET",
+      name: 'TX-DAILY',
+      description: 'TX-DAILY',
+      event_type: "TX-DAILY",
+      eventType: "TX-DAILY",
       status: 'ongoing',
       params: JSON.stringify(params),
       startDate: dayjs().add(1, 'hour').toISOString(),
@@ -75,14 +75,14 @@ export default function SendMessageTemplate({
 
   const handleUpdate = useCallback(async () => {
     const params = {
-      tweet_id: form.getValues()?.message,
+      target_x_username: form.getValues()?.message,
     };
     await onUpdate?.({
       ...templateData,
-      name: 'RETWEET',
-      description: 'RETWEET',
-      event_type: "RETWEET",
-      eventType: "RETWEET",
+      name: 'TX-DAILY',
+      description: 'TX-DAILY',
+      event_type: "TX-DAILY",
+      eventType: "TX-DAILY",
       status: 'ongoing',
       params: JSON.stringify(params),
       startDate: dayjs().add(1, 'hour').toISOString(),
@@ -97,7 +97,6 @@ export default function SendMessageTemplate({
     })
     templateDialog.onClose();
   }, [data.id, onDelete, templateDialog]);
-
   const handleSwitch = useCallback(async (v: boolean) => {
     if(v) {
       await handleAdd();
@@ -130,11 +129,11 @@ export default function SendMessageTemplate({
         </div>
         
         }
-    {actionType === TaskTemplateAction.List && <TaskSwitch 
-         title='Retweet'
+  {actionType === TaskTemplateAction.List && <TaskSwitch 
+         title='TxDaily'
          icon={<TwitterLogoIcon className='h-6 w-6' />}
-         value={value}
          onChange={handleSwitch}
+         value={value}
         />}
       <Dialog
         open={templateDialog.isOpen}
@@ -161,9 +160,9 @@ export default function SendMessageTemplate({
                   name="message"
                   render={({field}) => (
                     <FormItem>
-                      <FormLabel>{"The Retweet Id"}</FormLabel>
+                      <FormLabel>{"contract address"}</FormLabel>
                       <FormControl>
-                        <Input placeholder="The Retweet Id" {...field} />
+                        <Input placeholder="contract address" {...field} />
                       </FormControl>
                       <FormDescription />
                       <FormMessage />

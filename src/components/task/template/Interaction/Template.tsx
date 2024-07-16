@@ -23,28 +23,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import axios from 'axios';
-import { TaskTemplateAction } from "../../TaskTemplate";
+import { TaskTemplateAction, TaskTemplateProps } from "../../TaskTemplate";
 import TaskExist from "./TaskExist";
 import dayjs from 'dayjs';
 import TaskAction from "./TaskAction";
 import TaskSwitch from "@/components/quest/form/TaskSwitch";
 import { TwitterLogoIcon } from "@radix-ui/react-icons";
-
-interface TaskTemplateProps {
-  taskTemplateId?: string;
-  title?: ReactNode;
-  icon?: ReactNode;
-  description?: string;
-  templateType?: string;
-  templateData: any;
-  data?: any;
-  actionType: TaskTemplateAction;
-  onAdd?: (data: any) => void;
-  onUpdate?: (data: any) => void;
-  onDelete?: (data: any) => void;
-  onAction?: (data: any) => void;
-  value?: any;
-}
 
 interface Inputs {
   message?: string;
@@ -71,14 +55,6 @@ export default function SendMessageTemplate({
   console.log()
 
   // const templateData = props?.templateData;
-
-  useEffect(() => {
-    if(templateData?.params) {
-      const value = JSON.parse(templateData.params);
-      form.setValue('message', value?.target_x_username)
-    }
-    console.log('data', templateData);
-  }, [templateData, templateData?.params, form])
   const handleAdd = useCallback(async () => {
     const params = {
       target_x_username: form.getValues()?.message,
@@ -136,6 +112,8 @@ export default function SendMessageTemplate({
     >
       <TaskExist title= {description} onEdit={templateDialog.onOpen}
       onDelete={handleDelete}
+      form={props.form}
+      formKey={props.formKey}
       />
     </div>
     

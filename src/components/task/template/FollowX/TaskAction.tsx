@@ -100,11 +100,11 @@ export default function TaskAction({
     let frameParams = `scrollbars=no,resizable=yes,status=no,location=no,toolbar=no,menubar=no,
 width=800,height=600,left=300,top=300`;
     window.open(
-      `https://x.com/intent/follow?screen_name=${params?.target_x_username}`,
+      `https://x.com/intent/follow?screen_name=${params?.target_x_name}`,
       "Follow",
       frameParams
     );
-  }, [handleSubmit, params?.target_x_username]);
+  }, [handleSubmit, params?.target_x_name]);
 
   const [status, setStatus] = useState(data?.opRecord?.status || "INIT");
   const taskStatus = useMemo(() => {
@@ -122,83 +122,41 @@ width=800,height=600,left=300,top=300`;
   return (
     <>
       <div className="w-full bg-[#323232] rounded-lg">
-        <div className=" w-full flex gap-6 items-center justify-between  flex-grow p-5">
-          <div className="flex items-center gap-6 ">
-            <div className="p-6 bg-black rounded-lg">
-              <TwitterLogoIcon className="w-8 h-8 text-white" />
+        <div className=" w-full flex sm:flex-row flex-col gap-6 items-center justify-between  flex-grow p-2 sm:p-5">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6 ">
+              <div className="p-6 bg-black rounded-lg">
+                <TwitterLogoIcon className="w-8 h-8 text-white" />
+              </div>
             </div>
+            <div className=" text-[#A9A9A9]  flex-grow">{`Follow ${params?.target_x_name} on Twitter`}</div>
+
           </div>
-          <div className="flex justify-between items-center gap-2 relative flex-grow">
-            <div className=" text-[#A9A9A9]  flex-grow">{`Follow ${""} on Twitter`}</div>
-            <div className=" flex-shrink-0">
-              <div
-                className=" cursor-pointer border border-white border-opacity-50 rounded-lg py-4 px-20 text-white font-bold text-base"
-                onClick={handleOpenFollowX}
-              >
-                {"Follow X"}
+          <div className="flex items-center">
+            <div className="flex justify-between items-center gap-2 relative flex-grow">
+              <div className=" flex-shrink-0">
+                <div
+                  className=" cursor-pointer border border-white border-opacity-50 rounded-lg py-4 px-20 text-white font-bold text-base"
+                  onClick={handleOpenFollowX}
+                >
+                  {"Follow X"}
+                </div>
+              </div>
+              <div>
+                <div onClick={handleVerify} className=" cursor-pointer">
+                  {taskStatus === "FINISH" ? (
+                    <CheckIcon className="h-10 w-10 text-green-700" />
+                  ) : (
+                    <RotateCwIcon className=" text-white h-10 w-10" />
+                  )}
+                </div>
+                {/* <ChevronRightIcon className="h-10 w-10" /> */}
               </div>
             </div>
-            <div>
-              <div onClick={handleVerify} className=" cursor-pointer">
-                {taskStatus === "FINISH" ? (
-                  <CheckIcon className="h-10 w-10 text-green-700" />
-                ) : (
-                  <RotateCwIcon className=" text-white h-10 w-10" />
-                )}
-              </div>
-              {/* <ChevronRightIcon className="h-10 w-10" /> */}
-            </div>
+
           </div>
         </div>
       </div>
-      <Dialog
-        open={actionDialog.isOpen}
-        onOpenChange={(v) => {
-          actionDialog.onClose();
-          if (v) {
-            actionDialog.onOpen();
-            return;
-          }
-          actionDialog.onClose();
-        }}
-      >
-        {/* <DialogTrigger asChild>
-        
-                  </DialogTrigger> */}
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-          </DialogHeader>
-          {/* <div className=" flex flex-col gap-6">
-                      {title}
-                    </div> */}
-          <div className=" w-full">
-            <div>
-              <div>Followed account: </div>
-              <div>{params?.target_x_username}</div>
-            </div>
-            {/* <Form {...form}>
-              <FormField
-                control={form.control}
-                name="message"
-                render={(field) => (
-                  <FormItem>
-                    <FormLabel>{"message"}</FormLabel>
-                    <FormControl>
-                      <Input placeholder="message" {...field} />
-                    </FormControl>
-                    <FormDescription />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </Form> */}
-            <div className="w-full flex items-center justify-center p-4">
-              <Button onClick={handleSubmit}>Follow X</Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

@@ -13,6 +13,8 @@ import RetweetXTemplate from './template/RetweetX/Template';
 import LikeXTemplate from './template/LikeX/Template';
 import VisitPageTemplate from './template/VisitPage/Template';
 import InteractionTemplate from './template/Interaction/Template';
+import InteractionDailyTemplate from './template/InteractionDaily/Template';
+
 import { UseFormReturn } from 'react-hook-form';
 
 export enum TaskTemplateAction  {
@@ -52,6 +54,7 @@ export const TaskTypeRegister: Record<string, FC<any>> = {
   RetweetX:  RetweetXTemplate,
   LikeX:  LikeXTemplate,
   VisitPage: VisitPageTemplate,
+  InteractionDaily: InteractionDailyTemplate,
 }
 
 export default function TaskTemplate({

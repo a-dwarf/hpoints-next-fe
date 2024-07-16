@@ -57,6 +57,7 @@ const gateway = '/api/op-records';
 export default function TaskAction({ taskId, title, onAction,
   data
  }: TaskExistProps) {
+  console.log('LikeXdata', data);
   const form = useForm<Inputs>();
   const actionDialog = useDisclosure();
 
@@ -64,10 +65,11 @@ export default function TaskAction({ taskId, title, onAction,
     const p = data?.params
     let a: any = {};
     try {
-      a = JSON.parse(p);
-    } catch (error) {
-      
-    }
+      if (typeof p === "string") {
+        a = JSON.parse(p);
+      }
+      a = p || {};
+    } catch (error) {}
     return a;
   }, [data?.params])
 

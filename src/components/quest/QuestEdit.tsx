@@ -444,6 +444,12 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
                   onAdd={handleAddTask}
                   value={taskFields.fields.some((f) => f.eventType == "TX-COUNT")}
                 />
+                <TaskTemplate
+                  actionType={TaskTemplateAction.List}
+                  templateType="InteractionDaily"
+                  onAdd={handleAddTask}
+                  value={taskFields.fields.some((f) => f.eventType == "TX-DAILY")}
+                />
               </div>
             </div>
             <div></div>

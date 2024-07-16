@@ -3,17 +3,17 @@ import Link from 'next/link'
 import { ArchiveXIcon, Delete, DeleteIcon, Edit, PlusIcon, XIcon } from 'lucide-react'
 import { TwitterLogoIcon } from '@radix-ui/react-icons';
 import { Input } from 'antd';
-import { Controller, UseFormReturn } from 'react-hook-form';
-import {TaskExistProps} from '../../TaskExist';
+import { TaskExistProps } from '../../TaskExist';
+import { Controller } from 'react-hook-form';
 
 export default function TaskExist({
   taskId,
   title,
   onEdit,
   onDelete,
+  icon,
   form,
   formKey,
-  icon,
 }: TaskExistProps) {
   return (
     <div className='w-full bg-[#323232] rounded-lg'>
@@ -24,7 +24,7 @@ export default function TaskExist({
           </div>
         </div>
         <div className='flex flex-col items-center gap-2 relative flex-grow'>
-          <div className=' text-[#A9A9A9]'>{'Follow X'}</div>
+          <div className=' text-[#A9A9A9]'>{'Interaction Daily'}</div>
           <div className=' absolute right-0 top-0'>
             <XIcon className='w-4 h-4 cursor-pointer'
             onClick={() => {
@@ -33,11 +33,20 @@ export default function TaskExist({
             />
           </div>
           <div className=' w-full'>
-            <Controller
+          <Controller
             control={form?.control}
-            name={`${formKey}.params.target_x_name`}
+            name={`${formKey}.params.address`}
             render={({field}) => {
-              return <Input placeholder='Input X Account'  className=' w-full placeholder:text-center h-14 text-center'
+              return <Input placeholder='Input Contract address'  className=' w-full placeholder:text-center h-14 text-center'
+              {...field}
+              />
+            }}
+            />
+                    <Controller
+            control={form?.control}
+            name={`${formKey}.params.count`}
+            render={({field}) => {
+              return <Input placeholder='Input tx count'  className=' w-full placeholder:text-center h-14 text-center'
               {...field}
               />
             }}

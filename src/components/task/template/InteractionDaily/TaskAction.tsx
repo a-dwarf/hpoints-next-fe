@@ -90,8 +90,8 @@ export default function TaskAction({ taskId, title, onAction,
       handleSubmit();
     let frameParams = `scrollbars=no,resizable=yes,status=no,location=no,toolbar=no,menubar=no,
 width=800,height=600,left=300,top=300`;
-    window.open(`${params?.url}`, "_blank")
-  }, [handleSubmit, params?.url]);
+    window.open(`https://x.com/intent/follow?screen_name=${params?.target_x_username}`, "Follow" , frameParams)
+  }, [handleSubmit, params?.target_x_username]);
 
   const [status, setStatus] = useState(data?.opRecord?.status || "INIT");
   const taskStatus = useMemo(() => {
@@ -109,7 +109,7 @@ width=800,height=600,left=300,top=300`;
   }, [data.id]);
   return (
     <>
-        <div className="w-full bg-[#323232] rounded-lg">
+      <div className="w-full bg-[#323232] rounded-lg">
         <div className=" w-full flex gap-6 items-center justify-between  flex-grow p-5">
           <div className="flex items-center gap-6 ">
             <div className="p-6 bg-black rounded-lg">
@@ -117,14 +117,14 @@ width=800,height=600,left=300,top=300`;
             </div>
           </div>
           <div className="flex justify-between items-center gap-2 relative flex-grow">
-            <div className=" text-[#A9A9A9] flex-grow">{`Visit ${params?.url || ''}`}</div>
+            <div className=" text-[#A9A9A9] flex-grow">{`Interaction Daily ${params?.address || ''}`}</div>
             <div className=" flex-shrink-0">
-              <div
+              {/* <div
                 className=" cursor-pointer border border-white border-opacity-50 rounded-lg py-4 px-20 text-white font-bold text-base"
                 onClick={handleOpenFollowX}
               >
-                {"Visit"}
-              </div>
+                {"Like X"}
+              </div> */}
             </div>
             <div>
               <div onClick={handleVerify} className=" cursor-pointer">
@@ -163,7 +163,7 @@ width=800,height=600,left=300,top=300`;
           <div className=" w-full">
             <div>
               <div>Followed account: </div>
-              <div>{params?.url}</div>
+              <div>{params?.target_x_username}</div>
             </div>
             {/* <Form {...form}>
               <FormField

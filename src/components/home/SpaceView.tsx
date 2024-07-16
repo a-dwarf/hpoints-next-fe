@@ -170,17 +170,17 @@ export default function SpaceView () {
         <SpaceSkeleton  className="h-72 self-center"/>
         <SpaceSkeleton  className="h-72 self-center"/>
         <SpaceSkeleton  className="h-72 self-center"/>
-        <SpaceSkeleton  className="h-72 self-center"/>
         </>}
         {!error && !isLoading && ((questsList.length > 0) ?  data?.map((item: any) => {
           return <SpaceItem key={item.id} data={item}/>
         }): <>
+            <div></div>
             <div className=" flex items-center justify-center w-full">
               <ListNoData />
             </div>
+            <div></div>
         </>)}
         {!error && (isLoading) && <>
-        <SpaceSkeleton  className="h-72 self-center"/>
         <SpaceSkeleton  className="h-72 self-center"/>
         <SpaceSkeleton  className="h-72 self-center"/>
         <SpaceSkeleton  className="h-72 self-center"/>

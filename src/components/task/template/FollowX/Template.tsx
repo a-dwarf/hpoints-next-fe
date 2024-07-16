@@ -83,7 +83,7 @@ export default function SendMessageTemplate({
   // }, [templateData, templateData?.params, form])
   const handleAdd = useCallback(async () => {
     const params = {
-      target_x_username: form.getValues()?.message,
+      target_x_name: form.getValues()?.message,
     };
     await onAdd?.({
       // eventTypeId: 2,
@@ -101,7 +101,7 @@ export default function SendMessageTemplate({
 
   const handleUpdate = useCallback(async () => {
     const params = {
-      target_x_username: form.getValues()?.message,
+      target_x_name: form.getValues()?.message,
     };
     await onUpdate?.({
       ...templateData,

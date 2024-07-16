@@ -3,14 +3,8 @@ import Link from 'next/link'
 import { ArchiveXIcon, Delete, DeleteIcon, Edit, PlusIcon, XIcon } from 'lucide-react'
 import { TwitterLogoIcon } from '@radix-ui/react-icons';
 import { Input } from 'antd';
-
-interface TaskExistProps {
-  taskId?: string;
-  title?: ReactNode;
-  icon?: ReactNode;
-  onEdit?: () =>void;
-  onDelete?: () =>void;
-}
+import { TaskExistProps } from '../../TaskExist';
+import { Controller } from 'react-hook-form';
 
 export default function TaskExist({
   taskId,
@@ -18,6 +12,8 @@ export default function TaskExist({
   onEdit,
   onDelete,
   icon,
+  form,
+  formKey,
 }: TaskExistProps) {
   return (
     <div className='w-full bg-[#323232] rounded-lg'>
@@ -37,8 +33,24 @@ export default function TaskExist({
             />
           </div>
           <div className=' w-full'>
-            <Input placeholder='Input Contract address'  className=' w-full placeholder:text-center h-14 text-center'/>
-            <Input placeholder='Input tx count'  className=' w-full placeholder:text-center h-14 text-center'/>
+          <Controller
+            control={form?.control}
+            name={`${formKey}.params.address`}
+            render={({field}) => {
+              return <Input placeholder='Input Contract address'  className=' w-full placeholder:text-center h-14 text-center'
+              {...field}
+              />
+            }}
+            />
+                    <Controller
+            control={form?.control}
+            name={`${formKey}.params.count`}
+            render={({field}) => {
+              return <Input placeholder='Input tx count'  className=' w-full placeholder:text-center h-14 text-center'
+              {...field}
+              />
+            }}
+            />
           </div>
         </div>
       </div>
