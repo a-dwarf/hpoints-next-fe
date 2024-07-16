@@ -27,7 +27,7 @@ import {
   useSearchParams,
 } from "next/navigation";
 import useSWR from "swr";
-import useSWRImmutable from "swr/immutable";
+import useSWRImmutable from "swr";
 import { DatePicker, GetProp, UploadFile, UploadProps } from "antd";
 import { Textarea } from "@/components/ui/textarea";
 import TaskTemplate, { TaskTemplateAction } from "../task/TaskTemplate";

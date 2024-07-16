@@ -17,7 +17,7 @@ import { useAccount, useSignMessage } from 'wagmi'
 import { Hex, verifyMessage } from 'viem';
 import { useParams, useRouter } from 'next/navigation'
 import useSWR from 'swr'
-import useSWRImmutable from 'swr/immutable'
+import useSWRImmutable from 'swr'
 import { DatePicker } from 'antd';
 import { Textarea } from '@/components/ui/textarea'
 

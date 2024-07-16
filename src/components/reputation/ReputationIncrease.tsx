@@ -1,4 +1,4 @@
-import useSWRImmutable from "swr/immutable";
+import useSWRImmutable from "swr";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { TwitterLogoIcon } from "@radix-ui/react-icons";

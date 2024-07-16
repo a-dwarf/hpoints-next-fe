@@ -1,5 +1,5 @@
 "use client";
-import useSWRImmutable from "swr/immutable";
+import useSWRImmutable from "swr";
 import { SpaceItem } from "../home/SpaceView";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";

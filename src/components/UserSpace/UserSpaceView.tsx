@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SpaceSkeleton } from "../loading/SkeletonCard";
 import { useMemo } from "react";
 import { useAccount } from "wagmi";
-import useSWRImmutable from "swr/immutable";
+import useSWRImmutable from "swr";
 import axios from "axios";
 import { SpaceItem } from "../home/SpaceView";
 import ListNoData from "../base/ListNoData";

@@ -11,7 +11,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
-import useSWRImmutable from "swr/immutable"
+import useSWRImmutable from "swr"
 import { Skeleton } from "../ui/skeleton"
 import clsx from "clsx"
 

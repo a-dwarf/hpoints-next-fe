@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useMemo } from "react";
-import useSWRImmutable from "swr/immutable";
+import useSWRImmutable from "swr";
 import { SpaceSkeleton } from "../loading/SkeletonCard";
 import { useRouter } from "next/navigation";
 import { SpaceItem } from "../home/SpaceView";

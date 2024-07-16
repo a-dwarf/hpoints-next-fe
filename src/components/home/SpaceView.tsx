@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import Link from "next/link";
-import useSWRImmutable from "swr/immutable";
+import useSWRImmutable from "swr";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SpaceSkeleton } from "../loading/SkeletonCard";
 import { useMemo } from "react";

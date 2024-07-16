@@ -11,7 +11,7 @@ import { ArchiveXIcon, AwardIcon, ChevronLeftIcon, PlusIcon } from "lucide-react
 import Link from "next/link";
 import {useParams, useRouter} from "next/navigation";
 import { useCallback, useMemo } from "react";
-import useSWRImmutable from "swr/immutable";
+import useSWRImmutable from "swr";
 import { useAccount } from "wagmi";
 
 export interface ScoredOverviewProps {

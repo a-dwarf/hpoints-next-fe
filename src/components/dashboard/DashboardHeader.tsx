@@ -1,7 +1,7 @@
 'use client'
 import dayjs from "dayjs";
 import { Button } from "../ui/button";
-import useSWRImmutable from "swr/immutable";
+import useSWRImmutable from "swr";
 import { useParams } from "next/navigation";
 import { RewardItem } from "../home/SpaceView";
 

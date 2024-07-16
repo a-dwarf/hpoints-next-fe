@@ -17,7 +17,7 @@ import axios from 'axios';
 import TwitterTemplate from '@/components/task/template/TwitterTemplate'
 import SendMessageTemplate from '@/components/task/template/SendMessageTemplate'
 import { useSignApiMessage } from '@/hooks/sign'
-import useSWRImmutable from 'swr/immutable'
+import useSWRImmutable from 'swr'
 import { NormalSkeleton } from '@/components/loading/SkeletonCard'
 
 interface TaskFormProps {

@@ -4,7 +4,7 @@ import Link  from "next/link";
 import UserProjectView from "./UserProjectView";
 import UserSpaceView from "./UserSpaceView";
 
-import useSWRImmutable from "swr/immutable";
+import useSWRImmutable from "swr";
 import axios from "axios";
 import { useAccount } from "wagmi";
 import { useMemo } from "react";

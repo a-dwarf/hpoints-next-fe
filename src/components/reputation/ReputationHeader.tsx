@@ -1,4 +1,4 @@
-import useSWRImmutable from "swr/immutable";
+import useSWRImmutable from "swr";
 
 export default function ReputationHeader() {
   const {data, isLoading, error } = useSWRImmutable(`/api/reputations`);

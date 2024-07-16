@@ -21,7 +21,7 @@ import TaskExist from "../task/TaskExist";
 import TaskTemplate from "../task/TaskTemplate";
 import { SpaceListTable } from "./space/SpaceListTable";
 import { useAccount } from "wagmi";
-import useSWRImmutable from "swr/immutable";
+import useSWRImmutable from "swr";
 import axios from "axios";
 import { useSignApiMessage } from "@/hooks/sign";
 import { useRouter } from "next/navigation";
