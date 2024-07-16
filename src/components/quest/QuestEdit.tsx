@@ -108,9 +108,23 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
     setPreviewOpen(true);
   };
 
-  const handleChange = useCallback(({ fileList: newFileList } :{fileList: UploadFile[]}) =>{
+  const handleChange = useCallback(async({ fileList: newFileList } :{fileList: UploadFile[]}) =>{
+    // const formData = new FormData();
+
+    console.log('fileList', newFileList)
+
+    // formData.append('format', 'json');
+    // formData.append('smfile', new Blob(fileList?.[0]?.originFileObj as any) );
+
+    // const data = await axios.post('/api/file/upload',formData, {
+    //   headers: {
+    //     'Content-Type': 'multipart/form-data',
+    //     Authorization:'G53QlpZM8fNITgWv1JudjD6Szq4sP9KV',
+    //   },
+    // });
+    // console.log(data);
     setFileList(newFileList)
-    // form.setValue('avatar', newFileList?.[0]?.url)
+    form.setValue('avatar', newFileList?.[0]?.response?.data?.url)
   }, [form]);
 
   useEffect(() => {
@@ -162,12 +176,11 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
 
   const handleSave = useCallback(async () => {
     const values = form.getValues();
-
     const postData = {
-      ...values,
+      // ...values,
       name: values.name,
       description: values.description,
-      avatar: values.avatar || '/images/quest/cover.png',
+      avatar: values.avatar,
       startDate: values.startTime?.format(),
       endDate: values.endTime?.format(),
       tasks: values.tasks,
@@ -312,8 +325,13 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
           name="avatar"
           render={({ field }) => (
             <FormItem className=" ">
-              <FormControl>
+              {/* <FormControl> */}
                 {<Upload
+                  name="smfile"
+                  action={'/api/file/upload'}
+                  headers={
+                    {'Authorization':'G53QlpZM8fNITgWv1JudjD6Szq4sP9KV'}
+                  }
                   listType="picture-card"
                   // listType="picture"
                   fileList={fileList}
@@ -326,7 +344,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
                   <div className=" w-40 h-40">
                   </div>
                 </Upload>}
-              </FormControl>
+              {/* </FormControl> */}
               {previewImage && (
                       <Image
                         wrapperStyle={{ display: 'none' }}
