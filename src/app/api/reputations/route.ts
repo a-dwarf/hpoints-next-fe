@@ -16,23 +16,23 @@ export async function GET() {
       "completeReplutions": [
         {
           "isComplete": session?.user?.accounts.find((ele: any) => ele.provider == "github") ? true : false,
-          "rpputionIdType": "github",
-          "scroe": 10,
+          "reputionIdType": "github",
+          "score": 10,
         },
         {
           "reputionIdType": "x",
           "isComplete": session?.user?.accounts.find((ele: any) => ele.provider == "twitter") ? true : false,
-          "scroe": 10,
+          "score": 10,
         },
         {
           "reputionIdType": "email",
           "isComplete": session?.user?.accounts.find((ele: any) => ele.provider == "google") ? true : false,
-          "scroe": 10,
+          "score": 10,
         },
         {
           "reputionIdType": "uniswap_2_tx",
           "isComplete": true,
-          "scroe": 20,
+          "score": 20,
         }
       ]
     }
