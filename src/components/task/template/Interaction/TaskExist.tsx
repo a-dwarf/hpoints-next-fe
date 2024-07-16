@@ -2,9 +2,10 @@ import { ReactNode } from 'react'
 import Link from 'next/link'
 import { ArchiveXIcon, Delete, DeleteIcon, Edit, PlusIcon, XIcon } from 'lucide-react'
 import { TwitterLogoIcon } from '@radix-ui/react-icons';
-import { Input } from 'antd';
+import { DatePicker, Input } from 'antd';
 import { TaskExistProps } from '../../TaskExist';
 import { Controller } from 'react-hook-form';
+import dayjs from 'dayjs';
 
 export default function TaskExist({
   taskId,
@@ -35,6 +36,41 @@ export default function TaskExist({
           <div className=' w-full'>
           <Controller
             control={form?.control}
+            name={`${formKey}.params.chain`}
+            defaultValue={'ETH'}
+            render={({field}) => {
+              return <Input placeholder='Input Contract address'  className=' w-full placeholder:text-center h-14 text-center'
+              {...field}
+              />
+            }}
+            />
+          <Controller
+            control={form?.control}
+            name={`${formKey}.params.start_time`}
+            render={({field}) => {
+              return <DatePicker showTime placeholder="Start Time" 
+              // {...field}
+                value={field?.value ? dayjs.unix((Number(field.value))) : undefined}
+                onChange={(v) => {
+                  field.onChange(v?.unix() || undefined);
+                }}
+              />
+            }}
+            />
+          <Controller
+            control={form?.control}
+            name={`${formKey}.params.end_time`}
+            render={({field}) => {
+              return <DatePicker showTime placeholder="End Time"
+                value={field?.value ? dayjs.unix((Number(field.value))) : undefined}
+                onChange={(v) => {
+                  field.onChange(v?.unix() || undefined);
+                }}
+               />
+            }}
+            />
+          <Controller
+            control={form?.control}
             name={`${formKey}.params.address`}
             render={({field}) => {
               return <Input placeholder='Input Contract address'  className=' w-full placeholder:text-center h-14 text-center'
@@ -42,7 +78,7 @@ export default function TaskExist({
               />
             }}
             />
-                    <Controller
+                    {/* <Controller
             control={form?.control}
             name={`${formKey}.params.count`}
             render={({field}) => {
@@ -50,7 +86,7 @@ export default function TaskExist({
               {...field}
               />
             }}
-            />
+            /> */}
           </div>
         </div>
       </div>
