@@ -199,16 +199,18 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
       console.log(rs);
 
       if (rs.data.id) {
-        router.push(`/quest/edit/${rs.data.id}`);
+        // router.push(`/quest/edit/${rs.data.id}`);
+        router.push(`/user`);
       }
       return;
     }
 
     const rs = await axios.put(`/api/quests/${id}`, { ...postData, id });
+    router.push(`/user`);
 
-    console.log(router);
+    // console.log(router);
 
-    console.log(rs);
+    // console.log(rs);
 
     // if(rs.data.id) {
     //   router.push(`/quests/${id}`);
@@ -217,7 +219,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
 
   const handlePublish = useCallback(async () => {
     const rs = await axios.post(`/api/quests/${id}/publish`);
-    router.push(`/quest/${id}`);
+    router.push(`/user`);
   }, [id, router]);
 
   console.log("taskFields", taskFields);
@@ -373,7 +375,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
                 "The tasks is shown directly on your page. Users must complete tasks to earn points. Setting tasks properly can help your project gain user growth"
               }
             </div>
-            <div className=" px-20">
+            <div className=" sm:px-20">
               <div>
                 { taskFields.fields.length > 0 ? <div className="my-4 flex flex-col gap-10">
                   {taskFields.fields.map((t, index) => {
@@ -411,7 +413,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
                   </div>}
               </div>
               <div className=" border-t  border-solid border-[#323232] mt-10"></div>
-              <div className=" grid grid-cols-3 gap-3 my-6">
+              <div className=" grid grid-cols-1 sm:grid-cols-3 gap-3 my-6">
                 <TaskTemplate
                   actionType={TaskTemplateAction.List}
                   templateType="FollowX"
@@ -483,33 +485,37 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
               render={({ field }) => (
                 <FormItem>
                   <div className="flex items-center gap-4 p-4 font-semibold text-[#A9A9A9] text-sm">
-                    <div className=" flex-shrink-0 bg-[#323232] w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                    <div className=" flex-shrink-0 bg-[#323232] w-8 h-8 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-white font-bold text-xl">
                       {"1"}
                     </div>
-                    <div>Set</div>
-                    <div className="flex items-center justify-center bg-[#323232] py-4 px-20 rounded-lg">
-                      <FormControl>
-                        <input
-                          className=" text-white bg-transparent border-none outline-none w-10 text-right"
-                          {...field}
-                        />
-                      </FormControl>
-                      <div className=" ml-4">
-                        <img
-                          className="h-6 w-6"
-                          src="/images/icons/points.png"
-                        />
-                        {/* <TvIcon className='h-6 w-6' /> */}
+                    <div className="flex items-center gap-4 flex-col sm:flex-grow">
+                      <div className=" flex items-center gap-4">
+                        <div>Set</div>
+                        <div className="flex items-center justify-center bg-[#323232] py-4 px-20 rounded-lg">
+                          <FormControl>
+                            <input
+                              className=" text-white bg-transparent border-none outline-none w-10 text-right"
+                              {...field}
+                            />
+                          </FormControl>
+                          <div className=" ml-4">
+                            <img
+                              className="h-6 w-6"
+                              src="/images/icons/points.png"
+                            />
+                            {/* <TvIcon className='h-6 w-6' /> */}
+                          </div>
+                        </div>   
                       </div>
-                    </div>
-                    {/* <Input className=' w-10 mx-4' placeholder="point"  /> */}
-                    <div></div>
-                    <div className="flex items-center justify-between flex-grow">
-                      <div>{"For people"}</div>
-                      <div className="text-[#FDFF7B] text-xs font-normal">
-                        {"who finish all Task"}
+                      <div  className=" flex items-center gap-4 flex-grow">
+                        <div className="flex items-center justify-between flex-grow">
+                          <div>{"For people"}</div>
+                          <div className="text-[#FDFF7B] text-xs font-normal">
+                            {"who finish all Task"}
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </div>    
                   </div>
                   {/* <FormDescription />
                   <FormMessage /> */}
@@ -520,7 +526,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
         </div>
         <div className=" border-t border-[#323232] w-full mt-16"></div>
 
-        <div className=" flex justify-between py-6">
+        <div className=" flex flex-col sm:flex-row justify-between py-6">
           <div className="my-6 flex justify-between items-center">
             <div className="w-32">
               <FormLabel className=" text-white font-semibold text-2xl">
@@ -535,7 +541,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
               </div>
             </div>
           </div>
-          <div className=" flex items-center justify-between my-2">
+          <div className=" flex flex-col sm:flex-row items-center justify-between my-2 gap-2">
             <div className=" flex items-center gap-2 justify-center mr-4 cursor-pointer border border-[#A9A9A9] rounded-lg py-2.5 px-3">
               <SaveIcon className="h-6 w-6" />
               <div onClick={handleSave}>Save Draft</div>

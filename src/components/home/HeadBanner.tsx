@@ -28,7 +28,7 @@ export default function HeadBanner () {
         </div>
         <div></div>
         <div className="py-10 flex flex-col sm:flex-row gap-10 mt-6">
-          <Link href={'/quest/create'} className=" rounded-xl py-4 px-8 text-3xl text-white font-bold"
+          <Link href={'/quest/create'} className=" rounded-xl py-4 px-8 text-3xl text-white font-bold text-center"
            style={{
             background: "linear-gradient( 43deg, #0C8A5D 0%, #149B6B 42%, #33C993 100%)",
            }}

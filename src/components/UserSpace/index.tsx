@@ -106,8 +106,8 @@ export const UserBanner = ({
             {isLoading ? <div className="flex-grow">
         <Skeleton className="w-40 h-10 rounded-xl" />
       </div> :<div className=" text-[#A9A9A9] font-medium">
-              {googleUser ? <div>
-                {googleUser?.username}
+              {data?.email ? <div>
+                {data?.email}
               </div>:<div className=" cursor-pointer" onClick={() => {
                     signIn('google');
                 }}>
@@ -123,8 +123,8 @@ export const UserBanner = ({
             {isLoading ? <div className="flex-grow">
         <Skeleton className="w-40 h-10 rounded-xl" />
       </div> :<div className=" text-[#A9A9A9] font-medium">
-              {data?.email ? <div>
-                {data?.email}
+              {googleUser ? <div>
+                {googleUser?.username}
               </div> :<div className=" cursor-pointer" onClick={() => {
                    signIn('github');
               }}>

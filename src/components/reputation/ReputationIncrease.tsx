@@ -90,7 +90,7 @@ export default function ReputationIncrease() {
           description={"confirm your X id"}
           action={"Bind"}
           url="/user"
-          isComplete = {data?.completeReplutions.find((item: any) => item?.reputionIdType === 'twitter')?.isComplete}
+          isComplete = {data?.completeReplutions.find((item: any) => item?.reputionIdType === 'x')?.isComplete}
 
         />
         <IncreaseItem
