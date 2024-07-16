@@ -42,7 +42,7 @@ export default function TaskExist({
               />
             }}
             />
-                    <Controller
+                    {/* <Controller
             control={form?.control}
             name={`${formKey}.params.count`}
             render={({field}) => {
@@ -50,7 +50,7 @@ export default function TaskExist({
               {...field}
               />
             }}
-            />
+            /> */}
           </div>
         </div>
       </div>

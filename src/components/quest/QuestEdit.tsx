@@ -185,6 +185,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
       endDate: values.endTime?.format(),
       tasks: values.tasks,
       reward: [],
+      chain: 'ETH',
       rewards: values.rewards,
       // ...values,
     };
