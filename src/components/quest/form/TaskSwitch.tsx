@@ -17,8 +17,8 @@ export default function TaskSwitch({
     onClick={() => {
       onChange?.(!value);
     }}
-    className={clsx("flex items-center py-3 px-6 cursor-pointer justify-center gap-2 border border-white border-opacity-50 rounded-md self-center", {
-      'bg-[#545538]': !!value,
+    className={clsx("flex items-center py-3 px-6 cursor-pointer justify-center gap-2 border border-white border-opacity-50 rounded-md self-center hover:bg-[#545538]", {
+      // 'bg-[#545538]': !!value,
     })}
 
     style={{

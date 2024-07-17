@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Icon, Plus, SaveIcon, TvIcon } from "lucide-react";
+import { Icon, Plus, RefreshCwIcon, SaveIcon, TvIcon } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useDisclosure } from "@chakra-ui/react";
 import { ReloadIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
@@ -41,6 +41,7 @@ import { ConfigProvider } from "antd";
 import TaskSwitch from "./form/TaskSwitch";
 import NoData from "../base/NoData";
 import { Upload, Image } from 'antd';
+import clsx from "clsx";
 
 interface QuestEditProps {
   title?: ReactNode;
@@ -174,48 +175,50 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
     [taskFields]
   );
 
+  const [saveLoading, setSaveLoading] = useState(false);
+
   const handleSave = useCallback(async () => {
-    const values = form.getValues();
-    const postData = {
-      // ...values,
-      name: values.name,
-      description: values.description,
-      avatar: values.avatar,
-      startDate: values.startTime?.format(),
-      endDate: values.endTime?.format(),
-      tasks: values.tasks,
-      reward: [],
-      chain: 'ETH',
-      rewards: values.rewards,
-      // ...values,
-    };
+    setSaveLoading(true);
+    try {
 
-    console.log("postData", postData);
-    // return;
-    if (pathname.startsWith("/quest/create")) {
-      const rs = await axios.post("/api/quests", postData);
-
-      console.log(router);
-
-      console.log(rs);
-
-      if (rs.data.id) {
-        // router.push(`/quest/edit/${rs.data.id}`);
-        router.push(`/user`);
+      const values = form.getValues();
+      const postData = {
+        // ...values,
+        name: values.name,
+        description: values.description,
+        avatar: values.avatar,
+        startDate: values.startTime?.format(),
+        endDate: values.endTime?.format(),
+        tasks: values.tasks,
+        reward: [],
+        chain: 'ETH',
+        rewards: values.rewards,
+        // ...values,
+      };
+  
+      console.log("postData", postData);
+      // return;
+      if (pathname.startsWith("/quest/create")) {
+        const rs = await axios.post("/api/quests", postData);
+  
+        console.log(router);
+  
+        console.log(rs);
+  
+        if (rs.data.id) {
+          // router.push(`/quest/edit/${rs.data.id}`);
+          router.push(`/user`);
+        }
+        return;
       }
-      return;
+  
+      const rs = await axios.put(`/api/quests/${id}`, { ...postData, id });
+      router.push(`/user`);
+      
+    } catch (error) {
+      
     }
-
-    const rs = await axios.put(`/api/quests/${id}`, { ...postData, id });
-    router.push(`/user`);
-
-    // console.log(router);
-
-    // console.log(rs);
-
-    // if(rs.data.id) {
-    //   router.push(`/quests/${id}`);
-    // }
+    setSaveLoading(false);
   }, [form, id, pathname, router]);
 
   const handlePublish = useCallback(async () => {
@@ -549,9 +552,14 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
             </div>
           </div>
           <div className=" flex flex-col sm:flex-row items-center justify-between my-2 gap-2">
-            <div className=" flex items-center gap-2 justify-center mr-4 cursor-pointer border border-[#A9A9A9] rounded-lg py-2.5 px-3">
-              <SaveIcon className="h-6 w-6" />
-              <div onClick={handleSave}>Save Draft</div>
+            <div className={clsx(" flex items-center gap-2 justify-center mr-4 cursor-pointer border border-[#A9A9A9] rounded-lg py-2.5 px-3" ,{
+              'opacity-50': saveLoading
+            })}>
+              {saveLoading ? <RefreshCwIcon className="h-6 w-6 animate-spin"  /> :<SaveIcon className="h-6 w-6" />}
+              <div onClick={() => {
+                if(saveLoading) return;
+                handleSave()
+              }}>Save Draft</div>
             </div>
             {data?.status === 'Draft' && <div
               className="cursor-pointer rounded-xl py-4 px-16 text-white font-bold"
