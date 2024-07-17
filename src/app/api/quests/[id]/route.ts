@@ -7,10 +7,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   const session: any = await auth();
   const userId = session?.user?.id;
 
-  if (!session || !session.user) {
-    return new NextResponse('Unauthorized', { status: 401 });
-  }
-
   const quest = await prisma.quest.findUnique({
     where: { id: parseInt(id) },
     include: {
