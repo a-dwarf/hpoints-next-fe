@@ -93,7 +93,7 @@ width=800,height=600,left=300,top=300`;
     window.open(`https://x.com/intent/follow?screen_name=${params?.target_x_username}`, "Follow" , frameParams)
   }, [handleSubmit, params?.target_x_username]);
 
-  const [status, setStatus] = useState(data?.opRecord?.status || "INIT");
+  const [status, setStatus] = useState(data?.opRecord?.status);
   const taskStatus = useMemo(() => {
     return status || data?.opRecord?.status;
   }, [data?.opRecord?.status, status])
