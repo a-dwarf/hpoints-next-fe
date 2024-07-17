@@ -5,6 +5,7 @@ import { TwitterLogoIcon } from '@radix-ui/react-icons';
 import { Input } from 'antd';
 import { TaskExistProps } from '../../TaskExist';
 import { Controller } from 'react-hook-form';
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 
 export default function TaskExist({
   taskId,
@@ -33,13 +34,31 @@ export default function TaskExist({
             />
           </div>
           <div className=' w-full'>
-          <Controller
+          <FormField
             control={form?.control}
+            rules={{
+              required: {
+                value: true,
+                message: "*",
+              },
+              pattern: {
+                value: /^[0-9]*$/,
+                message: "Input Validate Tweet Id",
+              },
+            }}
             name={`${formKey}.params.tweet_id`}
-            render={({field}) => {
-              return <Input placeholder='Input Tweet Id'  className=' w-full placeholder:text-center h-14 text-center'
+            render={({ field }) => {
+              return (
+                <FormItem className="">
+                  <FormControl>
+                  <Input placeholder='Input Tweet Id'  className=' w-full placeholder:text-center h-14 text-center'
               {...field}
               />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              );
             }}
             />
           </div>

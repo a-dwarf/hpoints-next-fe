@@ -75,7 +75,10 @@ export default function UserProjectView () {
         <SpaceSkeleton  className="w-80 h-72"/>
         </>}
         {!error && !isLoading && ((questsList.length > 0) ?  data?.map((item: any) => {
-          return <SpaceItem key={item.id} data={item} hasDraft={true}/>
+          return <SpaceItem key={item.id} data={item}
+          hasDraft={true}
+          url={(item?.status === 'Draft') ? `/quest/edit/${item?.id}` :`/dashboard/${item?.id}`}
+          />
         }): <>
           <div className=" flex items-center justify-center w-full">
             <ListNoData />

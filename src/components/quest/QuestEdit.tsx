@@ -140,6 +140,31 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
     }
   }, [data, form]);
 
+  const scrollToError = useCallback(() => {
+    if (form.formState.errors) {
+      // Sort inputs based on their position on the page. (the order will be based on validaton order otherwise)
+      const elements = Object.keys(form.formState.errors)
+      .map((name) => document.getElementsByName(name)[0])
+      .filter((el) => !!el);
+      elements.sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+      
+      if (elements.length > 0) {
+        let errorElement = elements[0];
+        // console.log('scrollToError', errorElement);
+        // console.log('scrollToError', errorElement.offsetTop);
+        const top = errorElement.getBoundingClientRect().top;
+        console.log('errorElement', top)
+        window.scrollTo({
+          top,
+          behavior: 'smooth',
+        })
+
+        // errorElement.scrollIntoView({ behavior: "smooth"}); // scrollIntoView options are not supported in Safari
+        // errorElement.focus({ preventScroll: true });
+      }
+    }
+  }, [ form.formState.errors]);
+
   const tasks = useMemo(() => {
     return [
       {
@@ -186,6 +211,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
       const isValidate = await form.trigger();
       console.log('isValidate', isValidate);
       if(!isValidate) {
+        scrollToError()
         throw Error('Validate fail')
       }
 
@@ -227,7 +253,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
       
     }
     setSaveLoading(false);
-  }, [form, id, pathname, router]);
+  }, [form, id, pathname, router, scrollToError]);
 
   const [publishLoading, setPublishLoading] = useState(false);
 
@@ -250,6 +276,14 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
     address: address,
     token: '0xdac17f958d2ee523a2206206994597c13d831ec7',
   });
+
+  // using a state here to make the "scroll & focus" happen once per submission
+const [canFocus, setCanFocus] = useState(true)
+
+const onError = () => {
+  console.log('onError');
+  setCanFocus(true)
+}
 
   return (
     <div className="w-full py-6 text-white">
@@ -338,7 +372,9 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
               <FormItem className="">
                 <FormControl>
                   <div>
-                    <DatePicker showTime placeholder="Start Time" {...field} />
+                    <DatePicker showTime placeholder="Start Time" {...field} 
+                      minDate={dayjs()}
+                    />
                   </div>
                 </FormControl>
                 <FormDescription />
@@ -359,7 +395,9 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
               <FormItem>
                 <FormControl>
                   <div>
-                    <DatePicker showTime placeholder="End Time" {...field} />
+                    <DatePicker showTime placeholder="End Time" {...field} 
+                      minDate={ form.getValues('startTime')  || dayjs() }
+                    />
                   </div>
                 </FormControl>
                 <FormDescription />
@@ -624,6 +662,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
             })}
             onClick={() => {
               if(saveLoading) return;
+              // form.handleSubmit(handleSave, onError)
               handleSave()
             }}
             >

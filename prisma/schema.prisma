@@ -169,8 +169,7 @@ model OperationRecord {
 
 enum OpCheckStatus {
   INIT
-  TURE
-  FALSE
+  FINISH
 }
 
 model Reputation {

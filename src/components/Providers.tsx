@@ -45,6 +45,7 @@ const swrFetcher =  async (url: string) => {
 
 
 const swrConfig: SWRConfiguration = {
+  revalidateOnFocus: false,
   fetcher: swrFetcher
 };
 

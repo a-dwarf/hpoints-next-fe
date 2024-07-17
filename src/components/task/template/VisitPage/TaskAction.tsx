@@ -93,7 +93,7 @@ width=800,height=600,left=300,top=300`;
     window.open(`${params?.url}`, "_blank")
   }, [handleSubmit, params?.url]);
 
-  const [status, setStatus] = useState(data?.opRecord?.status || "INIT");
+  const [status, setStatus] = useState(data?.opRecord?.status);
   const taskStatus = useMemo(() => {
     return status || data?.opRecord?.status;
   }, [data?.opRecord?.status, status])

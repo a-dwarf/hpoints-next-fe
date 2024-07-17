@@ -162,52 +162,6 @@ export default function SendMessageTemplate({
          onChange={handleSwitch}
          value={value}
         />}
-      <Dialog
-        open={templateDialog.isOpen}
-        onOpenChange={(v) => {
-          if (v) {
-            templateDialog.onOpen();
-            return;
-          }
-          templateDialog.onClose();
-        }}
-      >
-        {/* <DialogTrigger asChild>
-      
-                </DialogTrigger> */}
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-          </DialogHeader>
-          <div className=" flex flex-col gap-6">
-            <div className=" w-full flex flex-col gap-4">
-              <Form {...form}>
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({field}) => (
-                    <FormItem>
-                      <FormLabel>{"The Followed Account"}</FormLabel>
-                      <FormControl>
-                        <Input placeholder="The Followed Account" {...field} />
-                      </FormControl>
-                      <FormDescription />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </Form>
-              {actionType === TaskTemplateAction.List && <Button onClick={handleAdd}>
-                {'Add Task'}
-              </Button>}
-
-              {actionType === TaskTemplateAction.Exist && <Button onClick={handleUpdate}>
-                {'Update Task'}
-              </Button>}
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

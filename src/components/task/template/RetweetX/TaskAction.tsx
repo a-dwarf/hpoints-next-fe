@@ -95,7 +95,7 @@ width=800,height=600,left=300,top=300`;
     window.open(`https://x.com/intent/retweet?tweet_id=${params?.tweet_id}`, "Retweet" , frameParams)
   }, [handleSubmit, params?.tweet_id]);
 
-  const [status, setStatus] = useState(data?.opRecord?.status || "INIT");
+  const [status, setStatus] = useState(data?.opRecord?.status);
   const taskStatus = useMemo(() => {
     return status || data?.opRecord?.status;
   }, [data?.opRecord?.status, status])
