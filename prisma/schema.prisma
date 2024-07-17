@@ -121,8 +121,8 @@ model Task {
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
-  quest         Quest            @relation(fields: [questId], references: [id], onDelete: Cascade)
-  eventTypeName EventType        @relation(fields: [eventType], references: [name])
+  quest         Quest             @relation(fields: [questId], references: [id], onDelete: Cascade)
+  eventTypeName EventType         @relation(fields: [eventType], references: [name])
   opRecord      OperationRecord[]
 
   @@map("tasks")
@@ -156,7 +156,7 @@ model OperationRecord {
   questId   Int           @map("quest_id")
   dataId    String?       @map("data_id")
   params    Json          @map("params")
-  point     Int?          @map("point")
+  point     Int           @map("point") @default(0)
   status    OpCheckStatus @default(INIT) @map("status")
   createdAt DateTime      @default(now()) @map("created_at")
   updatedAt DateTime      @updatedAt @map("updated_at")

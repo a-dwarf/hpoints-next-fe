@@ -31,11 +31,15 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 
   const total_points = quest.tasks.reduce((sum, task) => {
-    return task.opRecord ? sum + (task.opRecord.point || 0) : sum;
+    return task.opRecord.reduce((taskSum, record) => {
+      return taskSum + (record.point || 0);
+    }, sum);
   }, 0);
 
   const user_points = quest.tasks.reduce((userSum, task) => {
-    return task.opRecord && task.opRecord.userId === userId ? userSum + (task.opRecord.point || 0) : userSum;
+    return task.opRecord.reduce((taskUserSum, record) => {
+      return record.userId === userId ? taskUserSum + (record.point || 0) : taskUserSum;
+    }, userSum);
   }, 0);
 
   const questWithTotalPoints = {
