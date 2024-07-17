@@ -63,8 +63,11 @@ export async function POST(req: NextRequest) {
           if (isFollow) await handle(opRecord);
           return NextResponse.json({ is_check: isFollow });
         case 'RETWEET':
-          let isRetweet = await getRetweetData(xprovider?.providerAccountId, xprovider?.params?.target_tweet_id)
+          let isRetweet = await getRetweetData(xprovider?.providerAccountId, xprovider?.params?.tweet_id)
           return NextResponse.json({ is_check: isRetweet });
+        case 'VIEW_URL':
+          await handle(opRecord);
+          return NextResponse.json({ is_check: true });
         default:
           return NextResponse.json({ is_check: false });
       }
