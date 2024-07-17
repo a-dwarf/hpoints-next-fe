@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '../../../lib/prisma';
 import { auth } from "@/auth"
 import { followCheck, getRetweetData } from "@/lib/x"
+import { OpCheckStatus } from '@prisma/client';
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
@@ -84,6 +85,7 @@ async function handle(opRecord: any) {
     where: { id: opRecord.id },
     data: {
       point: 1,
+      status: OpCheckStatus.FINISH,
     },
   });
 
