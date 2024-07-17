@@ -15,7 +15,9 @@ export async function GET() {
       tasks: {
         some: {
           opRecord: {
-            userId: userId,
+            some: {
+              userId: userId,
+            },
           },
         },
       },
