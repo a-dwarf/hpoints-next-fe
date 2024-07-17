@@ -42,6 +42,8 @@ import TaskSwitch from "./form/TaskSwitch";
 import NoData from "../base/NoData";
 import { Upload, Image } from 'antd';
 import clsx from "clsx";
+import { useBalance } from 'wagmi'
+
 
 interface QuestEditProps {
   title?: ReactNode;
@@ -221,12 +223,27 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
     setSaveLoading(false);
   }, [form, id, pathname, router]);
 
+  const [publishLoading, setPublishLoading] = useState(false);
+
   const handlePublish = useCallback(async () => {
-    const rs = await axios.post(`/api/quests/${id}/publish`);
-    router.push(`/user`);
+    setPublishLoading(true);
+    try {
+      const rs = await axios.post(`/api/quests/${id}/publish`);
+      router.push(`/user`);
+    } catch (error) {
+      
+    }
+    setPublishLoading(false);
   }, [id, router]);
 
   console.log("taskFields", taskFields);
+
+  const {address} = useAccount();
+
+  const result = useBalance({
+    address: address,
+    token: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+  });
 
   return (
     <div className="w-full py-6 text-white">
@@ -474,6 +491,16 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
           <div className=" bg-background rounded-xl">
             <RewardToken form={form} formKey={"tokens"} />
           </div>
+          <div className="flex items-center justify-end mt-4 ">
+            <div className="flex items-center gap-2">
+              <div className="text-[#A9A9A9]">Your balance: </div>
+              <div>{result.data?.formatted}</div>
+              <div>
+                <img className="w-6 h-6" src="/images/icons/usdt.png" alt="" />
+              </div>
+            </div>
+
+          </div>
         </div>
 
         <div className=" mt-10">
@@ -498,7 +525,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
                     <div className=" flex-shrink-0 bg-[#323232] w-8 h-8 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-white font-bold text-xl">
                       {"1"}
                     </div>
-                    <div className="flex items-center gap-4 flex-col sm:flex-grow">
+                    <div className="flex items-center gap-4 flex-col sm:flex-row flex-grow">
                       <div className=" flex items-center gap-4">
                         <div>Set</div>
                         <div className="flex items-center justify-center bg-[#323232] py-4 px-20 rounded-lg">
@@ -517,7 +544,7 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
                           </div>
                         </div>   
                       </div>
-                      <div  className=" flex items-center gap-4 flex-grow">
+                      <div  className=" flex items-center justify-between gap-4 flex-grow w-full">
                         <div className="flex items-center justify-between flex-grow">
                           <div>{"For people"}</div>
                           <div className="text-[#FDFF7B] text-xs font-normal">
@@ -554,21 +581,29 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
           <div className=" flex flex-col sm:flex-row items-center justify-between my-2 gap-2">
             <div className={clsx(" flex items-center gap-2 justify-center mr-4 cursor-pointer border border-[#A9A9A9] rounded-lg py-2.5 px-3" ,{
               'opacity-50': saveLoading
-            })}>
+            })}
+            onClick={() => {
+              if(saveLoading) return;
+              handleSave()
+            }}
+            >
               {saveLoading ? <RefreshCwIcon className="h-6 w-6 animate-spin"  /> :<SaveIcon className="h-6 w-6" />}
-              <div onClick={() => {
-                if(saveLoading) return;
-                handleSave()
-              }}>Save Draft</div>
+              <div>Save Draft</div>
             </div>
-            {data?.status === 'Draft' && <div
-              className="cursor-pointer rounded-xl py-4 px-16 text-white font-bold"
+            {<div
+              className={clsx("cursor-pointer rounded-xl py-4 px-16 text-white font-bold", {
+                'opacity-50 cursor-not-allowed': publishLoading || data?.status !== 'Draft'
+              })}
               style={{
                 backgroundImage:
                   "linear-gradient( 43deg, #0C8A5D 0%, #149B6B 42%, #33C993 100%)",
               }}
+              onClick={() => {
+                if(publishLoading || data?.status !== 'Draft') return;
+                handlePublish();
+              }}
             >
-              <div onClick={handlePublish}>Publish</div>
+              <div>Publish</div>
             </div>}
           </div>
         </div>

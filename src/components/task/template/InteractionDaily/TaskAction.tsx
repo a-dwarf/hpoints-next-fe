@@ -110,7 +110,7 @@ width=800,height=600,left=300,top=300`;
   return (
     <>
       <div className="w-full bg-[#323232] rounded-lg">
-        <div className=" w-full flex gap-6 items-center justify-between  flex-grow p-5">
+        <div className=" w-full flex gap-6 items-center justify-between  flex-grow p-2 sm:p-5">
           <div className="flex items-center gap-6 ">
             <div className="p-6 bg-black rounded-lg">
               <TwitterLogoIcon className="w-8 h-8 text-white" />

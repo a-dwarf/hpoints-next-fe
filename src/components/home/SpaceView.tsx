@@ -120,7 +120,7 @@ export const SpaceItem = ({
         </div>
       </div>
       <div className="h-40 w-40 rounded-2xl flex-shrink-0 ml-1">
-        <CustomImage width={160} height={160} className="h-40 w-40 rounded-2xl" alt="" src={data?.avatar}
+        <CustomImage width={160} height={160} className="h-40 w-40 rounded-2xl" alt="" src={data?.avatar || ''}
           errorImage="/images/quest/cover.png"
           unoptimized
         />

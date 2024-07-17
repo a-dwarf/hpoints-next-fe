@@ -110,17 +110,20 @@ width=800,height=600,left=300,top=300`;
   return (
     <>
         <div className="w-full bg-[#323232] rounded-lg">
-        <div className=" w-full flex gap-6 items-center justify-between  flex-grow p-5">
-          <div className="flex items-center gap-6 ">
-            <div className="p-6 bg-black rounded-lg">
-              <TwitterLogoIcon className="w-8 h-8 text-white" />
+        <div className=" w-full grid grid-cols-1 sm:grid-cols-2 sm:flex-row flex-col gap-6 items-center justify-between  flex-grow p-2 sm:p-5">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6 ">
+              <div className="p-6 bg-black rounded-lg">
+                <TwitterLogoIcon className="w-8 h-8 text-white" />
+              </div>
             </div>
+            <div className=" text-[#A9A9A9]  flex-grow">{`Visit ${params?.url || ''}`}</div>
+
           </div>
           <div className="flex justify-between items-center gap-2 relative flex-grow">
-            <div className=" text-[#A9A9A9] flex-grow">{`Visit ${params?.url || ''}`}</div>
-            <div className=" flex-shrink-0">
+            <div className=" flex-shrink-0  flex-grow">
               <div
-                className=" cursor-pointer border border-white border-opacity-50 rounded-lg py-4 px-20 text-white font-bold text-base"
+                className=" cursor-pointer border border-white border-opacity-50 rounded-lg py-4 sm:w-52  text-center text-white font-bold text-base"
                 onClick={handleOpenFollowX}
               >
                 {"Visit"}
