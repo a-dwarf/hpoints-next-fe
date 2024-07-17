@@ -14,7 +14,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 
   const opRecord: any = await prisma.operationRecord.findUnique({
-    where: { taskId: Number(id), userId },
+    where: {
+      taskId_userId: {
+        taskId: Number(id),
+        userId: session.user.id,
+      },
+    },
   });
 
   if (opRecord?.point) {
@@ -22,6 +27,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 
   let xprovider = session?.user?.accounts.find((ele: any) => ele.provider == "twitter")
+  console.log(xprovider)
   switch (opRecord?.eventType) {
     case 'FOLLOW':
       let isFollow = await followCheck(opRecord?.params?.target_x_name, xprovider?.providerAccountId)
@@ -37,6 +43,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 async function handle(opRecord: any) {
+  console.log(opRecord)
   await prisma.operationRecord.update({
     where: { id: opRecord.id },
     data: {
@@ -59,5 +66,6 @@ async function handle(opRecord: any) {
     })
   });
   const data = await result.json();
+  console.log(`${process.env.HSERVICE_URL}/event`, data)
   return data;
 }
