@@ -79,14 +79,16 @@ export const StatusIcon = ({
 export interface SpaceItemProps {
   data?: any
   hasDraft?: boolean;
+  url?: string;
 }
 
 export const SpaceItem = ({
   data,
   hasDraft,
+  url,
 }: SpaceItemProps) => {
   
-  return <Link href={(hasDraft && data?.status === 'Draft') ? `/quest/edit/${data?.id}` :`/quest/${data?.id}`} className="flex flex-col items-center bg-[#141414] rounded-2xl  h-72 p-5 flex-shrink-0">
+  return <Link href={url ? url :((hasDraft && data?.status === 'Draft') ? `/quest/edit/${data?.id}` :`/quest/${data?.id}`)} className="flex flex-col items-center bg-[#141414] rounded-2xl  h-72 p-5 flex-shrink-0">
     <div className="flex items-center justify-between w-full">
       <div className="flex items-center gap-2">
         <RewardItem icon={'/images/icons/points.png'} 
