@@ -169,24 +169,6 @@ export const WalletSignButton = () => {
 function Header() {
   // const account = useAccount();
   const account = useWagmiAccount();
-
-  const handleRegister = useCallback(async () => {
-    const address = account.address;
-    if(!address) return;
-    const res = await axios.get(`/api/user/${address}`);
-    const user = res.data;
-    if(user?.id) {
-      return;
-    }
-    const rs = await axios.put(`/api/user/${address}`, {
-      address,
-      name: address,
-    });
-
-  }, [account.address]);
-  useEffect(() => {
-    handleRegister();
-  }, [handleRegister]);
   const scrollRef = useRef(null);
   const [top, setTop] = useState(0)
   const handleScroll = useCallback(() => {

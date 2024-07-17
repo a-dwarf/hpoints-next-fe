@@ -117,8 +117,7 @@ width=800,height=600,left=300,top=300`;
                 <TwitterLogoIcon className="w-8 h-8 text-white" />
               </div>
             </div>
-            <div className=" text-[#A9A9A9]  flex-grow">{`Visit ${params?.url || ''}`}</div>
-
+            <div className=" text-[#A9A9A9]  flex-grow text-ellipsis line-clamp-2">{`Visit ${params?.url || ''}`}</div>
           </div>
           <div className="flex justify-between items-center gap-2 relative flex-grow">
             <div className=" flex-shrink-0  flex-grow">

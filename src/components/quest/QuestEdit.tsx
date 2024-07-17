@@ -183,6 +183,12 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
     setSaveLoading(true);
     try {
 
+      const isValidate = await form.trigger();
+      console.log('isValidate', isValidate);
+      if(!isValidate) {
+        throw Error('Validate fail')
+      }
+
       const values = form.getValues();
       const postData = {
         // ...values,
@@ -250,6 +256,12 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
       <Form {...form}>
         <FormField
           control={form.control}
+          rules={{
+            required: {
+              value: true,
+              message: '*',
+            },
+          }}
           name="name"
           render={({ field }) => (
             <FormItem className="">
@@ -273,7 +285,17 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
         <FormField
           control={form.control}
           name="description"
-          render={({ field }) => (
+          rules={{
+            required: {
+              value: true,
+              message: '*',
+            },
+            minLength: {
+              value: 30,
+              message: 'the length of description >= 30'
+            },
+          }}
+          render={({ field, fieldState, formState }) => (
             <FormItem className="mt-10">
               <FormLabel className=" text-white font-semibold text-2xl  mt-6">
                 {"Quest Description"}
@@ -305,6 +327,12 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
           > */}
           <FormField
             control={form.control}
+            rules={{
+              required: {
+                value: true,
+                message: '*',
+              },
+            }}
             name="startTime"
             render={({ field }) => (
               <FormItem className="">
@@ -321,6 +349,12 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
           <FormField
             control={form.control}
             name="endTime"
+            rules={{
+              required: {
+                value: true,
+                message: '*',
+              },
+            }}
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -346,6 +380,12 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
         <FormField
           control={form.control}
           name="avatar"
+          rules={{
+            required: {
+              value: true,
+              message: '*',
+            },
+          }}
           render={({ field }) => (
             <FormItem className=" ">
               {/* <FormControl> */}
