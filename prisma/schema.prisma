@@ -123,7 +123,7 @@ model Task {
 
   quest         Quest            @relation(fields: [questId], references: [id], onDelete: Cascade)
   eventTypeName EventType        @relation(fields: [eventType], references: [name])
-  opRecord      OperationRecord?
+  opRecord      OperationRecord[]
 
   @@map("tasks")
 }
@@ -152,7 +152,7 @@ model OperationRecord {
   id        Int           @id @default(autoincrement()) @map("id")
   userId    String        @map("user_id")
   eventType String        @map("event_type")
-  taskId    Int           @unique @map("task_id")
+  taskId    Int           @map("task_id")
   questId   Int           @map("quest_id")
   dataId    String?       @map("data_id")
   params    Json          @map("params")
