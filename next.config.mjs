@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	images: {
+		domains: ['s2.loli.net', 'airlyft.one']
+	},
 	async rewrites() {
 		return [
 			{

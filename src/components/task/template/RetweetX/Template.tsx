@@ -99,12 +99,13 @@ export default function SendMessageTemplate({
   }, [data.id, onDelete, templateDialog]);
 
   const handleSwitch = useCallback(async (v: boolean) => {
-    if(v) {
-      await handleAdd();
-    }else {
-      await handleDelete();
-    }
-  }, [handleAdd, handleDelete])
+    await handleAdd();
+    // if(v) {
+    //   await handleAdd();
+    // }else {
+    //   await handleDelete();
+    // }
+  }, [handleAdd])
   return (
     <>
       {actionType === TaskTemplateAction.Exist &&

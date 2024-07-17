@@ -106,7 +106,7 @@ export default function RewardToken({
   useEffect(() => {
     form?.setValue(formKey, [
       {amount: '100', symbol: 'USDT', visible: false},
-      {amount: '100', symbol: 'points', visible: false}
+      // {amount: '100', symbol: 'points', visible: false}
 
     ])
   }, [form, formKey])
@@ -114,7 +114,7 @@ export default function RewardToken({
   return (
     <div className='w-full'>
       <BasicRewardItem form={form} formKey={`${formKey}.0`} index={1} amount='200' icon={<img className='h-6 w-6' src='/images/icons/usdt.png' />}/>
-      <BasicRewardItem  form={form} formKey={`${formKey}.1`}  index={2} amount='200'  icon={<img className='h-6 w-6' src='/images/icons/points.png' />}/>
+      {/* <BasicRewardItem  form={form} formKey={`${formKey}.1`}  index={2} amount='200'  icon={<img className='h-6 w-6' src='/images/icons/points.png' />}/> */}
     </div>
   )
 }

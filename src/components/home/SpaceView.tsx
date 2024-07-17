@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import ListNoData from "../base/ListNoData";
 import { Edit2Icon, Edit3Icon } from "lucide-react";
+import CustomImage from "../base/CustomImage";
 
 export const ActivityItem = () => {
   return <div className=" h-14 border flex items-center px-4">{'Task'}</div>
@@ -91,7 +92,7 @@ export const SpaceItem = ({
         <RewardItem icon={'/images/icons/points.png'} 
         amount={'100'}
         />
-        <RewardItem icon={'/images/icons/points.png'} 
+        <RewardItem icon={'/images/icons/usdt.png'} 
         amount={'100'}
         />
       </div>
@@ -119,10 +120,11 @@ export const SpaceItem = ({
         </div>
       </div>
       <div className="h-40 w-40 rounded-2xl flex-shrink-0 ml-1">
-        {/* <Image className="h-40 w-40 rounded-2xl" alt="" src={data?.avatar || '/images/quest/QuestEmpty.png'}
-          overrideSrc="/images/quest/QuestEmpty.png"
-        /> */}
-        <img src={data?.avatar || '/images/quest/QuestEmpty.png'} className="h-40 w-40 rounded-2xl" />
+        <CustomImage width={160} height={160} className="h-40 w-40 rounded-2xl" alt="" src={data?.avatar}
+          errorImage="/images/quest/cover.png"
+          unoptimized
+        />
+        {/* <img src={data?.avatar || '/images/quest/QuestEmpty.png'} className="h-40 w-40 rounded-2xl" /> */}
       </div>
     </div>
   </Link>

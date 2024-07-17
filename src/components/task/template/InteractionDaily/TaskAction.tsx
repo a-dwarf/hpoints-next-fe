@@ -117,7 +117,14 @@ width=800,height=600,left=300,top=300`;
             </div>
           </div>
           <div className="flex justify-between items-center gap-2 relative flex-grow">
-            <div className=" text-[#A9A9A9] flex-grow">{`Interaction Daily ${params?.address || ''}`}</div>
+            <div className=" text-[#A9A9A9] flex-grow">
+                <div>
+                {`Interaction Daily`}
+                </div>
+                <div className=" truncate max-w-28">
+                  {` ${params?.address || ''}`}
+                </div>
+            </div>
             <div className=" flex-shrink-0">
               {/* <div
                 className=" cursor-pointer border border-white border-opacity-50 rounded-lg py-4 px-20 text-white font-bold text-base"
@@ -139,56 +146,6 @@ width=800,height=600,left=300,top=300`;
           </div>
         </div>
       </div>
-      <Dialog
-        open={actionDialog.isOpen}
-        onOpenChange={(v) => {
-          actionDialog.onClose();
-          if (v) {
-            actionDialog.onOpen();
-            return;
-          }
-          actionDialog.onClose();
-        }}
-      >
-        {/* <DialogTrigger asChild>
-        
-                  </DialogTrigger> */}
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-          </DialogHeader>
-          {/* <div className=" flex flex-col gap-6">
-                      {title}
-                    </div> */}
-          <div className=" w-full">
-            <div>
-              <div>Followed account: </div>
-              <div>{params?.target_x_username}</div>
-            </div>
-            {/* <Form {...form}>
-              <FormField
-                control={form.control}
-                name="message"
-                render={(field) => (
-                  <FormItem>
-                    <FormLabel>{"message"}</FormLabel>
-                    <FormControl>
-                      <Input placeholder="message" {...field} />
-                    </FormControl>
-                    <FormDescription />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </Form> */}
-            <div className="w-full flex items-center justify-center p-4">
-              <Button
-                onClick={handleSubmit}
-              >Follow X</Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </>
   );
 }

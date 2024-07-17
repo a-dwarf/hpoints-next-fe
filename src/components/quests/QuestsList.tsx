@@ -102,8 +102,8 @@ export default function QuestsList() {
                         label: <span>Ongoing</span>,
                       },
                       {
-                        value: "Draft",
-                        label: <span>Draft</span>,
+                        value: "End",
+                        label: <span>End</span>,
                       },
                     ]}
                     // defaultValue={"Ongoing"}

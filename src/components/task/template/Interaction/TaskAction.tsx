@@ -117,7 +117,14 @@ width=800,height=600,left=300,top=300`;
             </div>
           </div>
           <div className="flex justify-between items-center gap-2 relative flex-grow">
-            <div className=" text-[#A9A9A9] flex-grow">{`Interaction Count ${params?.address || ''}`}</div>
+            <div className=" text-[#A9A9A9] flex-grow">
+              <div>
+              {`Interaction Count`}
+              </div>
+              <div className=" truncate max-w-28">
+                {` ${params?.address || ''}`}
+              </div>
+            </div>
             <div className=" flex-shrink-0">
               {/* <div
                 className=" cursor-pointer border border-white border-opacity-50 rounded-lg py-4 px-20 text-white font-bold text-base"
