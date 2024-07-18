@@ -93,10 +93,10 @@ width=800,height=600,left=300,top=300`;
     window.open(`https://x.com/intent/follow?screen_name=${params?.target_x_username}`, "Follow" , frameParams)
   }, [handleSubmit, params?.target_x_username]);
 
-  const [status, setStatus] = useState(data?.opRecord?.status);
+  const [status, setStatus] = useState(data?.opRecord?.[0]?.status);
   const taskStatus = useMemo(() => {
-    return status || data?.opRecord?.status;
-  }, [data?.opRecord?.status, status])
+    return status || data?.opRecord?.[0]?.status;
+  }, [data?.opRecord?.[0]?.status, status])
 
   const handleVerify = useCallback(async () => {
     const rs = await axios.get(`/api/tasks/${data.id}/check`);
