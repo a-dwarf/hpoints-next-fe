@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '../../../../../lib/prisma';
 import { auth } from "@/auth"
 import { followCheck, getRetweetData } from "@/lib/x"
+import { OpCheckStatus } from '@prisma/client';
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
@@ -37,6 +38,9 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       let isRetweet = await getRetweetData(xprovider?.providerAccountId, opRecord?.params?.tweet_id)
       if (isRetweet) await handle(opRecord);
       return NextResponse.json({ is_check: isRetweet });
+    case 'VIEW_URL':
+      await handle(opRecord);
+      return NextResponse.json({ is_check: true });
     default:
       return NextResponse.json({ is_check: false });
   }
@@ -48,21 +52,21 @@ async function handle(opRecord: any) {
     where: { id: opRecord.id },
     data: {
       point: 1,
+      status: OpCheckStatus.FINISH,
     },
   });
 
   // http => point service
   const result = await fetch(`${process.env.HSERVICE_URL}/event`, {
-    cache: 'no-store',
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
       "pk_user": opRecord?.userId,
-      "pk_owner": opRecord?.taskId,
+      "pk_owner": opRecord?.taskId + "",
       "event_meta": [],
-      "event_type": opRecord?.event_type
+      "event_type": opRecord?.eventType
     })
   });
   const data = await result.json();
