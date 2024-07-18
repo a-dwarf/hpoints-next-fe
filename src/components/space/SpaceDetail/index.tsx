@@ -1,4 +1,5 @@
 'use client'
+import CustomImage from "@/components/base/CustomImage";
 import { RewardItem } from "@/components/home/SpaceView";
 import { NormalSkeleton, SpaceSkeleton } from "@/components/loading/SkeletonCard";
 import { TemplateEventTypeMap, templateTypeMap } from "@/components/project/space/TaskForm";
@@ -125,8 +126,7 @@ export default function SpaceDetail() {
     <div className='w-full flex flex-col justify-center items-center'>
       <div className='max-w-5xl w-full py-10 sm:px-0'>
         <div className=" flex flex-col sm:flex-row  items-center sm:items-start sm:justify-between gap-6">
-          <div className=" flex-grow">
-
+          <div className="">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <ChevronLeftIcon className="h-6 w-6 cursor-pointer" 
@@ -147,15 +147,21 @@ export default function SpaceDetail() {
 
               </div>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 sm:max-w-xl w-full">
               <div className=" text-white font-semibold text-4xl">{data?.name}</div>
               <div className=" text-base text-[#A9A9A9] mt-6">
                 {data?.description}
               </div>
             </div>
           </div>
-          <div className=" w-[360px] h-[360px] rounded-xl  bg-background">
-            <img className=" w-full object-cover object-center" src={data?.avatar} />
+          <div className=" w-[360px] h-[360px] rounded-xl  bg-background flex-shrink-0 flex items-center justify-center">
+            <CustomImage 
+              width={360} 
+              className=" rounded-xl"
+              height={360}
+              alt="" src={data?.avatar || ''}
+              errorImage="/images/quest/cover.png"
+            />
           </div>
 
         </div>
@@ -165,41 +171,43 @@ export default function SpaceDetail() {
             className="w-full h-40"
           />}
         </div> */}
-        <div className="px-2 sm:px-40">
-          <div className=" text-white text-3xl mt-20 font-bold">
-            Increase Reputation
-          </div>
-          <div className="flex flex-col mt-10 gap-4">
-            {/* {tasks.map((task: any) => {
-              return <TaskAction key={task.id} title={'Follow  on Twitter'} />
-            })} */}
+        <div className="px-2 flex items-center justify-center">
+          <div className="sm:max-w-2xl w-full">
+            <div className=" text-white text-3xl mt-20 font-bold">
+              Increase Reputation
+            </div>
+            <div className="flex flex-col mt-10 gap-4">
+              {/* {tasks.map((task: any) => {
+                return <TaskAction key={task.id} title={'Follow  on Twitter'} />
+              })} */}
 
-            {!isLoading &&  tasks.map((task: any, index: number) => {
-              return <div key={task.id} className=" flex items-center">
-                          <div className=" flex-shrink-0 bg-[#323232] sm:w-16 sm:h-16 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-xl m-2 sm:m-6">
-                          {index + 1}
-                        </div>
-                        <div className=" flex-grow">
+              {!isLoading &&  tasks.map((task: any, index: number) => {
+                return <div key={task.id} className=" flex items-center">
+                            <div className=" flex-shrink-0 bg-[#323232] sm:w-16 sm:h-16 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-xl m-2 sm:m-6">
+                            {index + 1}
+                          </div>
+                          <div className=" flex-grow">
 
-                          <TaskTemplate 
-                          templateType={TemplateEventTypeMap[task.eventType || '1']} 
-                          actionType={TaskTemplateAction.Action} 
-                          key={task.id} 
-                          title={task.name} 
-                          description={task.description} 
-                          onAction={handleAction}
-                          data={task}
-                          />
-                        </div>
-              </div>
-              
-            })}
-            {isLoading && <>
-            <SpaceSkeleton className=" h-60" />
-            <SpaceSkeleton className=" h-60" />
-            <SpaceSkeleton className=" h-60" />
-            <SpaceSkeleton className=" h-60" />
-            </>}
+                            <TaskTemplate 
+                            templateType={TemplateEventTypeMap[task.eventType || '1']} 
+                            actionType={TaskTemplateAction.Action} 
+                            key={task.id} 
+                            title={task.name} 
+                            description={task.description} 
+                            onAction={handleAction}
+                            data={task}
+                            />
+                          </div>
+                </div>
+                
+              })}
+              {isLoading && <>
+              <SpaceSkeleton className=" h-60" />
+              <SpaceSkeleton className=" h-60" />
+              <SpaceSkeleton className=" h-60" />
+              <SpaceSkeleton className=" h-60" />
+              </>}
+            </div>
           </div>
         </div>
         <div className="flex flex-col gap-3 sm:flex-row items-center justify-between my-4  sm:px-40 mt-10">
