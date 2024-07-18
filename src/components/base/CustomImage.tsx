@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Image from 'next/image'
+import Image, { ImageProps } from 'next/image'
 
-export default function CustomImage({alt = '', errorImage = '/images/quest/QuestEmpty.png', ...props}) {
+export default function CustomImage({alt = '', errorImage = '/images/quest/QuestEmpty.png', ...props}: ImageProps & {errorImage: string}) {
   const [src, setSrc] = useState(props.src);
   return (
     <Image
