@@ -65,6 +65,7 @@ export async function POST(req: NextRequest) {
           return NextResponse.json({ is_check: isFollow });
         case 'RETWEET':
           let isRetweet = await getRetweetData(xprovider?.providerAccountId, xprovider?.params?.tweet_id)
+          await handle(opRecord);
           return NextResponse.json({ is_check: isRetweet });
         case 'VIEW_URL':
           await handle(opRecord);
@@ -91,16 +92,15 @@ async function handle(opRecord: any) {
 
   // http => point service
   const result = await fetch(`${process.env.HSERVICE_URL}/event`, {
-    cache: 'no-store',
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
       "pk_user": opRecord?.userId,
-      "pk_owner": opRecord?.taskId,
+      "pk_owner": opRecord?.taskId + "",
       "event_meta": [],
-      "event_type": opRecord?.event_type
+      "event_type": opRecord?.eventType
     })
   });
   const data = await result.json();
