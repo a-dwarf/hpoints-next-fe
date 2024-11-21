@@ -18,7 +18,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useDisclosure } from "@chakra-ui/react";
 import { ReloadIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import axios from "axios";
-import { useAccount, useSignMessage } from "wagmi";
+import { useAccount, usePublicClient, useSignMessage, useWriteContract } from "wagmi";
 import { Hex, verifyMessage } from "viem";
 import {
   useParams,
@@ -43,6 +43,10 @@ import NoData from "../base/NoData";
 import { Upload, Image } from 'antd';
 import clsx from "clsx";
 import { useBalance } from 'wagmi'
+import { ABI } from "@/app/abi/ischia";
+import { waitForTransactionReceipt } from "viem/actions";
+import { useOperators } from "@/hooks/useOperators";
+import { AVS_PROJECT_OPERATOR } from "@/config";
 
 
 interface QuestEditProps {
@@ -110,6 +114,8 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
     setPreviewImage(file.url || (file.preview as string));
     setPreviewOpen(true);
   };
+
+  const { writeContractAsync } = useWriteContract();
 
   const handleChange = useCallback(async({ fileList: newFileList } :{fileList: UploadFile[]}) =>{
     // const formData = new FormData();
@@ -257,16 +263,40 @@ export default function QuestEdit({ title, icon }: QuestEditProps) {
 
   const [publishLoading, setPublishLoading] = useState(false);
 
+  const client = usePublicClient();
+
+  const operators = useOperators();
+
+  console.log("operators", operators);
+
   const handlePublish = useCallback(async () => {
     setPublishLoading(true);
     try {
-      const rs = await axios.post(`/api/quests/${id}/publish`);
-      router.push(`/user`);
+      const values = form.getValues();
+      const name = values.name;
+      const operatorAddress = "0xe059cd0a3d876badb8a4faa418027d74364decf";
+      const tx = await writeContractAsync({
+        abi: ABI,
+        address: AVS_PROJECT_OPERATOR,
+        functionName: "createNewProject",
+        args: [
+          operatorAddress,
+          name!
+        ],
+      });
+      const result = await waitForTransactionReceipt(client!, {
+        hash: tx,
+      });
+      if (result.status === "success") {
+        const rs = await axios.post(`/api/quests/${id}/publish`);
+        router.push(`/user`);
+      }
+
     } catch (error) {
       
     }
     setPublishLoading(false);
-  }, [id, router]);
+  }, [client, form, id, router, writeContractAsync]);
 
   console.log("taskFields", taskFields);
 

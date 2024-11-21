@@ -1,0 +1,1 @@
+export const AVS_PROJECT_OPERATOR = "0xe059cd0a3d876badb8a4faa418027d74364decf3";
