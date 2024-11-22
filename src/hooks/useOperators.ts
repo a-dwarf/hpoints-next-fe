@@ -9,6 +9,7 @@ export const useOperators = () => {
     const {data: len} = useReadContract({
         abi: ABI,
         address: AVS_PROJECT_OPERATOR,
+        // functionName: "operatorInfos",
         functionName: "getOperatorCount",
         args: [
         ],
@@ -34,5 +35,25 @@ export const useOperators = () => {
     const data = useReadContracts({
         contracts: allContracts as any,
     });
-  return data;
+    return data;
+//     const operatorInfoContracts = useMemo(() => {
+//         const operators = (data.data || []).map((d) => d.result);
+//         const params = {
+//             address: AVS_PROJECT_OPERATOR,
+//             abi: ABI,
+//             functionName: "operatorInfos",
+//         }
+//         const contracts = operators.map((op, index) => {
+//             return {
+//                 ...params,
+//                 args: [op]
+//             }
+//         });
+//         return contracts;
+//     }, [data.data]);
+
+//     const operatorsInfo = useReadContracts({
+//         contracts: operatorInfoContracts as any,
+//     });
+//   return operatorsInfo;
 }

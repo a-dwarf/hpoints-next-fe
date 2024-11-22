@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '../../../lib/prisma';
+import { getHeServiceEndpoint } from '@/config/hservice';
 
 export async function GET() {
-
-  const result = await fetch(`${process.env.HSERVICE_URL}/range_query`, {
+  const hurl = await getHeServiceEndpoint();
+  const result = await fetch(`${hurl || process.env.HSERVICE_URL}/range_query`, {
     cache: 'no-store',
     method: 'POST',
     headers: {
