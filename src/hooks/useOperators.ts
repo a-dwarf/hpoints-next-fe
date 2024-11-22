@@ -22,14 +22,14 @@ export const useOperators = () => {
             abi: ABI,
             functionName: "operators",
         }
-        const contracts = new Array(length).map((item, index) => {
+        const contracts = Array.from(new Array(length)).map((item, index) => {
             return {
                 ...params,
                 args: [BigInt(index)]
             }
         });
         return contracts;
-    }, [len])
+    }, [len]);
 
     const data = useReadContracts({
         contracts: allContracts as any,

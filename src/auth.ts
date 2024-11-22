@@ -34,14 +34,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         console.log("authorize", req);
 
         try {
-          const creMessage = JSON.parse(credentials?.message as any) || {};
-          const siwe = new SiweMessage(creMessage);
-          const nextAuthUrl = new URL(creMessage.uri);
+          // const creMessage = JSON.parse(credentials?.message as any) || {};
+          const siwe = new SiweMessage(credentials?.message as any);
+          
+          const nextAuthUrl = siwe.domain;
 
           const result = await siwe.verify({
             signature: credentials?.signature as any,
-            domain: nextAuthUrl.host,
-            nonce: creMessage.nonce,
+            domain: nextAuthUrl,
+            nonce: siwe.nonce,
           });
           // const csrf = await getCsrfToken();
           // console.log('authorize', csrf)
@@ -75,6 +76,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           return null;
         } catch (e) {
+          console.log("error", e);
           return null;
         }
       },
