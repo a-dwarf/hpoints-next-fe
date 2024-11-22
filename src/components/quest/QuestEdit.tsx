@@ -1,7 +1,7 @@
 "use client";
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -28,7 +28,7 @@ import {
 } from "next/navigation";
 import useSWR from "swr";
 import useSWRImmutable from "swr";
-import { DatePicker, GetProp, UploadFile, UploadProps } from "antd";
+import { DatePicker, GetProp, Select, UploadFile, UploadProps } from "antd";
 import { Textarea } from "@/components/ui/textarea";
 import TaskTemplate, { TaskTemplateAction } from "../task/TaskTemplate";
 import {
@@ -65,6 +65,7 @@ export interface Task {
 interface Inputs {
   tasks?: Task[];
   name?: string;
+  operator?: string;
   description?: string;
   avatar?: string;
   startTime?: Dayjs;
@@ -699,7 +700,7 @@ const onError = () => {
               {saveLoading ? <RefreshCwIcon className="h-6 w-6 animate-spin"  /> :<SaveIcon className="h-6 w-6" />}
               <div>Save Draft</div>
             </div>
-            {<div
+            {/* {<div
               className={clsx("cursor-pointer rounded-xl py-4 px-16 text-white font-bold", {
                 'opacity-50 cursor-not-allowed': publishLoading || data?.status !== 'Draft'
               })}
@@ -713,8 +714,47 @@ const onError = () => {
               }}
             >
               <div>Publish</div>
-            </div>}
+            </div>} */}
           </div>
+        </div>
+        <div className=" flex flex-col sm:flex-row items-center justify-between my-2 gap-2 sm:ml-32">
+          <Controller
+              control={form.control}
+              name="operator"
+              // defaultValue={}
+              render={({ field }) => (
+                <Select
+                  placeholder={"operator"}
+                  className=" w-40 h-10"
+                  options={
+                    operators.data?.map((item) => {
+                      return{
+                        value: item.result,
+                        label: <span>{item.result as string}</span>,
+                      }
+                    }) || []
+                  }
+                  // defaultValue={"Ongoing"}
+                  // value={'Ongoing'}
+                  {...field}
+                />
+              )}
+            />
+          {<div
+            className={clsx("cursor-pointer rounded-xl py-4 px-16 text-white font-bold", {
+              'opacity-50 cursor-not-allowed': publishLoading || data?.status !== 'Draft'
+            })}
+            style={{
+              backgroundImage:
+                "linear-gradient( 43deg, #0C8A5D 0%, #149B6B 42%, #33C993 100%)",
+            }}
+            onClick={() => {
+              if(publishLoading || data?.status !== 'Draft') return;
+              handlePublish();
+            }}
+          >
+            <div>Publish</div>
+          </div>}
         </div>
       </Form>
     </div>
